@@ -1,0 +1,296 @@
+instruments:
+  - type: virtual_vfr
+    row: 0
+    column: 0
+    span:
+      rows: 110
+      columns: 150
+  - type: horizontal_situation_indicator
+    row: 0
+    column: 0
+    span:
+      rows: 110
+      columns: 150
+    move:
+      shrink: 12
+    options:
+      fontSize: 48
+      fgcolor: "#aaaaaa"
+      bgcolor: "#aaaaaa"
+      cdi_enabled: true
+      gsi_enabled: true
+  - type: altimeter_tape
+    row: 0
+    column: 135
+    span:
+      rows: 110
+      columns: 15
+    options:
+      fontsize: 28
+      number_font_size: 40
+      altitude: true
+  - type: vsi_pfd
+    row: 0
+    column: 127
+    span:
+      rows: 50
+      columns: 8
+  - type: numeric_display
+    row: 50
+    column: 127
+    span:
+      rows: 5
+      columns: 8
+    options:
+      decimalPlaces: 0
+      dbkey: VS
+  - type: airspeed_tape
+    row: 0
+    column: 0
+    span:
+      rows: 110
+      columns: 15
+    options:
+      fontsize: 40
+  - type: heading_display
+    row: 0
+    column: 70
+    span:
+      rows: 7
+      columns: 10
+    options:
+      bg_color: "#00000000"
+      fg_color: "#FFFFFF"
+      font_size: 47
+  - type: static_text
+    row: 0
+    column: 0
+    span:
+      rows: 5
+      columns: 27
+    options:
+      text: "Auto Pilot:"
+  - type: value_text
+    row: 0
+    column: 92
+    span:
+      rows: 5
+      columns: 35
+    options:
+      _dbkey: TIMEZ
+  - type: value_text
+    row: 5
+    column: 92
+    span:
+      rows: 5
+      columns: 35
+    options:
+      _dbkey: TIMEL
+  - type: value_text
+    row: 0
+    column: 27
+    span:
+      rows: 5
+      columns: 50
+    options:
+      _dbkey: APMSG
+  - type: static_text
+    row: 90
+    column: 115
+    span:
+      rows: 4
+      columns: 10
+    options:
+      text: "Baro:"
+  - type: numeric_display
+    row: 90
+    column: 126
+    span:
+      rows: 4
+      columns: 12
+    options:
+      dbkey: BARO
+      decimalPlaces: 2
+      pressure: true
+  - type: button
+    row: 80
+    column: 115
+    span:
+      rows: 10
+      columns: 10
+    options:
+      config: buttons/baro-down-invisible.yaml
+  - type: button
+    row: 80
+    column: 126
+    span:
+      rows: 10
+      columns: 10
+    options:
+      config: buttons/baro-up-invisible.yaml
+  - type: static_text
+    row: 95
+    column: 115
+    span:
+      rows: 4
+      columns: 10
+    options:
+      text: "DALT:"
+  - type: numeric_display
+    row: 95
+    column: 126
+    span:
+      rows: 4
+      columns: 15
+    options:
+      dbkey: DALT
+      decimalPlaces: 0
+      altitude: true
+  - type: static_text
+    row: 100
+    column: 115
+    span:
+      rows: 4
+      columns: 10
+    options:
+      text: "PALT:"
+  - type: numeric_display
+    row: 100
+    column: 126
+    span:
+      rows: 4
+      columns: 15
+    options:
+      dbkey: PALT
+      decimalPlaces: 0
+      altitude: true
+  - type: static_text
+    row: 105
+    column: 115
+    span:
+      rows: 4
+      columns: 10
+    options:
+      text: "OAT:"
+  - type: numeric_display
+    row: 105
+    column: 126
+    span:
+      rows: 4
+      columns: 10
+    options:
+      dbkey: OAT
+      temperature: true
+      showUnits: true
+      decimalPlaces: 0
+  - type: vertical_bar_gauge
+    row: 68
+    column: -2
+    span:
+      rows: 41
+      columns: 15
+    options:
+      name: Pitch
+      decimapPlaces: 0
+      showUnits: false
+      showValue: false
+      dbkey: TRIMP
+  - type: button
+    row: 71
+    column: 1
+    span:
+      rows: 14
+      columns: 9
+    options:
+      config: buttons/trim-up-invisible.yaml
+  - type: button
+    row: 85
+    column: 1
+    span:
+      rows: 10
+      columns: 9
+    options:
+      config: buttons/trim-center-invisible.yaml
+  - type: button
+    row: 95
+    column: 1
+    span:
+      rows: 15
+      columns: 9
+    options:
+      config: buttons/trim-down-invisible.yaml
+  - type: horizontal_bar_gauge
+    row: 99
+    column: 12
+    span:
+      rows: 20
+      columns: 38
+    options:
+      name: Yaw
+      decimapPlaces: 0
+      showUnits: false
+      showValue: false
+      dbkey: TRIMY
+  - type: horizontal_bar_gauge
+    row: 89
+    column: 12
+    span:
+      rows: 20
+      columns: 38
+    options:
+      name: Roll
+      decimapPlaces: 0
+      showUnits: false
+      showValue: false
+      dbkey: TRIMR
+  - type: button
+    row: 100
+    column: 11
+    span:
+      rows: 10
+      columns: 15
+    options:
+      config: buttons/trim-yaw-left-invisible.yaml
+  - type: button
+    row: 100
+    column: 26
+    span:
+      rows: 10
+      columns: 10
+    options:
+      config: buttons/trim-yaw-center-invisible.yaml
+  - type: button
+    row: 100
+    column: 36
+    span:
+      rows: 10
+      columns: 15
+    options:
+      config: buttons/trim-yaw-right-invisible.yaml
+  - type: button
+    row: 90
+    column: 11
+    span:
+      rows: 10
+      columns: 15
+    options:
+      config: buttons/trim-roll-left-invisible.yaml
+  - type: button
+    row: 90
+    column: 26
+    span:
+      rows: 10
+      columns: 10
+    options:
+      config: buttons/trim-roll-center-invisible.yaml
+  - type: button
+    row: 90
+    column: 36
+    span:
+      rows: 10
+      columns: 15
+    options:
+      config: buttons/trim-roll-right-invisible.yaml
+
+
+
