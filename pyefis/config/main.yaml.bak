@@ -1,0 +1,777 @@
+main:
+  # IP information for network adapter
+  FixServer: 127.0.0.1
+  FixPort: 3490
+  # Screen Geometry
+  #screenWidth: 1024
+  #screenHeight: 768
+  #screenWidth: 1920
+  #screenHeight: 550
+  #screenHeight: 1080
+  screenWidth: 800
+  screenHeight: 480
+  #screenWidth: 3840
+  #screenHeight: 1100
+  # Set EFIS to occupy the entire screen without system border / menu
+  screenFullSize: False #True
+
+  # Screen background color RGB
+  screenColor: (0,0,0)
+
+  # If left out the first defined screen will be default
+  defaultScreen: PFD
+
+dmenu:
+  menus:
+  # The button configuration is ['button text', 'action', 'argument']
+  # Currently limited to 6 buttons.  Comment out this entire section to hide menus if you are using real buttons.
+      PFDMenu:
+          - ['Hide', 'activate menu', 'ShowMenu']
+          - ['Back', 'Show Previous Screen','']
+          - ['Next', 'Show Next Screen','']
+          - ['EMS', 'Show Screen','EMS']
+          - ['Units', 'Set Instrument Units', 'OAT,OILT1,Temperature:Toggle']
+          - ['Basic', 'activate menu','BasicMenu']
+      BasicMenu:
+          - ['Hide', 'activate menu', 'ShowMenu2']
+          - ['PFD', 'Show Screen','PFD']
+          - ['EPFD', 'Show Screen','EPFD']
+          - ['EMS', 'Show Screen','EMS']
+          - ['Six', 'Show Screen','SixPack']
+          - ['Main', 'activate menu','PFDMenu']
+      ShowMenu:
+          - ['Show', 'activate menu','PFDMenu']
+      ShowMenu2:
+          - ['Show', 'activate menu','BasicMenu']
+  start_menu: PFDMenu
+#  show_time: 3  # hides the menu after 3 seconds.  However cannot show again.  Don't use.  Here for reference only.
+  number_of_buttons: 6
+  buttons_spacing: 120
+  left_margin: 50
+  top_margin: 50
+
+disabledbuttonmenu:
+    colors:
+        red: "FF0000"
+        grey: "808080"
+        yellow: "FFFF00"
+        orange: "FFA500"
+        white: "FFFFFF"
+        black: "000000"
+        green: "00FF00"
+    defaults:
+       scale_buttons: true
+       hide_menu: false #Set to true if you want menu hidden by default
+       height: 100
+       width: 100
+       left_margin: 10
+       top_margin: 90
+       button_spacing: 20 # Space between buttons, can be negative to render right to left
+       bg_color: white
+       fg_color: black
+       corner_radius: 15 # or rounded
+       font_size: 25
+       # If a button does not specify x,y then they will be placed from left to right in the order defined starting at the margin defined
+       # IF a button does not specify height or width the default will be used
+    buttons:
+      showhide:
+        title: Hide
+        shortcut: "1" # Binds keyboard shortcut to the button
+        height: 200
+        width: 200
+        order: 1 # Optional, when specified this button will be part of the 'menu'
+        bg_color: orange
+        font_size: 30
+        db_items: BTN1 # A single item or a list, any value you want to use in an expression must be listed here
+        conditions: 
+          - name: "true" # Just a logical name, means nothing
+            expression: "BTN1 eq true" #Pycond expression see https://github.com/axiros/pycond
+            action:
+              internal: togglehide # Show/Hide the menu
+              simulate_click: true # Act as if the button was clicked
+              update_data: # Update one or more pieces of data
+                - type: set # set a static value, later I plan to add increment as an option too
+                  db_item: BTN1 # The name of the value to update
+                  value: false
+          - name: "false"
+            expression: "BTN1 eq false"
+            action:
+              internal: togglehide
+
+      back:
+        title: Back
+        shortcut: "2"
+        width: 200
+        order: 2
+        db_items: BTN2
+        conditions:
+          - name: "true"
+            expression: "BTN2 eq true"
+            action:
+              internal: back
+              simulate_click: true
+              update_data:
+                - type: set
+                  db_item: BTN2
+                  value: false
+          - name: "false"
+            expression: "BTN2 eq false"
+            action:
+              internal: back
+      next:
+        title: Next
+        shortcut: "3"
+        width: 200
+        order: 3
+        fg_color: orange
+        db_items: BTN3
+        conditions:
+          - name: "true"
+            expression: "BTN3 eq true"
+            action:
+              internal: next
+              simulate_click: true
+              update_data:
+                - type: set
+                  db_item: BTN2
+                  value: false
+          - name: "false"
+            expression: "BTN3 eq false"
+            action:
+              internal: next
+      pfd:
+        title: PFD #<- default title
+        titles:
+          PFD: EPFD #<- Titles for a given screen
+          EPFD: PFD
+        shortcut: "4"
+        width: 200
+        order: 4
+        db_items: BTN4
+        conditions:
+          - name: "true"
+            expression: "BTN4 eq true"
+            action:
+              goto:
+                PFD: EPFD
+                EPFD: PFD
+                default: EPFD
+              simulate_click: true
+              update_data:
+                - type: set
+                  db_item: BTN4
+                  value: false
+          - name: "false"
+            expression: "BTN4 eq false"
+            action:
+              goto:
+                PFD: EPFD
+                EPFD: PFD
+                default: EPFD
+
+      exit: #simple button only activated with click or shortcut
+        title: Exit
+        shortcut: "x"
+        order: 6
+        action:
+          internal: exit
+
+      testbutton:
+        title: "Dynamic Button"
+        shortcut: "a"
+        x: 10
+        y: 10
+        width: 140
+        corner_radius: 30
+        font_size: 15
+        db_items: ACID
+        menubutton: False # Optional, when True will hide/show withe the normal menu
+        hide_on:
+          - PFD #This button will be hidden on PFD screen
+        conditions:
+          # Imagine some device also monitors ACID and responds with its own messages
+          # Set ACID to Error to see the error state
+          # When you press the button in this state it will set ACID to Reset
+          - name: "error"
+            expression: "ACID eq 'Error'"
+            action:
+              bg_color: red
+              message: Error
+              update_data:
+                - type: set
+                  db_item: ACID
+                  value: Reset
+          # This condition does nothing when clicked
+          # When you set ACID to Ready it will work again
+          - name: "reset"
+            expression: "ACID eq 'Reset'"
+            action:
+              bg_color: yellow
+              message: Resetting
+          # Now the button will set RequestEnable when you click it
+          - name: "Ready"
+            expression: "ACID eq 'Ready'"
+            action:
+              bg_color: white
+              message: Ready
+              update_data:
+                - type: set
+                  db_item: ACID
+                  value: RequestEnable
+          # This condition does nothing when clicked
+          # set ACID to Enabled 
+          - name: "Request"
+            expression: "ACID eq 'RequestEnable'"
+            action:
+              bg_color: yellow
+              message: Enabling
+          # Clicking the button will set ACID to disabled 
+          - name: "Enabled"
+            expression: "ACID eq 'Enabled'"
+            action:
+              bg_color: green
+              message: Ready
+              update_data:
+                - type: set
+                  db_item: ACID
+                  value: Disabled
+          # Clicking the button will set ACID to Request Enable
+          - name: "disable"
+            expression: "ACID eq 'Disabled'"
+            action:
+              bg_color: white
+              message: "Off"
+              update_data:
+                - type: set
+                  db_item: ACID
+                  value: RequestEnable
+
+
+# The keybindings are used to attach keystrokes to actions.  The key can be
+# a string that represents a key Sequence.  See the documentation for more
+# information about key sequences and actions.
+keybindings:
+  - key: A
+    action: Show Previous Screen
+
+  - key: S
+    action: Show Next Screen
+
+  - key: P
+    action: Show Screen
+    args: PFD
+
+  - key: M
+    action: Set Airspeed Mode
+
+  - key: Q
+    action: Set Value
+    args: BTN6, True
+    direction: DN
+  - key: Q
+    action: Set Value
+    args: BTN6, False
+    direction: UP
+  - key: U
+    action: Set Instrument Units
+    args: OAT,OILT1,Temperature:Toggle
+
+  - key: F1
+    action: Activate Menu Item
+    args: 1
+  - key: F2
+    action: Activate Menu Item
+    args: 2
+  - key: F3
+    action: Activate Menu Item
+    args: 3
+  - key: F4
+    action: Activate Menu Item
+    args: 4
+  - key: F5
+    action: Activate Menu Item
+    args: 5
+  - key: F6
+    action: Activate Menu Item
+    args: 6
+
+  - key: ']'
+    action: Change Value
+    args: BARO,0.01
+  - key: '['
+    action: Change Value
+    args: BARO,-0.01
+
+  - key: "1"
+    action: Set EGT Mode
+    args: Normalize
+  - key: "2"
+    action: Set EGT Mode
+    args: Peak
+  - key: "3"
+    action: Set EGT Mode
+    args: Lean
+  - key: "4"
+    action: Set EGT Mode
+    args: Reset Peak
+
+# Data bindings tie actions to values in teh database
+# key is the database key and should match the FIX Gateway key
+databindingsdisabled:
+  - key: BTN1
+    condition: True
+    action: Activate Menu Item
+    args: 1
+  - key: BTN2
+    condition: True
+    action: Activate Menu Item
+    args: 2
+  - key: BTN3
+    condition: True
+    action: Activate Menu Item
+    args: 3
+  - key: BTN4
+    condition: True
+    action: Activate Menu Item
+    args: 4
+  - key: BTN5
+    condition: True
+    action: Activate Menu Item
+    args: 5
+  - key: BTN6
+    condition: True
+    action: Activate Menu Item
+    args: 6
+  - key: ENC1
+    action: Menu Encoder
+    args: <VALUE>   # This sends the data value to the action
+  - key: OILP1
+    condition: < 25
+    action: Show Screen
+    args: EMS
+
+
+# This section defines FIX IDs that we'll write out to the
+# FIX Gateway server.  Each can be defined as one of three
+# methods.  Interval will look at the time out lifetime (TOL)
+# of the point and send the data at half that interval.
+# OnChange will send when the value is changed and Both will
+# do both.
+outputs:
+  #TAS = Interval
+  BARO: OnChange
+  BTN16: OnChange
+  BTN1: OnChange
+  BTN2: OnChange
+  BTN3: OnChange
+  BTN4: OnChange
+  BTN5: OnChange
+  BTN6: OnChange
+  ACID: OnChange  
+  BTNAP: OnChange
+  BTNHH: OnChange
+  BTNFP: OnChange
+  APREQ: OnChange
+  APADJ: OnChange
+# Screen definitions describe the screens that will be loaded
+# and ready for use.  Each section should start with "Screen."
+# followed by the name.  The only required configuration is
+# module, which is the module that will be loaded to render
+# the screen
+
+screens:
+  EPFD:
+    module: pyefis.screens.epfd
+    title: E Primary Flight Display
+    dbpath: /home/eblevins/projects/efis/CIFP/FAACIFP18
+    indexpath: /home/eblevins/projects/efis/CIFP/index.bin
+    check_engine: [MAP1, TACH1, OILP1, OILT1, FUELQT, FUELF1, CHTMAX1, EGTAVG1]
+    update_period: .1
+
+  PFD:
+    module: pyefis.screens.pfd
+    title: Primary Flight Display
+    dbpath: /home/eblevins/projects/efis/CIFP/FAACIFP18
+    indexpath: /home/eblevins/projects/efis/CIFP/index.bin
+    update_period: .1
+
+  EMS:
+    module: pyefis.screens.ems_sm
+    title: Engine Management
+
+  EMSNew:
+    module: pyefis.screens.screenbuilder
+    title: Engine Management New
+    layout:
+      type: grid #Splits the screen into evenly sized grids where each grid can contain a single insturment
+      rows: 16
+      columns: 27
+    instruments:
+      - type: static_text
+        row: 1
+        column: 1
+        span:
+          rows: 1
+          columns: 20
+        options:
+          text: "Screen Builder"
+      - type: ganged_button
+        gang_type: horizontal
+        row: 14
+        column: 4.75
+        move:
+          shrink: 25
+          justify: top
+        span:
+          rows: 1
+          columns: 7.5
+        groups:
+          - name: Buttons
+            gap: 1
+            instruments:
+              -
+                options:
+                  config: config/buttons/egt-Normalize.yaml
+              -
+                options:
+                  config: config/buttons/egt-Lean.yaml
+              -
+                options:
+                  config: config/buttons/egt-Peak.yaml
+              -
+                options:
+                  config: config/buttons/egt-reset-peak.yaml
+      -
+        type: arc_gauge
+        row: 1
+        column: 1
+        span:
+          rows: 4
+          columns: 10
+        options:
+          name: RPM
+          decimalPlaces: 0
+          dbkey: TACH1
+      -
+        type: arc_gauge
+        row: 1
+        column: 10
+        span:
+          rows: 4
+          columns: 10
+        options:
+          name: MAP
+          decimalPlaces: 1          
+          dbkey: MAP1
+      -
+        type: ganged_horizontal_bar_gauge
+        gang_type: vertical
+        row: 1
+        column: 20
+        span:
+          rows: 5
+          columns: 7
+        groups:
+          - name: Oil
+            instruments:
+              -
+                options:
+                  name: Oil Press
+                  dbkey: OILP1
+              -
+                options:
+                  name: Oil Temp
+                  dbkey: OILT1 
+                  temperature: true
+      -
+        type: static_text
+        row: 6
+        column: 1
+        span:
+          columns: 4
+        options:
+          text: Power
+        move:
+          shrink: 10
+      -
+        type: static_text
+        row: 6
+        column: 6
+        span:
+          columns: 7
+        options:
+          text: EGT
+        move:
+          shrink: 10
+      -
+        type: static_text
+        row: 6
+        column: 14
+        span:
+          columns: 7
+        options:
+          text: CHT
+        move:
+          shrink: 10
+      -
+        type: static_text
+        row: 6
+        column: 23
+        span:
+          columns: 4
+        options:
+          text: FUEL
+        move:
+          shrink: 10
+      -
+        type: ganged_vertical_bar_gauge
+        gang_type: horizontal
+        row: 7
+        column: 1
+        span:
+          rows: 7
+          columns: 27
+        groups:
+          - name: Power
+            instruments:
+              -
+                options:
+                  name: Volt
+                  decimapPlaces: 1
+                  showUnits: false
+                  dbkey: VOLT
+              -
+                options:
+                  name: Amp
+                  showUnits: false
+                  dbkey: CURRNT
+          - name: EGT
+            #options:
+            #  ???? highlight max?
+            common_options:
+              egt_mode_switching: true
+              normalizeRange: 400
+            instruments:
+              -
+                options:
+                  name: "1"
+                  decPlaces: 0
+                  showUnits: false
+                  dbkey: EGT11
+              -
+                options:
+                  name: "2"
+                  decPlaces: 0
+                  showUnits: false
+                  dbkey: EGT12
+              -
+                options:
+                  name: "3"
+                  decPlaces: 0
+                  showUnits: false
+                  dbkey: EGT13
+              -
+                options:
+                  name: "4"
+                  decPlaces: 0
+                  showUnits: false
+                  dbkey: EGT14
+          - name: CHT
+            instruments:
+              -
+                options:
+                  name: "1"
+                  decPlaces: 0
+                  showUnits: false
+                  dbkey: CHT11
+              -
+                options:
+                  name: "2"
+                  decPlaces: 0
+                  showUnits: false
+                  dbkey: CHT12
+              -
+                options:
+                  name: "3"
+                  decPlaces: 0
+                  showUnits: false
+                  dbkey: CHT13
+              -
+                options:
+                  name: "4"
+                  decPlaces: 0
+                  showUnits: false
+                  dbkey: CHT14
+          - name: FUEL
+            instruments:
+              -
+                options:
+                  name: "Left"
+                  decPlaces: 0
+                  showUnits: false
+                  dbkey: FUELQ1
+              -
+                options:
+                  name: "Center"
+                  decPlaces: 0
+                  showUnits: false
+                  dbkey: FUELQ2
+              -
+                options:
+                  name: "Right"
+                  decPlaces: 0
+                  showUnits: false
+                  dbkey: FUELQ1
+
+
+
+  SixPack:
+    module: pyefis.screens.sixpack
+    title: Standard Instrument Panel
+
+
+
+  SixPackNew:
+    module: pyefis.screens.screenbuilder
+    title: Standard Instrument Panel New
+    layout:
+      type: grid #Splits the screen into evenly sized grids where each grid can contain a single insturment
+      rows: 2
+      columns: 3
+      margin:
+        top: 10
+        left: 10
+        right: 10
+        bottom: 10
+    instruments:
+      # Add mapping feature
+      # Some instruments need multiple inputs, how would one know what values/mapping is needed?
+      # span
+      #  rows: 2
+      #  columns: 3
+      -
+        type: airspeed_dial
+        row: 1
+        column: 1
+        options:
+          bg_color: "#00000000"
+      - type: atitude_indicator
+        row: 1
+        column: 2
+      -
+        type: altimeter_dial
+        row: 1
+        column: 3
+      -
+        type: turn_coordinator
+        row: 2
+        column: 1
+      - 
+        type: horizontal_situation_indicator
+        row: 2             # Row where this grid starts vertical, 1 is top
+        column: 2          # Column where this grid starts horizontal, 1 is left
+                           # Span is not yet implemented
+        #span:             # Defines if this grid should span multiple columns or rows making it larger
+          #rows: 2         # This grid will occupuy row 2 and 3, 2 rows
+          #columns: 2      # This grid will occupy columns 2 and 3, 2 columns
+        move:              # Everything maintains aspect ratio of the grid you defined, 
+                           # with row, column and span but you can make things smaller by percentages
+                           # The default is for the object to occupy the whole space
+          shrink: 21       # This will reduce the size by 10 percent
+                           # When shrinking the default is for the object to be centered horizontal and vertically
+          justify:         # If you want to move it you can use 'top', 'bottom', 'left' or 'right'
+            - bottom       # If you decide to configure top and bottom or right and left
+                           # Only one of the mutually exclusive options will be used
+                           # While this might seem limiting, keep in mind that you can make a high number of initial grids
+                           # Then use span along with shrink and justify to get items precisely placed.
+                           # Hopefully one day all the widgets will be updated to scale fonts and such based on the size of the space they occupy
+                           # This would make it very simple to resize, just change the size of the window and all items will be proportionally 
+                           # moved and sized to fit. If you go wider gauges might have more space between them horizontally
+                           # However, the screen would still be usable without having to change any other setting.
+        options:
+          gsi_enabled: true
+          cdi_enabled: true
+      -
+        type: heading_display
+        column: 2
+        row: 2
+        move:
+          shrink: 80
+          justify:
+            - top
+
+      -
+        type: vsi_dial
+        row: 2
+        column: 3
+      - type: static_text
+        row: 2.6
+        column: 1
+        span:
+          rows: 1
+          columns: 3
+        move:
+          shrink: 90
+            
+        options:
+          text: "Screen Builder"
+
+  PFDSM:
+    module: pyefis.screens.pfd_sm
+    title: PFD Small
+
+  #Test:
+  #  module: pyefis.screens.test
+  #  title: Test Screen
+
+# Hooks are user defined modules that are loaded at specific points
+# in the programs execution.  Right now their is only one place and
+# it is right after all of the initialization and just before the
+# main window and default screen are shown.  We'll add more as the
+# need arises.
+hooks:
+  # Keys:
+  #   module: user.hooks.keys
+  # Composite:
+  #   module: user.hooks.composite
+
+
+# Logging configuration - See Python logging.config module documenation
+# Logging configuration - See Python logging.config module documenation
+logging:
+  version: 1
+  disable_existing_loggers: False
+  loggers:
+    '':
+      # messages with levels below the one given will not be logged
+      #level: DEBUG
+      level: INFO
+      #level: WARNING
+      #level: ERROR
+      #level: CRITICAL
+
+      handlers: [stderr, file]
+      propagate: True
+
+  formatters:
+    standard:
+      format: "%(levelname)s:%(asctime)s:%(name)s - %(message)s"
+      datefmt: "%Y%m%d-%H:%M:%S"
+      class: logging.Formatter
+
+  handlers:
+    stderr:
+      class: logging.StreamHandler
+      formatter: standard
+      stream: ext://sys.stderr
+
+    file:
+      class: logging.FileHandler
+      formatter: standard
+      filename: fixgw.log
+      mode: w
+      #mode: a
+
+    syslog:
+      class: logging.handlers.SysLogHandler
+      formatter: standard
