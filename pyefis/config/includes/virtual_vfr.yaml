@@ -4,13 +4,13 @@ instruments:
     column: 0
     span:
       rows: 110
-      columns: 150
+      columns: 155
   - type: horizontal_situation_indicator
     row: 0
     column: 0
     span:
       rows: 110
-      columns: 150
+      columns: 155
     move:
       shrink: 12
     options:
@@ -21,7 +21,7 @@ instruments:
       gsi_enabled: true
   - type: altimeter_tape
     row: 0
-    column: 135
+    column: 140
     span:
       rows: 110
       columns: 15
@@ -31,13 +31,13 @@ instruments:
       altitude: true
   - type: vsi_pfd
     row: 0
-    column: 127
+    column: 132
     span:
       rows: 50
       columns: 8
   - type: numeric_display
     row: 50
-    column: 127
+    column: 132
     span:
       rows: 5
       columns: 8
@@ -54,7 +54,7 @@ instruments:
       fontsize: 40
   - type: heading_display
     row: 0
-    column: 70
+    column: 72.5
     span:
       rows: 7
       columns: 10
@@ -72,7 +72,7 @@ instruments:
       text: "Auto Pilot:"
   - type: value_text
     row: 0
-    column: 92
+    column: 97
     span:
       rows: 5
       columns: 35
@@ -80,7 +80,7 @@ instruments:
       _dbkey: TIMEZ
   - type: value_text
     row: 5
-    column: 92
+    column: 97
     span:
       rows: 5
       columns: 35
@@ -96,7 +96,7 @@ instruments:
       _dbkey: APMSG
   - type: static_text
     row: 90
-    column: 115
+    column: 118
     span:
       rows: 4
       columns: 10
@@ -104,7 +104,7 @@ instruments:
       text: "Baro:"
   - type: numeric_display
     row: 90
-    column: 126
+    column: 129
     span:
       rows: 4
       columns: 12
@@ -113,24 +113,24 @@ instruments:
       decimalPlaces: 2
       pressure: true
   - type: button
-    row: 80
-    column: 115
+    row: 83
+    column: 118
     span:
-      rows: 10
+      rows: 7
       columns: 10
     options:
       config: buttons/baro-down-invisible.yaml
   - type: button
-    row: 80
-    column: 126
+    row: 83
+    column: 129
     span:
-      rows: 10
+      rows: 7
       columns: 10
     options:
       config: buttons/baro-up-invisible.yaml
   - type: static_text
     row: 95
-    column: 115
+    column: 118
     span:
       rows: 4
       columns: 10
@@ -138,7 +138,7 @@ instruments:
       text: "DALT:"
   - type: numeric_display
     row: 95
-    column: 126
+    column: 129
     span:
       rows: 4
       columns: 15
@@ -148,7 +148,7 @@ instruments:
       altitude: true
   - type: static_text
     row: 100
-    column: 115
+    column: 118
     span:
       rows: 4
       columns: 10
@@ -156,7 +156,7 @@ instruments:
       text: "PALT:"
   - type: numeric_display
     row: 100
-    column: 126
+    column: 129
     span:
       rows: 4
       columns: 15
@@ -166,7 +166,7 @@ instruments:
       altitude: true
   - type: static_text
     row: 105
-    column: 115
+    column: 118
     span:
       rows: 4
       columns: 10
@@ -174,7 +174,7 @@ instruments:
       text: "OAT:"
   - type: numeric_display
     row: 105
-    column: 126
+    column: 129
     span:
       rows: 4
       columns: 10
@@ -184,11 +184,11 @@ instruments:
       showUnits: true
       decimalPlaces: 0
   - type: vertical_bar_gauge
-    row: 68
-    column: -2
+    row: 79
+    column: -1
     span:
-      rows: 41
-      columns: 15
+      rows: 29
+      columns: 13
     options:
       name: Pitch
       decimapPlaces: 0
@@ -196,15 +196,15 @@ instruments:
       showValue: false
       dbkey: TRIMP
   - type: button
-    row: 71
+    row: 78
     column: 1
     span:
-      rows: 14
+      rows: 12
       columns: 9
     options:
       config: buttons/trim-up-invisible.yaml
   - type: button
-    row: 85
+    row: 90
     column: 1
     span:
       rows: 10
@@ -212,10 +212,10 @@ instruments:
     options:
       config: buttons/trim-center-invisible.yaml
   - type: button
-    row: 95
+    row: 100
     column: 1
     span:
-      rows: 15
+      rows: 10
       columns: 9
     options:
       config: buttons/trim-down-invisible.yaml
@@ -224,7 +224,7 @@ instruments:
     column: 12
     span:
       rows: 20
-      columns: 38
+      columns: 28
     options:
       name: Yaw
       decimapPlaces: 0
@@ -236,7 +236,7 @@ instruments:
     column: 12
     span:
       rows: 20
-      columns: 38
+      columns: 28
     options:
       name: Roll
       decimapPlaces: 0
@@ -248,12 +248,12 @@ instruments:
     column: 11
     span:
       rows: 10
-      columns: 15
+      columns: 10
     options:
       config: buttons/trim-yaw-left-invisible.yaml
   - type: button
     row: 100
-    column: 26
+    column: 21
     span:
       rows: 10
       columns: 10
@@ -261,10 +261,10 @@ instruments:
       config: buttons/trim-yaw-center-invisible.yaml
   - type: button
     row: 100
-    column: 36
+    column: 31
     span:
       rows: 10
-      columns: 15
+      columns: 10
     options:
       config: buttons/trim-yaw-right-invisible.yaml
   - type: button
@@ -272,12 +272,12 @@ instruments:
     column: 11
     span:
       rows: 10
-      columns: 15
+      columns: 10
     options:
       config: buttons/trim-roll-left-invisible.yaml
   - type: button
     row: 90
-    column: 26
+    column: 21
     span:
       rows: 10
       columns: 10
@@ -285,10 +285,10 @@ instruments:
       config: buttons/trim-roll-center-invisible.yaml
   - type: button
     row: 90
-    column: 36
+    column: 31
     span:
       rows: 10
-      columns: 15
+      columns: 10
     options:
       config: buttons/trim-roll-right-invisible.yaml
 

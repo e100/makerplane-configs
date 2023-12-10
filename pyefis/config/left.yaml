@@ -168,22 +168,22 @@ screens:
     title: Screen Builder
     layout:
       type: grid #Splits the screen into evenly sized grids where each grid can contain a single insturment
-      draw_grid: true
+      #draw_grid: true
       rows: 110
-      columns: 400
+      columns: 200
     instruments:
       - type: include,includes/left-side-buttons.yaml
       - type: include,includes/basic_arcs.yaml
         relative: true
         row: 0
-        column: 17
+        column: 170
       - type: weston
         #disabled: true
         row: 0
-        column: 75
+        column: 15
         span:
-          rows: 118
-          columns: 300
+          rows: 113
+          columns: 155
         options:
           socket: pyefis-waydroid-1
           ini: weston.ini
@@ -210,7 +210,7 @@ screens:
       - type: include,includes/virtual_vfr.yaml
         relative: true
         row: 0
-        column: 20
+        column: 15
 
       - type: include,includes/basic_arcs.yaml
         relative: true
@@ -223,8 +223,8 @@ screens:
     layout:
       type: grid #Splits the screen into evenly sized grids where each grid can contain a single insturment
       rows: 110
-      columns: 400
-      draw_grid: true
+      columns: 200
+      #draw_grid: true
     instruments:
       - type: include,includes/left-side-buttons.yaml
       - type: ganged_button
@@ -258,10 +258,10 @@ screens:
         type: ganged_vertical_bar_gauge
         gang_type: horizontal
         row: 0
-        column: 25
+        column: 15
         span:
           rows: 55
-          columns: 350
+          columns: 180
         groups:
           - name: RPM
             common_options:
@@ -352,10 +352,10 @@ screens:
         type: ganged_vertical_bar_gauge
         gang_type: horizontal
         row: 55
-        column: 25
+        column: 15
         span:
           rows: 55
-          columns: 350
+          columns: 180
         groups:
           - name: EGT
             #options:

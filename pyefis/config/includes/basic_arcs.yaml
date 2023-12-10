@@ -22,6 +22,11 @@ instruments:
               dbkey: FUELQT
           -
             options:
+              name: Fuel Flow
+              dbkey: FUELF1
+              decimalPlaces: 1
+          -
+            options:
               name: Coolant
               temperature: true
               dbkey: H2OT1
