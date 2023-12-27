@@ -28,11 +28,33 @@ connections:
   netfix:
     load: yes
     module: fixgw.plugins.netfix
-    type: server
+    type: both
     host: 0.0.0.0
     port: 3490
     buffer_size: 1024
     timeout: 1.0
+    clients:
+      - host: 192.168.15.127
+        port: 3490
+    outputs:
+      QVOTE1: Interval
+      QVOTE2: Interval
+      TRIMP: onchange
+      TRIMY: onchange
+      TRIMR: onchange
+      APREQ: onchange
+      APADJ: onchange
+      BTNHH: onchange
+      BTNFP: onchange
+      WPNAME:
+      WPLAT:
+      WPLON:
+
+  quorum:
+    load: yes
+    module: fixgw.plugins.quorum
+    nodeid: 2
+    total_nodes: 2
 
   # Command Line Module
   command:
@@ -327,7 +349,7 @@ connections:
     module: fixgw.plugins.mavlink
     type: serial
     baud: 115200
-    port: /dev/ttyACM0
+    port: /dev/ttyUSB0
     options:
       airspeed: true
       groundspeed: true
