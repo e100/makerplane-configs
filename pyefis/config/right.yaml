@@ -27,6 +27,8 @@ main:
 # a string that represents a key Sequence.  See the documentation for more
 # information about key sequences and actions.
 keybindings:
+  - key: x
+    action: exit
   - key: A
     action: Show Previous Screen
 
