@@ -9,19 +9,27 @@ These instructions are written for Ubuntu and were only tested on 23.10
 sudo apt install librtlsdr-dev libusb-1.0-0-dev pkg-config debhelper libjpeg-dev i2c-tools python3-smbus python3-pip python3-dev python3-pil python3-daemon screen autoconf libfftw3-bin libfftw3-dev libtool build-essential mercurial libncurses-dev golang
 ```
 
+### Clone stratux repo
+```
+
+```
+
 ### Replace sensors.go
 ```
 cp sensors.go stratux/main/
 ```
 ### Build and install
 ```
-make install
+cd stratux
+make
+sudo make install
 ```
 
 ### Disable Fan control
 I'm not using the fan control from stratux so I disabled that
 ```
-systemctl stop fancontrol.service
+sudo systemctl stop fancontrol.service
+sudo systemctl disable fancontrol.service
 ```
 
 
