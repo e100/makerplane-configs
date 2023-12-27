@@ -3,6 +3,8 @@ main:
   FixServer: 127.0.0.1
   FixPort: 3490
   # Screen Geometry
+  #screenWidth: 1280
+  #screenHeight: 720
   #screenWidth: 1024
   #screenHeight: 768
   screenWidth: 1920
@@ -27,6 +29,9 @@ main:
 # a string that represents a key Sequence.  See the documentation for more
 # information about key sequences and actions.
 keybindings:
+  - key: X
+    action: exit
+
   - key: A
     action: Show Previous Screen
 
@@ -162,8 +167,8 @@ outputs:
 
 screens:
   MAP:
-    dbpath: /home/eblevins/projects/efis/CIFP/FAACIFP18
-    indexpath: /home/eblevins/projects/efis/CIFP/index.bin
+    dbpath: ~/.makerplane/pyefis/CIFP/FAACIFP18
+    indexpath: ~/.makerplane/pyefis/CIFP/index.bin
     module: pyefis.screens.screenbuilder
     title: Screen Builder
     layout:
@@ -192,8 +197,9 @@ screens:
             - show-full-ui
       
   PFD:
-    dbpath: /home/eblevins/projects/efis/CIFP/FAACIFP18
-    indexpath: /home/eblevins/projects/efis/CIFP/index.bin
+    dbpath: ~/.makerplane/pyefis/CIFP/FAACIFP18
+    indexpath: ~/.makerplane/pyefis/CIFP/index.bin
+      #refresh_period: 0.25
     module: pyefis.screens.screenbuilder
     title: Screen Builder
     layout:

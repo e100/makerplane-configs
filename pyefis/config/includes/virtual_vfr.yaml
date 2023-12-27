@@ -61,7 +61,7 @@ instruments:
     options:
       bg_color: "#00000000"
       fg_color: "#FFFFFF"
-      font_size: 47
+      fontSize: 47
   - type: static_text
     row: 0
     column: 0
