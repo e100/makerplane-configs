@@ -97,6 +97,13 @@ git checkout combined
 snapacraft
 snap install fixgateway_0.3_amd64.snap --dangerous
 
+Might need to try running the snap one time before the next step:
+cd ~/snap/fixgateway/common
+git clone https://github.com/e100/makerplane-configs.git .makerplane
+
+The fixgateway snap runs in confined mode, it does not have access to the normal home directory.
+So I also clone this repo into the location where the confined snap can access the home directory.
+
 You must also read the docs/snapcraft.md for Fix and follow the directions to complete setup
 If using serial ports add yourself to dialout
 sudo usermod -a -G dialout ${USER}
@@ -112,6 +119,9 @@ cd FIX-Gateway
 git checkout improve_snap
 snapcraft
 snap install pyefis_0.1_arm64.snap --dangerous --classic
+
+When copying the systemd unit file also edit the exec line and set the config file to the left or right as needed
+ExecStart=/snap/bin/pyefis --config-file /home/eblevins/.makerplane/pyefis/config/left.yaml
 
 
 
@@ -129,5 +139,27 @@ sudo waydroid shell
 ANDROID_RUNTIME_ROOT=/apex/com.android.runtime ANDROID_DATA=/data ANDROID_TZDATA_ROOT=/apex/com.android.tzdata ANDROID_I18N_ROOT=/apex/com.android.i18n sqlite3 /data/data/com.google.android.gsf/databases/gservices.db "select * from main where name = \"android_id\";"
 
 Use the string of numbers printed by the command to register the device on your Google Account at https://www.google.com/android/uncertified
+
+
+Move waydroid to direct network connection.
+# Netwokr Bridge:
+vi /etc/systemd/network/25-br0.netdev
+[NetDev]
+Name=br0
+Kind=bridge
+
+vi /etc/systemd/network/25-br0-en.network
+[Match]
+Name=eth0
+
+[Network]
+Bridge=br0
+
+vi /etc/systemd/network/25-br0.network
+[Match]
+Name=br0
+
+[Network]
+DHCP=yes
 
 
