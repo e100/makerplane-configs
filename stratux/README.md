@@ -11,7 +11,7 @@ sudo apt install librtlsdr-dev libusb-1.0-0-dev pkg-config debhelper libjpeg-dev
 
 ### Clone stratux repo
 ```
-
+git clone --recursive https://github.com/b3nn0/stratux.git
 ```
 
 ### Replace sensors.go
