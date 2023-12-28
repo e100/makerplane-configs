@@ -163,3 +163,11 @@ Name=br0
 DHCP=yes
 
 
+# Edit waydroid network
+sudo vi /var/lib/waydroid/lxc/waydroid/config
+Change:
+lxc.net.0.link = waydroid0
+TO
+lxc.net.0.link = br0
+
+
