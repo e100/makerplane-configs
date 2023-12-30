@@ -18,6 +18,7 @@ Open a terminal window and run:
 sudo apt update
 sudo apt dist-upgrade -y
 ```
+![Installing Updates](/images/apt.png)
 
 While not necessary I rebooted at this point.
 A bug in the kernel caused the fan to run full speed, the fist update fixes this so I don't get annoyed by the fan.
