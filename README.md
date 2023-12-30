@@ -41,8 +41,12 @@ sudo bash pwr_ubuntu.sh
 edit /boot/firmware/config.txt
 
 add:
-# x729 RTC
+# X729 Power
+usb_max_current_enable=1
+
+# X729 RTC
 dtoverlay=i2c-rtc,ds1307
+
 
 # no on ubuntu"
 #sudo apt-get -y remove fake-hwclock
@@ -171,3 +175,18 @@ TO
 lxc.net.0.link = br0
 
 
+
+# Download the data for virtual VFR and index it
+```
+mkdir ~/.makerplane/pyefis/CIFP/
+cd ~/.makerplane/pyefis/CIFP/
+```
+
+Visit https://www.faa.gov/air_traffic/flight_info/aeronav/digital_products/cifp/download/
+
+Download the latest data:
+```
+wget https://aeronav.faa.gov/Upload_313-d/cifp/CIFP_231228.zip
+unzip CIFP_231228.zip
+
+```
