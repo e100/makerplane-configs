@@ -139,6 +139,17 @@ You must also read the docs/snapcraft.md for Fix and follow the directions to co
 If using serial ports add yourself to dialout
 sudo usermod -a -G dialout ${USER}
 
+For my setup the following commands, maybe with some slight changes will get everything working:
+```
+sudo usermod -a -G dialout ${USER}
+sudo snap set system experimental.hotplug=true
+sudo systemctl restart snapd.service
+snap interface serial-port --attrs
+snap connect fixgateway:serial-port snapd:ft232rusbuart
+
+```
+
+
 ### Clone this repo again
 The FIX Gateway snap runs confined and cannot access files in ~/.makerplane<br>
 So we also place the config files in a folder that the confined snap does have access to.
