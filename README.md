@@ -50,23 +50,25 @@ cd setup
 git clone https://github.com/e100/x729
 cd x729
 git checkout ubuntu
-
-#Setup shutdown on power loss:
+```
+###Setup shutdown on power loss:
+```
 sudo bash pwr_ubuntu.sh
+```
 
-
-# Setup RTC
+### Setup RTC
 edit /boot/firmware/config.txt
 
 add:
+```
 # X729 Power
 usb_max_current_enable=1
 
 # X729 RTC
 dtoverlay=i2c-rtc,ds1307
+```
 
-
-# no on ubuntu"
+# not on ubuntu, but this is needed on RPI OS
 #sudo apt-get -y remove fake-hwclock
 #sudo update-rc.d -f fake-hwclock remove
 #sudo systemctl disable fake-hwclock
@@ -74,15 +76,17 @@ dtoverlay=i2c-rtc,ds1307
 #Comment out all except the dev= line
 #reboot
 
-# Setup waveshare CAN FD hat
+## Setup waveshare CAN FD hat
 edit /boot/firmware/config.txt adding:
+```
 # Waveshare CAN FD HAT
 dtparam=spi=on
 dtoverlay=spi1-3cs
 dtoverlay=mcp251xfd,spi0-0,interrupt=25
 dtoverlay=mcp251xfd,spi1-0,interrupt=24
+```
 
-rebooted
+Reboot
 
 create /etc/systemd/network/80-can0.network with:
 [Match]
