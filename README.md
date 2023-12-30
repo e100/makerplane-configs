@@ -5,14 +5,30 @@ This is not intended to be a tutorial so some details may be omitted.
 
 ### Image the drive
 First I imaged the boot disk using the Raspberry Pi imager with Ubuntu Desktop 23.10
+![Raspberry Pi Imager](/images/rpi-imager.png)
 
 After booting up I connected to Wifi network and selected time zone
 Entered username/password and selected to log in automatically
+Enabled Location Services but not sure if that is of much use or not yet
 In Power Settings set the screen blank option to Never, we do not want the screen to blank mid flight!
 
+### Install the latest updates
+Open a terminal window and run:
+```
+sudo apt update
+sudo apt dist-upgrade -y
+```
+
+While not necessary I rebooted at this point.
+A bug in the kernel caused the fan to run full speed, the fist update fixes this so I don't get annoyed by the fan.
+
 ### Login and clone this repo
+
+```
+cd ~
 git clone https://github.com/e100/makerplane-configs.git .makerplane
 cd .makerplane
+```
 
 ### Installing software needed
 ```
