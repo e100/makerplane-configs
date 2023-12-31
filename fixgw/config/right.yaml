@@ -34,11 +34,11 @@ connections:
     buffer_size: 1024
     timeout: 1.0
     clients:
-      - host: 192.168.15.127
+      - host: 192.168.2.1
         port: 3490
     outputs:
       QVOTE1: Interval
-      QVOTE2: Interval
+        #QVOTE2: Interval
       TRIMP: onchange
       TRIMY: onchange
       TRIMR: onchange
@@ -53,8 +53,8 @@ connections:
   quorum:
     load: yes
     module: fixgw.plugins.quorum
-    nodeid: 2
-    total_nodes: 2
+    nodeid: 1
+    total_nodes: 1
 
   # Command Line Module
   command:

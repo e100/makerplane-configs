@@ -1,4 +1,4 @@
-## AHRS from FIX Gateway
+# AHRS from FIX Gateway
 This is a small hack to get AHRS data from Makerplane FIX Gateway into stratux. I wrote this because I already had reliable and accurate AHRS data in FIX Gateway and wanted to pass it along to stratux so it could also be used in an EFB.
 
 ## Installing
@@ -11,6 +11,7 @@ sudo apt install librtlsdr-dev libusb-1.0-0-dev pkg-config debhelper libjpeg-dev
 
 ### Clone stratux repo
 ```
+cd ~/.makerplane/stratux
 git clone --recursive https://github.com/b3nn0/stratux.git
 ```
 
@@ -22,23 +23,38 @@ cp sensors.go stratux/main/
 ### Modify network template
 ```
 sed -i 's/# allow-hotplug eth0 # configured by ifplugd/# Bridge for local ethernet and waydroid/g' stratux/image/interfaces.template 
-sed -i 's/iface eth0 inet dhcp/iface eth0 inet manual\n\nauto br0\niface br0 inet static\n        address 192.168.2.1\n        broadcast 192.168.2.255\n        netmask 255.255.255.0\n        bridge_ports eth0\n        bridge_stp off \n        bridge_waitport 0\n        bridge_fd 0/g' stratux/image/interfaces.template
+sed -i 's/iface eth0 inet dhcp/iface eth0 inet manual\n\nauto br0\niface br0 inet static\n  address 192.168.2.1\n  broadcast 192.168.2.255\n  netmask 255.255.255.0\n  bridge_ports eth0\n  bridge_stp off \n  bridge_waitport 0\n  bridge_fd 0\n\n# iLevil IP\n\n# CAN Networks/g' stratux/image/interfaces.template
 ```
 
-### Create some directories and links so editing netwokr settings in stratus GUI works
+### If using the iFly plugin in FIX Gateway
+If you are using the iFly plugin in FIX Gateway to pickup waypoints from the flight plan you need some additional configuration for the network template.<br>
+The issue is iFly only sends to the IP address 192.168.1.1 so we need that address setup for the FIX gateway to get the data.
+```
+sed -i 's/# iLevil IP/# iLevil IP\nauto br0:0\niface br0:0 inet static\n  address 192.168.1.1\n  netmask 255.255.255.0/g' stratux/image/interfaces.template
+```
+
+### If using CAN all that to the network template too:
+```
+TODO Need to finish this:
+sed -i 's/# CAN Networks/# CAN Networks/g' stratux/image/interfaces.template
+```
+
+
+### Create some directories and links so editing network settings in stratus GUI works
 ```
 sudo mkdir -p /overlay/robase
 sudo ln -s /etc /overlay/robase/etc
 ```
 
 ### Create dnsmasq config for local ethernet
-```
-cat << 'EOF' > /etc/dnsmasq.d/stratux-dnsmasq-eth0.conf
-interface=br0
-dhcp-range=interface:br0,192.168.2.128,192.168.2.254,24h
-dhcp-host=00:16:3e:f9:d3:04,hawk1_android,192.168.2.20,3d
+You will likely want to customize this.<br>
+I set a static IP address for each waydroid install on the network and for other FIX Gateway servers.
 
-EOF
+```
+echo 'interface=br0
+dhcp-range=interface:br0,192.168.2.128,192.168.2.254,24h
+dhcp-host=00:16:3e:f9:d3:04,hawk1_android,192.168.2.20,30d
+'| sudo tee -a /etc/dnsmasq.d/stratux-dnsmasq-eth0.conf >/dev/null
 ```
 ### Build and install
 ```
@@ -59,3 +75,38 @@ sudo systemctl disable fancontrol.service
 systemctl disable wpa_supplicant
 systemctl disable systemd-timesyncd
 ```
+
+### If using waydroid
+Setup waydroid to use the br0 network.
+```
+sudo sed -i 's/waydroid0/br0/g' /var/lib/waydroid/lxc/waydroid/config
+```
+
+## Reboot
+
+## Configure Stratux
+After rebooting open up the browser and navigate to http://127.0.0.1
+
+### Setup Wifi
+Click the settings tab on the left side.<br>
+In the WiFi Settings box on the right select the mode `AP + Client`
+![AP Mode](/images/ap-mode.png)
+
+Select your wifi country<br>
+Enable Network Security and set a password<br>
+Enable the option Internet passthrough<br>
+Click Add WiFi Client Network<br>
+I added my phone's mobile hotspot and my home wifi, if you FBO has wifi might want to add that too!<br>
+Click Submit WiFi settings
+
+### Enable/disable hardware
+On the hardware sections on the settings page enable/disable the hardware you are using
+
+Now reboot 
+
+#######
+Need to add this to /etc/network/interfaces:
+auto wlan0
+
+Without it the wifi does not always come up
+

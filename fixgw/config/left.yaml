@@ -34,10 +34,10 @@ connections:
     buffer_size: 1024
     timeout: 1.0
     clients:
-      - host: 192.168.15.127
+      - host: 192.168.2.2
         port: 3490
     outputs:
-      QVOTE1: Interval
+      #QVOTE1: Interval
       QVOTE2: Interval
       TRIMP: onchange
       TRIMY: onchange
