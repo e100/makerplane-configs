@@ -102,6 +102,12 @@ Click Submit WiFi settings
 ### Enable/disable hardware
 On the hardware sections on the settings page enable/disable the hardware you are using
 
+
+### Remove network manager
+```
+sudo apt remove network-manager -y
+sudo apt autoremove -y
+```
 Now reboot 
 
 #######
