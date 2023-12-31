@@ -49,6 +49,7 @@ connections:
       WPNAME:
       WPLAT:
       WPLON:
+      BARO:
 
   quorum:
     load: yes
