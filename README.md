@@ -4,15 +4,17 @@ This is not intended to be a tutorial so some details may be omitted.
 
 
 ## Image the drive
-First I imaged the boot disk using the Raspberry Pi imager with Ubuntu Desktop 23.10
+First I imaged the boot disk using the Raspberry Pi imager with Raspberry Pi OS bookworm 64bit
 ![Raspberry Pi Imager](/images/rpi-imager.png)
+TODO Update image
+TODO Include screenshot of settings
 
-After booting up I connected to Wifi network and selected time zone
-Entered username/password and selected to log in automatically
-Enabled Location Services but not sure if that is of much use or not yet
-In Power Settings set the screen blank option to Never, we do not want the screen to blank mid flight!
+I connected the ethernet port but you could use WiFi instead
 
-## Install the latest updates
+## Initial Setup
+The first thing we need to do is install the latest updates, change a few options then reboot
+
+### Install the latest updates
 Open a terminal window and run:
 ```
 sudo apt update
@@ -20,13 +22,44 @@ sudo apt dist-upgrade -y
 ```
 ![Installing Updates](/images/apt.png)
 
-While not necessary I rebooted at this point.
-A bug in the kernel caused the fan to run full speed, the fist update fixes this so I don't get annoyed by the fan.
+### enable SPI, I2C, X11 and disable screen blanking
+```
+sudo raspi-config nonint do_blanking 1
+sudo raspi-config nonint do_spi 0
+sudo raspi-config nonint do_i2c 0
+sudo raspi-config nonint do_wayland W1
+```
+NOTE: While wayland is the future its inability to reparent windows is currently and issue for pyEFIS if you would like to include a Waydroid window within it
+
+
+## Enable 4k pages so Waydroid works
+```
+echo '# 4k pages
+kernel=kernel8.img
+'| sudo tee -a /boot/config.txt >/dev/null
+
+#sudo apt purge linux-image-rpi-2712
+```
+
+Reboot
+
 
 ## Installing software needed
 ```
 sudo apt update
-sudo apt install git weston vim-nox raspi-config openssh-server i2c-tools python3-smbus python3-pip python3-pil git can-utils
+sudo apt install -y git weston vim-nox raspi-config openssh-server i2c-tools python3-smbus python3-pip python3-pil git can-utils util-linux-extra snapd x11-utils
+```
+
+## Enable apparmor
+This is optional but improves security:
+```
+sudo sed --follow-symlinks -i 's/quiet/apparmor=1 security=apparmor quiet/g' /boot/cmdline.txt
+```
+
+## Enable PSI
+This is optional, if you plan to use Waydroid it is mandatory
+```
+sudo sed --follow-symlinks -i 's/quiet/psi=1 quiet/g' /boot/cmdline.txt
 ```
 
 ## Clone this repo
@@ -56,18 +89,57 @@ git checkout ubuntu
 sudo bash pwr_ubuntu.sh
 ```
 
-### Setup RTC
-edit /boot/firmware/config.txt
-
-add:
+### Set option to allow USB Power 
 ```
-# X729 Power
+echo '# X729 Power
 usb_max_current_enable=1
-
-# X729 RTC
-dtoverlay=i2c-rtc,ds1307
+'| sudo tee -a /boot/config.txt >/dev/null
 ```
 
+### Setup RTC device on the x729
+This is optional, you could use the RPI 5's internal RTC by adding a battery.<br>
+Since the x729 already has batteries I decided to use it
+echo '# X729 RTC
+dtoverlay=i2c-rtc,ds1307
+'| sudo tee -a /boot/config.txt >/dev/null
+```
+
+### Create udev rule to make this RTC symlinked to /dev/rtc
+
+```
+echo 'SUBSYSTEM=="rtc", KERNEL=="rtc1", SYMLINK+="rtc", OPTIONS+="link_priority=10", TAG+="systemd"
+'| sudo tee -a /etc/udev/rules.d/55-i2c-rtc.rules >/dev/null
+
+echo '[Unit]
+ConditionCapability=CAP_SYS_TIME
+ConditionVirtualization=!container
+DefaultDependencies=no
+Wants=dev-rtc.device
+After=dev-rtc.device
+Before=systemd-timesyncd.service ntpd.service chrony.service
+
+[Service]
+Type=oneshot
+CapabilityBoundingSet=CAP_SYS_TIME
+PrivateTmp=yes
+ProtectSystem=full
+ProtectHome=yes
+DeviceAllow=/dev/rtc rw
+DevicePolicy=closed
+ExecStart=/usr/sbin/hwclock -f /dev/rtc --hctosys
+
+[Install]
+WantedBy=time-sync.target
+'| sudo tee -a /etc/systemd/system/i2c-rtc.service >/dev/null
+
+sudo systemctl enable  i2c-rtc.service
+sudo systemctl start systemd-timesyncd.service
+sudo systemctl enable systemd-timesyncd.service
+
+```
+
+
+# Not sure if this is needed on raspberry pi os or not, did not do this:
 # not on ubuntu, but this is needed on RPI OS
 #sudo apt-get -y remove fake-hwclock
 #sudo update-rc.d -f fake-hwclock remove
@@ -77,14 +149,16 @@ dtoverlay=i2c-rtc,ds1307
 #reboot
 
 ## Setup waveshare CAN FD hat
-edit /boot/firmware/config.txt adding:
 ```
-# Waveshare CAN FD HAT
-dtparam=spi=on
+echo '# Waveshare CAN FD HAT
+dtparam=spi=on <- Needs to be before any other dtoverlay!
 dtoverlay=spi1-3cs
 dtoverlay=mcp251xfd,spi0-0,interrupt=25
 dtoverlay=mcp251xfd,spi1-0,interrupt=24
+'| sudo tee -a /boot/config.txt >/dev/null
 ```
+
+NOTE: We will setup the network interfaces for CAN0 and CAN1 later when we setup Stratux
 
 Reboot
 
@@ -112,10 +186,11 @@ Handy to use in the airplane should you need a keyboard for some reason
 ```
 snap install snapcraft --classic
 sudo snap install lxd
-sudo lxd init --auto
+sudo /snap/bin/lxd init --auto
 sudo usermod -a -G lxd ${USER}
 newgrp lxd # OR reboot
 ```
+It is easiest to just reboot at this step before continuing
 
 ## Install FIX Gateway
 I install fix gateway by making a snap. The main advantage is versioning. If some day you update and the new snap is broken, just switch back to the pervious version. Hopefully some day we will get our snaps into the snap store making installing and updating even easier.
@@ -132,7 +207,7 @@ git checkout combined
 ```
 ### Build the snap and install it
 ```
-snapacraft
+snapcraft
 snap install fixgateway_0.3_arm64.snap --dangerous
 ```
 NOTE: as snap versions change the filename to install might change.<br>
@@ -153,6 +228,8 @@ snap connect fixgateway:serial-port snapd:ft232rusbuart
 
 ```
 
+### Test that the snap is working
+Run `fixgateway.client` command, it should open up, type `quit` to exit
 
 ### Clone this repo again
 The FIX Gateway snap runs confined and cannot access files in ~/.makerplane<br>
@@ -170,7 +247,7 @@ cd ~/.makerplane/
 mkdir -p ~/.config/systemd/user
 cp systemd/fixgateway.service ~/.config/systemd/user/
 ```
-NOTE: Edit `~/.config/systemd/user/user/fixgateway.service` and change the config file to use if needed.
+NOTE: Edit `~/.config/systemd/user/fixgateway.service` and change the config file to use if needed.
 ![FIX Gateway config](/images/fix-config.png)
 
 ### Configure autostart
@@ -239,8 +316,7 @@ This is optional and only needed if you plan to use android applications in the 
 ```
 sudo apt install curl ca-certificates -y
 curl https://repo.waydro.id | sudo bash
-sudo apt install waydroid -y
-sudo apt install linux-modules-extra-raspi -y
+sudo apt install -y libglibutil libgbinder python3-gbinder waydroid
 ```
 #### Install lineago OS
 NOTE: Remove the -s GAPPS if you do not want google play
@@ -251,7 +327,8 @@ sudo waydroid init -s GAPPS
 IF you installed the google play store you will need to self certify this installation before google Play will work.
 First you need to start waydroid:
 ```
-waydroid show-full-ui
+weston &
+WAYLAND_DISPLAY=wayland-1 waydroid show-full-ui
 ```
 Now open the waydroid shell and execute the following command, it will output an android ID:
 ```
@@ -265,3 +342,4 @@ Use the string of numbers printed by the command to register the device on your 
 At this point you should reboot and make sure everything so far seems to be working. Then continue onto installing stratuc by reading the stratux/README.md in this repo
 
 
+ 
