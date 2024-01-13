@@ -30,7 +30,7 @@ inputs:
   - { canid: 0x18D, index: 0, fixid: "TAS", priority: 0 }
   - { canid: 0x185, index: 0, fixid: "HEAD", priority: 0 }
   - { canid: 0x186, index: 0, fixid: "VS", priority: 0 }
-  - { canid: 0x190, index: 0, fixid: "BARO", priority: 0 }
+  - { canid: 0x190, index: 0, fixid: "BARO", priority: 0, nodespecific: True }
   - { canid: 0x200, index: 0, fixid: "TACH1", priority: 0 }
   - { canid: 0x201, index: 0, fixid: "TACH2", priority: 0 }
   - { canid: 0x202, index: 0, fixid: "PROP1", priority: 0 }
@@ -88,7 +88,7 @@ inputs:
   #         otherwise a node specific parameter set message will be sent
 
 outputs:
-  - { fixid: "BARO", canid: 0x190, index: 0, owner: True, on_change: True}
+  - { fixid: "BARO", canid: 0x190, index: 0, owner: False, on_change: True}
   - { fixid: "DALT", canid: 0x408, index: 0, owner: False, on_change: True}
 
 # Special Input Functions
