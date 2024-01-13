@@ -31,5 +31,4 @@ RestartSec=1s
 ExecStart=/snap/bin/fixgateway.server --config-file /home/eblevins/snap/fixgateway/common/.makerplane/fixgw/config/default.yaml
 
 [Install]
-WantedBy=graphical-session.target
-
+WantedBy=default.target

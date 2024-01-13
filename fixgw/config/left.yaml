@@ -120,16 +120,16 @@ connections:
 
   # CAN-FIX
   canfix:
-    load: no
+    load: yes
     module: fixgw.plugins.canfix
     # See the python-can documentation for the meaning of these options
     interface: socketcan
-    channel: vcan0
+    channel: can1
     #interface: serial
     #channel: /dev/ttyUSB0
 
     # This file controls the
-    mapfile: "{CONFIG}/canfix/map.yaml"
+    mapfile: "{CONFIG}/canfix/left.yaml"
     # The following is our Node Identification Information
     # See the CAN-FIX Protocol Specification for more information
     node: 145     # CAN-FIX Node ID
@@ -368,7 +368,7 @@ connections:
     load: yes
     module: fixgw.plugins.megasquirt
     interface: socketcan
-    channel: vcan0
+    channel: can0
     items:
       rpm: TACH1
       fuelflow: FUELF1 
@@ -386,7 +386,7 @@ connections:
     module: fixgw.plugins.mgl
     # See the python-can documentation for the meaning of these options
     interface: socketcan
-    channel: vcan0
+    channel: can0
     rdac:
       default_id: 1
       sendd:

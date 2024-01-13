@@ -162,17 +162,6 @@ NOTE: We will setup the network interfaces for CAN0 and CAN1 later when we setup
 
 Reboot
 
-create /etc/systemd/network/80-can0.network with:
-[Match]
-Name=can0
-
-[CAN]
-BitRate=250K
-RestartSec=100ms
-
-# Enable and start
-sudo systemctl enable systemd-networkd
-sudo systemctl start systemd-networkd
 
 Turn on RDAC and see if it works should get output with:
 candump -cae can0,0:0,#FFFFFFFF
@@ -227,6 +216,12 @@ snap interface serial-port --attrs
 snap connect fixgateway:serial-port snapd:ft232rusbuart
 
 ```
+
+Granting access to the canbus:
+```
+snap connect fixgateway:can-bus snapd
+```
+
 
 ### Test that the snap is working
 Run `fixgateway.client` command, it should open up, type `quit` to exit
@@ -323,6 +318,19 @@ NOTE: Remove the -s GAPPS if you do not want google play
 ```
 sudo waydroid init -s GAPPS
 ```
+
+#### Fix apparmor TODO Not sure if this helped or not yet
+https://github.com/waydroid/waydroid/issues/631
+```
+cd /etc/apparmor.d/
+sudo ln -s lxc/lxc-waydroid .
+```
+
+#### Fix permissions errors
+https://github.com/waydroid/waydroid/issues/1065
+```
+sudo sed --follow-symlinks -i 's/lxc.console.path/lxc.mount.entry = none acct cgroup2 rw,nosuid,nodev,noexec,relatime,nsdelegate,memory_recursiveprot 0 0\n\nlxc.console.path/g' /var/lib/waydroid/lxc/waydroid/config
+```
 #### Self Certify Play Store:
 IF you installed the google play store you will need to self certify this installation before google Play will work.
 First you need to start waydroid:
@@ -342,4 +350,8 @@ Use the string of numbers printed by the command to register the device on your 
 At this point you should reboot and make sure everything so far seems to be working. Then continue onto installing stratuc by reading the stratux/README.md in this repo
 
 
+
+
+# Known issues
+## If pyefis is killed sometimes the waydroid and weston processe are not killed. When pyefis is restarted it is not possible to get the android window working again.
  

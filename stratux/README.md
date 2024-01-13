@@ -6,7 +6,7 @@ These instructions are written for Ubuntu and were only tested on 23.10
 
 ### Install dependencies
 ```
-sudo apt install librtlsdr-dev libusb-1.0-0-dev pkg-config debhelper libjpeg-dev i2c-tools python3-smbus python3-pip python3-dev python3-pil python3-daemon screen autoconf libfftw3-bin libfftw3-dev libtool build-essential mercurial libncurses-dev golang ifupdown net-tools bridge-utils
+sudo apt install -y librtlsdr-dev libusb-1.0-0-dev pkg-config debhelper libjpeg-dev i2c-tools python3-smbus python3-pip python3-dev python3-pil python3-daemon screen autoconf libfftw3-bin libfftw3-dev libtool build-essential mercurial libncurses-dev golang ifupdown net-tools bridge-utils libconfig9 dnsmasq-base git cmake libusb-1.0-0-dev build-essential autoconf libtool i2c-tools libfftw3-dev libncurses-dev python3-serial jq ifplugd iptables
 ```
 
 ### Clone stratux repo
@@ -36,7 +36,8 @@ sed -i 's/# iLevil IP/# iLevil IP\nauto br0:0\niface br0:0 inet static\n  addres
 ### If using CAN all that to the network template too:
 ```
 TODO Need to finish this:
-sed -i 's/# CAN Networks/# CAN Networks/g' stratux/image/interfaces.template
+sed -i 's/# CAN Networks/# CAN Networks\n\nauto can1\n  iface can1 inet manual\n  pre-up \/sbin\/ip link set can1 type can bitrate 500000\n  up \/sbin\/ifconfig can1 up\n  down \/sbin\/ifconfig can1 down\n/g' stratux/image/interfaces.template
+sed -i 's/# CAN Networks/# CAN Networks\n\nauto can0\n  iface can0 inet manual\n  pre-up \/sbin\/ip link set can0 type can bitrate 250000\n  up \/sbin\/ifconfig can0 up\n  down \/sbin\/ifconfig can0 down\n/g' stratux/image/interfaces.template
 ```
 
 
@@ -46,16 +47,6 @@ sudo mkdir -p /overlay/robase
 sudo ln -s /etc /overlay/robase/etc
 ```
 
-### Create dnsmasq config for local ethernet
-You will likely want to customize this.<br>
-I set a static IP address for each waydroid install on the network and for other FIX Gateway servers.
-
-```
-echo 'interface=br0
-dhcp-range=interface:br0,192.168.2.128,192.168.2.254,24h
-dhcp-host=00:16:3e:f9:d3:04,hawk1_android,192.168.2.20,30d
-'| sudo tee -a /etc/dnsmasq.d/stratux-dnsmasq-eth0.conf >/dev/null
-```
 ### Build and install
 ```
 cd stratux
@@ -72,9 +63,27 @@ sudo systemctl disable fancontrol.service
 
 ### Disable other services that should not run automatically
 ```
-systemctl disable wpa_supplicant
-systemctl disable systemd-timesyncd
+systemctl disable dnsmasq # Only did this on so far
+systemctl disable systemd-resolved.service # did not do this
+systemctl disable wpa_supplicant # did this
+systemctl disable systemd-timesyncd #did this
 ```
+So far did none of the disables to see what is really needed
+
+### Create dnsmasq config for local ethernet
+You will likely want to customize this.<br>
+I set a static IP address for each waydroid install on the network and for other FIX Gateway servers.
+
+```
+sudo mkdir /etc/dnsmasq.d
+echo 'bind-interfaces
+except-interface=lxcbr0
+interface=br0
+dhcp-range=interface:br0,192.168.2.128,192.168.2.254,24h
+dhcp-host=00:16:3e:f9:d3:04,hawk1_android,192.168.2.20,30d
+'| sudo tee -a /etc/dnsmasq.d/stratux-dnsmasq-eth0.conf >/dev/null
+```
+
 
 ### If using waydroid
 Setup waydroid to use the br0 network.
@@ -115,4 +124,9 @@ Need to add this to /etc/network/interfaces:
 auto wlan0
 
 Without it the wifi does not always come up
+
+This seems to be a heat issue.
+The ubuntu kernel is not regulating temp properly
+Also should add the rfkill options to the cmdline.txt
+do not think the auto wlan0 is needed
 

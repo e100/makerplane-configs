@@ -31,4 +31,4 @@ RestartSec=1s
 ExecStart=/snap/bin/pyefis --config-file /home/eblevins/.makerplane/pyefis/config/left.yaml
 
 [Install]
-WantedBy=graphical-session.target
+WantedBy=default.target
