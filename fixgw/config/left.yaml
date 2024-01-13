@@ -320,6 +320,10 @@ connections:
       - function: altd
         inputs: ["PALT","TALT","OAT"]
         output: DALT
+      - function: encoder
+        inputs: [ "ENC1" ]
+        output: BARO
+        multiplier: 0.01
 
       # - function: min
       #   inputs: []

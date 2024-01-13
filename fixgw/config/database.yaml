@@ -2,7 +2,7 @@ variables:
   e: 1  # Engines
   c: 6  # Cylinders
   a: 8  # Generic Analogs
-  b: 16 # Generic Buttons
+  b: 30 # Generic Buttons
   g: 4  # Egt Buttons
   r: 4  # Encoders
   t: 3  # Fuel Tanks

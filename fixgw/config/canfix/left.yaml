@@ -91,8 +91,8 @@ outputs:
 
 # Special Input Functions
 encoders:
-    - { fixid: "ENC1, ENC2, BTN11", canid: 0x300, index: 0 }
-    - { fixid: "ENC3,ENC4,BTN12", canid: 0x301, index: 0 }
+    - { fixid: "ENC1, ENC2, BTN21", canid: 0x300, index: 0 }
+    - { fixid: "ENC3, ENC4, BTN22", canid: 0x301, index: 0 }
 
 # Generic Switch Inputs
 switches:
