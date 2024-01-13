@@ -55,7 +55,7 @@ connections:
     load: yes
     module: fixgw.plugins.quorum
     nodeid: 1
-    total_nodes: 2
+    total_nodes: 3
 
   # Command Line Module
   command:
