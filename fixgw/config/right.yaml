@@ -28,17 +28,17 @@ connections:
   netfix:
     load: yes
     module: fixgw.plugins.netfix
-    type: both
+    type: server 
     host: 0.0.0.0
     port: 3490
     buffer_size: 1024
     timeout: 1.0
     clients:
-      - host: 192.168.2.1
+      - host: 192.168.2.2
         port: 3490
     outputs:
-      QVOTE1: Interval
-        #QVOTE2: Interval
+      #QVOTE1: Interval
+      QVOTE2: Interval
       TRIMP: onchange
       TRIMY: onchange
       TRIMR: onchange
@@ -55,7 +55,7 @@ connections:
     load: yes
     module: fixgw.plugins.quorum
     nodeid: 1
-    total_nodes: 1
+    total_nodes: 2
 
   # Command Line Module
   command:
@@ -120,19 +120,19 @@ connections:
 
   # CAN-FIX
   canfix:
-    load: no
+    load: yes
     module: fixgw.plugins.canfix
     # See the python-can documentation for the meaning of these options
     interface: socketcan
-    channel: vcan0
+    channel: can1
     #interface: serial
     #channel: /dev/ttyUSB0
 
     # This file controls the
-    mapfile: "{CONFIG}/canfix/map.yaml"
+    mapfile: "{CONFIG}/canfix/right.yaml"
     # The following is our Node Identification Information
     # See the CAN-FIX Protocol Specification for more information
-    node: 145     # CAN-FIX Node ID
+    node: 146     # CAN-FIX Node ID
     device: 145   # CAN-FIX Device Type
     revision: 0   # Software Revision Number
     model: 0      # Model Number
@@ -320,6 +320,10 @@ connections:
       - function: altd
         inputs: ["PALT","TALT","OAT"]
         output: DALT
+      - function: encoder
+        inputs: [ "ENC1" ]
+        output: BARO
+        multiplier: 0.01
 
       # - function: min
       #   inputs: []
@@ -368,7 +372,7 @@ connections:
     load: yes
     module: fixgw.plugins.megasquirt
     interface: socketcan
-    channel: vcan0
+    channel: can0
     items:
       rpm: TACH1
       fuelflow: FUELF1 
@@ -386,7 +390,7 @@ connections:
     module: fixgw.plugins.mgl
     # See the python-can documentation for the meaning of these options
     interface: socketcan
-    channel: vcan0
+    channel: can0
     rdac:
       default_id: 1
       sendd:
