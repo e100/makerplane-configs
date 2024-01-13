@@ -324,6 +324,10 @@ connections:
         inputs: [ "ENC1" ]
         output: BARO
         multiplier: 0.01
+      - function: encoder
+        inputs: [ "ENC2" ]
+        output: TRIMP
+        multiplier: 1
 
       # - function: min
       #   inputs: []
