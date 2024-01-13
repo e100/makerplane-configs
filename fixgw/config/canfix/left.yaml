@@ -74,6 +74,7 @@ inputs:
   - { canid: 0x182, index: 0, fixid: "AOA", priority: 0 }
   - { canid: 0x188, index: 0, fixid: "AGL", priority: 0 }
   - { canid: 0x403, index: 0, fixid: "ROT", priority: 0 }
+  - { canid: 0x408, index: 0, fixid: "DALT", priority: 0, nodespecific: True }
 
 
   # Output mappings are for data that is read from the FixGW database and
@@ -88,6 +89,7 @@ inputs:
 
 outputs:
   - { fixid: "BARO", canid: 0x190, index: 0, owner: True, on_change: True}
+  - { fixid: "DALT", canid: 0x408, index: 0, owner: False, on_change: True}
 
 # Special Input Functions
 encoders:
