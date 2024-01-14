@@ -7,7 +7,5 @@ repeat_delay: 300
 conditions:
   - when: "CLICKED eq true" 
     actions:
-      - set value: "BTN1, True"
-      - set value: "BTN1, False"
-# Setting BTN True/False so FIX Gateway can compute the BARO value using encoder function
+      - change value: "BARO, -0.01"
 

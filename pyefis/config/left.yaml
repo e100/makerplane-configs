@@ -70,9 +70,7 @@ keybindings:
 # OnChange will send when the value is changed and Both will
 # do both.
 outputs:
-  BTN1: onchange
-  BTN2: onchange
-
+  BARO: onchange
 
 
 # Screen definitions describe the screens that will be loaded
