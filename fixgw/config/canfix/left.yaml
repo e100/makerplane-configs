@@ -88,8 +88,9 @@ inputs:
   #         otherwise a node specific parameter set message will be sent
 
 outputs:
-  - { fixid: "BARO", canid: 0x190, index: 0, owner: False, on_change: True}
-  - { fixid: "DALT", canid: 0x408, index: 0, owner: False, on_change: True}
+    - { fixid: "BARO", canid: 0x190, index: 0, owner: False, on_change: True}
+    - { fixid: "DALT", canid: 0x408, index: 0, owner: False, on_change: True}
+    - { fixid: "BTN11,BTN12,BTN13,BTN14,BTN15,BTN16,BTN17,BTN18,BTN19,BTN20", canid: 0x309, index: 0, owner: False }
 
 # Special Input Functions
 encoders:

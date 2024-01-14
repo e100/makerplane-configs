@@ -54,7 +54,7 @@ connections:
     load: yes
     module: fixgw.plugins.quorum
     nodeid: 2
-    total_nodes: 2
+    total_nodes: 3
 
   # Command Line Module
   command:
@@ -119,7 +119,7 @@ connections:
 
   # CAN-FIX
   canfix:
-    load: no
+    load: yes
     module: fixgw.plugins.canfix
     # See the python-can documentation for the meaning of these options
     interface: socketcan
@@ -345,7 +345,7 @@ connections:
     module: fixgw.plugins.stratux
 
   mavlink:
-    load: yes
+    load: no
     module: fixgw.plugins.mavlink
     type: serial
     baud: 115200
@@ -360,11 +360,11 @@ connections:
       pascal_offset: 2800
 
   ifly:
-    load: yes
+    load: no
     module: fixgw.plugins.ifly
 
   megasquirt:
-    load: yes
+    load: no
     module: fixgw.plugins.megasquirt
     interface: socketcan
     channel: vcan0
@@ -381,7 +381,7 @@ connections:
       #Ignition timing?
  
   mgl:
-    load: yes
+    load: no
     module: fixgw.plugins.mgl
     # See the python-can documentation for the meaning of these options
     interface: socketcan

@@ -30,7 +30,7 @@ inputs:
   - { canid: 0x18D, index: 0, fixid: "TAS", priority: 0 }
   - { canid: 0x185, index: 0, fixid: "HEAD", priority: 0 }
   - { canid: 0x186, index: 0, fixid: "VS", priority: 0 }
-  - { canid: 0x190, index: 0, fixid: "BARO", priority: 0 }
+  - { canid: 0x190, index: 0, fixid: "BARO", priority: 0, nodespecific: True }
   - { canid: 0x200, index: 0, fixid: "TACH1", priority: 0 }
   - { canid: 0x201, index: 0, fixid: "TACH2", priority: 0 }
   - { canid: 0x202, index: 0, fixid: "PROP1", priority: 0 }
@@ -74,6 +74,7 @@ inputs:
   - { canid: 0x182, index: 0, fixid: "AOA", priority: 0 }
   - { canid: 0x188, index: 0, fixid: "AGL", priority: 0 }
   - { canid: 0x403, index: 0, fixid: "ROT", priority: 0 }
+  - { canid: 0x408, index: 0, fixid: "DALT", priority: 0, nodespecific: True }
 
 
   # Output mappings are for data that is read from the FixGW database and
@@ -87,13 +88,17 @@ inputs:
   #         otherwise a node specific parameter set message will be sent
 
 outputs:
-  - { fixid: "BARO", canid: 0x190, index: 0, owner: False }
+    - { fixid: "BARO", canid: 0x190, index: 0, owner: False, on_change: True}
+    - { fixid: "DALT", canid: 0x408, index: 0, owner: False, on_change: True}
+    - { fixid: "BTN11,BTN12,BTN13,BTN14,BTN15,BTN16,BTN17,BTN18,BTN19,BTN20", canid: 0x309, index: 0, owner: False }
 
 # Special Input Functions
 encoders:
-    - { fixid: "ENC1, ENC2, BTN11", canid: 0x300, index: 0 }
-    - { fixid: "ENC3,ENC4,BTN12", canid: 0x301, index: 0 }
+    - { fixid: "ENC1, ENC2, BTN21", canid: 0x300, index: 0 }
+    - { fixid: "ENC3, ENC4, BTN22", canid: 0x301, index: 0 }
 
 # Generic Switch Inputs
 switches:
     - { fixid: "BTN1,BTN2,BTN3,BTN4,BTN5,BTN6", canid: 0x308, index: 0 }
+    - { fixid: "BTN11,BTN12,BTN13,BTN14,BTN15,BTN16,BTN17,BTN18,BTN19,BTN20", canid: 0x309, index: 0, owner: False }
+

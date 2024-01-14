@@ -129,7 +129,7 @@ connections:
     #channel: /dev/ttyUSB0
 
     # This file controls the
-    mapfile: "{CONFIG}/canfix/left.yaml"
+    mapfile: "{CONFIG}/canfix/map.yaml"
     # The following is our Node Identification Information
     # See the CAN-FIX Protocol Specification for more information
     node: 145     # CAN-FIX Node ID
@@ -282,7 +282,7 @@ connections:
   button1:
     load: no
     module: fixgw.plugins.rpi_button
-    btnkey: BTN1
+    btnkey: BTNx
     btnpin: 4
     rdelay: 0 # 0 for debouncing or time in seconde to determine the repeat delay
 

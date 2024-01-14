@@ -42,44 +42,6 @@ keybindings:
   - key: M
     action: Set Airspeed Mode
 
-  - key: Q
-    action: Set Value
-    args: BTN6, True
-    direction: DN
-  - key: Q
-    action: Set Value
-    args: BTN6, False
-    direction: UP
-  - key: U
-    action: Set Instrument Units
-    args: OAT,OILT1,Temperature:Toggle
-
-  - key: F1
-    action: Activate Menu Item
-    args: 1
-  - key: F2
-    action: Activate Menu Item
-    args: 2
-  - key: F3
-    action: Activate Menu Item
-    args: 3
-  - key: F4
-    action: Activate Menu Item
-    args: 4
-  - key: F5
-    action: Activate Menu Item
-    args: 5
-  - key: F6
-    action: Activate Menu Item
-    args: 6
-
-  - key: ']'
-    action: Change Value
-    args: BARO,0.01
-  - key: '['
-    action: Change Value
-    args: BARO,-0.01
-
   - key: "1"
     action: Set EGT Mode
     args: Normalize
@@ -95,38 +57,7 @@ keybindings:
 
 # Data bindings tie actions to values in teh database
 # key is the database key and should match the FIX Gateway key
-databindingsdisabled:
-  - key: BTN1
-    condition: True
-    action: Activate Menu Item
-    args: 1
-  - key: BTN2
-    condition: True
-    action: Activate Menu Item
-    args: 2
-  - key: BTN3
-    condition: True
-    action: Activate Menu Item
-    args: 3
-  - key: BTN4
-    condition: True
-    action: Activate Menu Item
-    args: 4
-  - key: BTN5
-    condition: True
-    action: Activate Menu Item
-    args: 5
-  - key: BTN6
-    condition: True
-    action: Activate Menu Item
-    args: 6
-  - key: ENC1
-    action: Menu Encoder
-    args: <VALUE>   # This sends the data value to the action
-  - key: OILP1
-    condition: < 25
-    action: Show Screen
-    args: EMS
+databindings:
 
 
 # This section defines FIX IDs that we'll write out to the
@@ -136,26 +67,9 @@ databindingsdisabled:
 # OnChange will send when the value is changed and Both will
 # do both.
 outputs:
-  #TAS = Interval
-  BARO: OnChange
-  BTN16: OnChange
-  BTN1: OnChange
-  BTN2: OnChange
-  BTN3: OnChange
-  BTN4: OnChange
-  BTN5: OnChange
-  BTN6: OnChange
-  BTN8: OnChange
-  BTN9: OnChange
-  ACID: OnChange  
-  BTNAP: OnChange
-  BTNHH: OnChange
-  BTNFP: OnChange
-  APREQ: OnChange
-  APADJ: OnChange
-  TRIMR: OnChange
-  TRIMP: OnChange
-  TRIMY: OnChange
+
+
+
 # Screen definitions describe the screens that will be loaded
 # and ready for use.  Each section should start with "Screen."
 # followed by the name.  The only required configuration is
