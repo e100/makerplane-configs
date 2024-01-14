@@ -109,6 +109,7 @@ encoders:
 
 # Generic Switch Inputs
 switches:
-#    - { fixid: "BTN1,BTN2", canid: 0x308, index: 0, owner: False }
+# These are currently here jsut to prevent exception
+    - { fixid: "BTN1,BTN2", canid: 0x308, index: 0, owner: False }
 #    - { fixid: "BTN11,BTN12,BTN13,BTN14,BTN15,BTN16,BTN17,BTN18,BTN19,BTN20", canid: 0x309, index: 0, owner: False }
 
