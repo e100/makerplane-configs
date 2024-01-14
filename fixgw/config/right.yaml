@@ -320,10 +320,22 @@ connections:
       - function: altd
         inputs: ["PALT","TALT","OAT"]
         output: DALT
+# BARO Encoder
       - function: encoder
         inputs: [ "ENC1" ]
         output: BARO
         multiplier: 0.01
+# BARO Touchscreen down
+      - function: encoder
+        inputs: [ "BTN1" ]
+        output: BARO
+        multiplier: -0.01
+# BARO Touchscreen up
+      - function: encoder
+        inputs: [ "BTN2" ]
+        output: BARO
+        multiplier: 0.01
+
       - function: encoder
         inputs: [ "ENC2" ]
         output: TRIMP

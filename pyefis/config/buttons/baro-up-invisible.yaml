@@ -1,6 +1,6 @@
 type: repeat
 text: "+"
-dbkey: BTN8
+dbkey: TSBTN2
 transparent: true
 # If repeats too fast can cause BARO set loops
 # Loops can also happen if the compute plugin in
@@ -13,6 +13,7 @@ repeat_delay: 300
 conditions:
   - when: "CLICKED eq true" 
     actions:
-      - BTN11 value: True
-      - BTN11 value: False
+      - set value: "BTN2, True"
+      - set value: "BTN2, False"
+# Setting BTN True/False so FIX Gateway can compute the BARO value using encoder function
 

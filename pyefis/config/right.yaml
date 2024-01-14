@@ -67,6 +67,8 @@ databindings:
 # OnChange will send when the value is changed and Both will
 # do both.
 outputs:
+  BTN1: onchange
+  BTN2: onchange
 
 
 
