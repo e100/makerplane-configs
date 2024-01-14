@@ -68,6 +68,9 @@ keybindings:
 # do both.
 outputs:
   BARO: onchange
+  TRIMP: onchange
+  TRIMR: onchange
+  TRIMY: onchange
 
 
 # Screen definitions describe the screens that will be loaded
