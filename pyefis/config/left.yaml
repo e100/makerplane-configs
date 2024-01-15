@@ -98,7 +98,7 @@ screens:
       rows: 110
       columns: 200
     instruments:
-      - type: include,includes/left-side-buttons.yaml
+      - type: include,includes/side-buttons.yaml
       - type: include,includes/basic_arcs.yaml
         relative: true
         row: 0

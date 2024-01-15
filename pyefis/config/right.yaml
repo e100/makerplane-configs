@@ -96,7 +96,7 @@ screens:
       rows: 110
       columns: 200
     instruments:
-      - type: include,includes/left-side-buttons.yaml
+      - type: include,includes/side-buttons.yaml
         relative: true
         row: 0
         column: 186
