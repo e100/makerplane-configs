@@ -325,6 +325,11 @@ connections:
         inputs: [ "ENC1" ]
         output: BARO
         multiplier: 0.01
+# BARO set to 29.92
+      - function: set
+        inputs: [ "BTN1" ]
+        value: 29.92
+        output: BARO
 # TRIMP Encoder
       - function: encoder
         inputs: [ "ENC2" ]
