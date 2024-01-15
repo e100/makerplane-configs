@@ -74,6 +74,12 @@ outputs:
   TRIMP: onchange
   TRIMR: onchange
   TRIMY: onchange
+  APREQ: onchange
+# I'm not entirely sure if the AP buttons need output or not
+  BTNHH: onchange
+  APADJ: onchange
+  BTNFP: onchange
+
 # Screen definitions describe the screens that will be loaded
 # and ready for use.  Each section should start with "Screen."
 # followed by the name.  The only required configuration is

@@ -20,8 +20,14 @@ These need to be output by pyEFIS
 TSBTN9/10/11 are used for TRIMY left, TRIMY center and TRIMY right
 These need to be output by pyEFIS
 
+### TSBTN12
+TSBTN12 is used by buttons/screen-ems-pfd.yaml
 
+### TSBTN13
+TSBTN13 is used by buttons/screen-map-pfd.yaml
 
+### TSBTN14
+TSBTN14 is used by buttons/units.yaml
 ## Physical Buttons
 ### BTN1 of ENC1
 BTN1 resets BARO to 29.92, currently do not have a function it implement this
@@ -54,4 +60,50 @@ ENC4 is received on CAN with id 0x301 position 2
 ENC4 is used to adjust TRIMY, the yaw trim, its button, TSBTN10, is used to center the trim.
 TRIMY value is calculated in Fix Gateway
 TRIMY is sent and received on CAN with id 0x314
+
+
+## Auto Pilot 
+These are the buttons/fixids are used by the auto pilot
+### APREQ
+APREQ can be set to request one of three auto pilot modes, TRIM, GUIDED and CRUISE.<br>
+This must be output from pyEFIS to the Fix Gateway<br>
+CRUISE mode is Heading Hold<br>
+GUIDED mode is Flight Plan<br>
+TRIM mode allows manual control of the TRIM tabs<br>
+
+### BTNHH
+BTNHH is the button to activate Heading Hold mode<br>
+This must be output from pyEFIS to the Fix Gateway<br>
+
+### BTNFP
+BTNFP is the button to activate Flight Plan mode of the auto pilot<br>
+This must be output from pyEFIS to the Fix Gateway
+
+### APADJ
+APDJ is used to adjust altitude or heading while the auto pilot is enaged.<br>
+This must be output from pyefis to the Fix Gateway<br>
+When in Heading Hold mode and APADJ is on, you can use the TRIM Pitch and Yaw controls to change altitude and heading.<br>
+When in Flight Plan mode and APADJ is on, you can use the TRIM Pitch controls to adjust altitude.<br>
+In either mode, once you reach the desired altitude or heading you can senter the trims or just press APADJ to return the auto pilot to normal.
+
+old:
+-  BARO: OnChange
+-  BTN16: OnChange
+-  BTN1: OnChange
+-  BTN2: OnChange
+-  BTN3: OnChange
+-  BTN4: OnChange
+-  BTN5: OnChange
+-  BTN6: OnChange
+-  BTN8: OnChange
+-  BTN9: OnChange
+-  ACID: OnChange  
+-  BTNAP: OnChange
+-  BTNHH: OnChange
+-  BTNFP: OnChange
+-  APREQ: OnChange
+-  APADJ: OnChange
+-  TRIMR: OnChange
+-  TRIMP: OnChange
+-  TRIMY: OnChange
 
