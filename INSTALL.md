@@ -25,7 +25,7 @@ sudo raspi-config nonint do_spi 0
 sudo raspi-config nonint do_i2c 0
 sudo raspi-config nonint do_wayland W1
 ```
-NOTE: While wayland is the future its inability to reparent windows is currently and issue for pyEFIS if you would like to include a Waydroid window within it
+NOTE: While wayland is the future its inability to reparent windows is currently an issue for pyEFIS if you would like to include a Waydroid window within it
 
 
 ## Enable 4k pages so Waydroid works
@@ -80,7 +80,7 @@ git clone https://github.com/e100/x729
 cd x729
 git checkout ubuntu
 ```
-###Setup shutdown on power loss:
+### Setup shutdown on power loss:
 ```
 sudo bash pwr_ubuntu.sh
 ```
@@ -95,6 +95,7 @@ usb_max_current_enable=1
 ### Setup RTC device on the x729
 This is optional, you could use the RPI 5's internal RTC by adding a battery.<br>
 Since the x729 already has batteries I decided to use it
+```
 echo '# X729 RTC
 dtoverlay=i2c-rtc,ds1307
 '| sudo tee -a /boot/config.txt >/dev/null
