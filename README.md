@@ -20,7 +20,7 @@ I selected the [GeekWorm X729 UPS](https://geekworm.com/products/x729) to provid
 | 1 | Megasquirt ECU | ECU for the Aeromomentum AM 13|
 | 2 | [Waveshare 2ch CAN FD Hat](https://www.waveshare.com/2-ch-can-fd-hat.htm)| CAN-bus input/output|
 | 2 | [GeekWorm X729 UPS](https://geekworm.com/products/x729) | UPS for the PIs|
-| 2 | [Pimoroni VNME Base with 500GB SSD](https://shop.pimoroni.com/products/nvme-base?variant=41219587211347)| Storage|
+| 2 | [Pimoroni NVME Base with 500GB SSD](https://shop.pimoroni.com/products/nvme-base?variant=41219587211347)| Storage|
 | ? | [adafruit RP2040 CAN BUS Feather](https://www.adafruit.com/product/5724)  | Button/Encoder inputs, indicators and relays |
 
 
