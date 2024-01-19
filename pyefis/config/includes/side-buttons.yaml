@@ -5,10 +5,10 @@ instruments:
     column: 0
     span:
       rows: 110
-      columns: 14
+      columns: 14.5
     groups:
       - name: Side Buttons
-        gap: 10
+        gap: 11
         instruments:
           -
             options:
