@@ -7,9 +7,11 @@ conditions:
   - when: "LEADER eq true"
     actions:
       - button: disable
+      - set text: L
       - set bg color: green
   - when: "LEADER eq false"
     actions:
       - button: disable
+      - set text: F
       - set bg color: red
 
