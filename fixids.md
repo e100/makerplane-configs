@@ -28,6 +28,11 @@ TSBTN13 is used by buttons/screen-map-pfd.yaml
 
 ### TSBTN14
 TSBTN14 is used by buttons/units.yaml
+
+### TSBTN15
+TSBTN15 is used by buttons/leader.yaml
+It is only used as an indicator
+
 ## Physical Buttons
 ### BTN1 of ENC1
 BTN1 resets BARO to 29.92, currently do not have a function it implement this

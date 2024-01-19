@@ -1,0 +1,15 @@
+type: simple
+text: "L"
+dbkey: TSBTN15
+condition_keys:
+  - LEADER
+conditions:
+  - when: "LEADER eq true"
+    actions:
+      - button: disable
+      - set bg color: green
+  - when: "LEADER eq false"
+    actions:
+      - button: disable
+      - set bg color: red
+
