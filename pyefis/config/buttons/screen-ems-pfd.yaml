@@ -1,6 +1,6 @@
 type: simple
 text: ""
-dbkey: BTN6
+dbkey: TSBTN12
 condition_keys:
   - CHT11
   - CHT12

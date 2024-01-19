@@ -7,6 +7,7 @@ variables:
   r: 4  # Encoders
   t: 3  # Fuel Tanks
   n: 5  # Nodes
+  s: 20 # Touchscreen buttons
 
 entries:
 - key: QVOTEn
@@ -32,6 +33,11 @@ entries:
   tol: 2000
 
 - key: BTNb
+  description: Generic Button %b
+  type: bool
+  tol: 0
+
+- key: TSBTNs
   description: Generic Button %b
   type: bool
   tol: 0

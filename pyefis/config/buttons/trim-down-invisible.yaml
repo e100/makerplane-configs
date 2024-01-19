@@ -1,6 +1,6 @@
 type: repeat
 text: ""
-dbkey: BTNTRIMDN
+dbkey: TSBTN5
 transparent: true
 repeat_interval: 5
 repeat_delay: 50

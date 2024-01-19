@@ -292,5 +292,14 @@ instruments:
     options:
       config: buttons/trim-roll-right-invisible.yaml
 
+  - type: button
+    row: 0
+    column: 150
+    span:
+      rows: 5
+      columns: 5
+    options:
+      config: buttons/leader.yaml
+
 
 

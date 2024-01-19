@@ -261,7 +261,7 @@ connections:
   button1:
     load: no
     module: fixgw.plugins.rpi_button
-    btnkey: BTN1
+    btnkey: BTNx
     btnpin: 4
     rdelay: 0 # 0 for debouncing or time in seconde to determine the repeat delay
 
