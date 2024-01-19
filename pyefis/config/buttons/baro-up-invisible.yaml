@@ -2,12 +2,6 @@ type: repeat
 text: "+"
 dbkey: TSBTN2
 transparent: true
-# If repeats too fast can cause BARO set loops
-# Loops can also happen if the compute plugin in
-# fix gateway also modified the data.
-# The latency between pyefis and fixgateway is the issue here
-# pyavtools.fix does not have a block send on receive feature
-# and I think that is what would be needed to resolve it.
 repeat_interval: 100
 repeat_delay: 300
 conditions:

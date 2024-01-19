@@ -129,7 +129,7 @@ screens:
       rows: 110
       columns: 200
     instruments:
-      - type: include,includes/left-side-buttons.yaml
+      - type: include,includes/side-buttons.yaml
         relative: true
         row: 0
         column: 0
@@ -153,7 +153,7 @@ screens:
       columns: 200
       #draw_grid: true
     instruments:
-      - type: include,includes/left-side-buttons.yaml
+      - type: include,includes/side-buttons.yaml
       - type: ganged_button
         disabled: true
         gang_type: horizontal
