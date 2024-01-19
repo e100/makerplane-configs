@@ -160,6 +160,15 @@ dtoverlay=mcp251xfd,spi1-0,interrupt=24
 
 NOTE: We will setup the network interfaces for CAN0 and CAN1 later when we setup Stratux
 
+To ensure can0 and can1 do not swap their names we will apply the following udev rule:
+
+```
+echo 'ACTION=="add", SUBSYSTEM=="net", DEVPATH=="/devices/platform/soc/*/spi0.0/net/can?", NAME="can0"
+ACTION=="add", SUBSYSTEM=="net", DEVPATH=="/devices/platform/soc/*/spi0.1/net/can?", NAME="can1"
+ACTION=="add", SUBSYSTEM=="net", DEVPATH=="/devices/platform/soc/*/spi1.0/net/can?", NAME="can1"
+'| sudo tee -a /etc/udev/rules.d/80-can.rules >/dev/null
+```
+
 Reboot
 
 
