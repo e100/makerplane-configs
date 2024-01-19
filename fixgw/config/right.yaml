@@ -51,12 +51,6 @@ connections:
       WPLON:
       BARO:
 
-  quorum:
-    load: yes
-    module: fixgw.plugins.quorum
-    nodeid: 1
-    total_nodes: 3
-
   # Command Line Module
   command:
     load: no
@@ -499,6 +493,13 @@ connections:
   demo:
     load: no
     module: fixgw.plugins.demo
+
+
+  quorum:
+    load: yes
+    module: fixgw.plugins.quorum
+    nodeid: 1
+    total_nodes: 3
 
 # Logging configuration - See Python logging.config module documenation
 logging:
