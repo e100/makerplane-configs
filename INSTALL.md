@@ -160,14 +160,14 @@ dtoverlay=mcp251xfd,spi1-0,interrupt=24
 '| sudo tee -a /boot/config.txt >/dev/null
 ```
 
-NOTE: We will setup the network interfaces for CAN0 and CAN1 later when we setup Stratux
+NOTE: We will setup the network interfaces for can10 and can11 later when we setup Stratux
 
-To ensure can0 and can1 do not swap their names we will apply the following udev rule:
+To ensure can10 and can11 do not swap their names we will apply the following udev rule:
 
 ```
-echo 'ACTION=="add", SUBSYSTEM=="net", DEVPATH=="/devices/platform/soc/*/spi0.0/net/can?", NAME="can0"
-ACTION=="add", SUBSYSTEM=="net", DEVPATH=="/devices/platform/soc/*/spi0.1/net/can?", NAME="can1"
-ACTION=="add", SUBSYSTEM=="net", DEVPATH=="/devices/platform/soc/*/spi1.0/net/can?", NAME="can1"
+echo 'ACTION=="add", SUBSYSTEM=="net", DEVPATH=="/devices/platform/soc/*/spi0.0/net/can?", NAME="can10"
+ACTION=="add", SUBSYSTEM=="net", DEVPATH=="/devices/platform/soc/*/spi0.1/net/can?", NAME="can11"
+ACTION=="add", SUBSYSTEM=="net", DEVPATH=="/devices/platform/soc/*/spi1.0/net/can?", NAME="can11"
 '| sudo tee -a /etc/udev/rules.d/80-can.rules >/dev/null
 ```
 
@@ -176,7 +176,7 @@ Reboot
 
 
 Turn on RDAC and see if it works should get output with:
-candump -cae can0,0:0,#FFFFFFFF
+candump -cae can10,0:0,#FFFFFFFF
 
 
 ## Pair BT keyboard/mouse app

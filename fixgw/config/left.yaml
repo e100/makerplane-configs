@@ -124,7 +124,7 @@ connections:
     module: fixgw.plugins.canfix
     # See the python-can documentation for the meaning of these options
     interface: socketcan
-    channel: can0
+    channel: can10
     #interface: serial
     #channel: /dev/ttyUSB0
 
@@ -393,7 +393,7 @@ connections:
     load: yes
     module: fixgw.plugins.megasquirt
     interface: socketcan
-    channel: can1
+    channel: can11
     items:
       rpm: TACH1
       fuelflow: FUELF1 
@@ -411,7 +411,7 @@ connections:
     module: fixgw.plugins.mgl
     # See the python-can documentation for the meaning of these options
     interface: socketcan
-    channel: can0
+    channel: can10
     rdac:
       default_id: 1
       sendd:
