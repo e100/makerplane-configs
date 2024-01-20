@@ -91,10 +91,14 @@ inputs:
   #         otherwise a node specific parameter set message will be sent
 
 outputs:
+  # Using , on_change: False because the encoder constantly sends data
+  # causing recalculations, False will case the data to get sent on the can-bus
+  # even if it has not changed value. This precents another gateway that is restarting
+  # from setting values back to the defaults when it starts
   - { fixid: "BARO",  canid: 0x190, index: 0, owner: False, on_change: False}
-  - { fixid: "TRIMP", canid: 0x312, index: 0, owner: False }
-  - { fixid: "TRIMR", canid: 0x313, index: 0, owner: False }
-  - { fixid: "TRIMY", canid: 0x314, index: 0, owner: False }
+  - { fixid: "TRIMP", canid: 0x312, index: 0, owner: False, on_change: False }
+  - { fixid: "TRIMR", canid: 0x313, index: 0, owner: False, on_change: False }
+  - { fixid: "TRIMY", canid: 0x314, index: 0, owner: False, on_change: False }
   - { fixid: "DALT",  canid: 0x408, index: 0, owner: False, on_change: True}
 
 #    - { fixid: "BTN1,BTN2", canid: 0x308, index: 0, owner: False }
