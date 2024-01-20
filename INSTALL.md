@@ -163,11 +163,20 @@ dtoverlay=mcp251xfd,spi1-0,interrupt=24
 NOTE: We will setup the network interfaces for can10 and can11 later when we setup Stratux
 
 To ensure can10 and can11 do not swap their names we will apply the following udev rule:
+PI4:
 
 ```
 echo 'ACTION=="add", SUBSYSTEM=="net", DEVPATH=="/devices/platform/soc/*/spi0.0/net/can?", NAME="can10"
 ACTION=="add", SUBSYSTEM=="net", DEVPATH=="/devices/platform/soc/*/spi0.1/net/can?", NAME="can11"
 ACTION=="add", SUBSYSTEM=="net", DEVPATH=="/devices/platform/soc/*/spi1.0/net/can?", NAME="can11"
+'| sudo tee -a /etc/udev/rules.d/80-can.rules >/dev/null
+```
+
+PI5:
+```
+echo 'ACTION=="add", SUBSYSTEM=="net", DEVPATH=="/devices/platform/axi/*/*.spi/spi_master/spi0/spi0.0/net/can?", NAME="can10"
+ACTION=="add", SUBSYSTEM=="net", DEVPATH=="/devices/platform/axi/*/*.spi/spi_master/spi1/spi1.0/net/can?", NAME="can11"
+ACTION=="add", SUBSYSTEM=="net", DEVPATH=="/devices/platform/soc/*/*.spi/spi_master/spi0/spi1.0/net/can?", NAME="can11"
 '| sudo tee -a /etc/udev/rules.d/80-can.rules >/dev/null
 ```
 
