@@ -254,6 +254,16 @@ entries:
   initial: 0.0
   tol: 200
 
+- key: RAT
+  description: MGL RDAC Air Temperature
+  type: float
+  min: -100.0
+  max: 100.0
+  units: degC
+  initial: 0.0
+  tol: 2000
+  aux: [Min,Max,lowWarn]
+
 - key: OAT
   description: Outside Air Temperature
   type: float

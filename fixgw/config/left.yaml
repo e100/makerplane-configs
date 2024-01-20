@@ -457,6 +457,9 @@ connections:
 # Need to check with the RDAC Docs for standard
         OAT:
             key: AUX2
+        # This must be collected as it is used for thermocouple compensation
+        RAT:
+            key: RDACTEMP
         FUELP1:
           key: FUELP
 # Maybe use this for battery current?
