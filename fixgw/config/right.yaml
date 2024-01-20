@@ -328,17 +328,17 @@ connections:
       - function: encoder
         inputs: [ "ENC2" ]
         output: TRIMP
-        multiplier: 1
+        multiplier: 0.1
 # TRIMR Encoder
       - function: encoder
         inputs: [ "ENC3" ]
         output: TRIMR
-        multiplier: 1
+        multiplier: 0.1
 # TRIMY Encoder
       - function: encoder
         inputs: [ "ENC4" ]
         output: TRIMY
-        multiplier: 1
+        multiplier: 0.1
 
       # - function: min
       #   inputs: []

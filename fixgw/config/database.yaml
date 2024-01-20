@@ -750,20 +750,20 @@ entries:
 - key: TRIMP
   description: Pitch Trim
   type: int
-  min: -1000
-  max: 1000
+  min: -100
+  max: 100
   initial: 0
 - key: TRIMR
   description: Roll Trim
   type: int
-  min: -1000
-  max: 1000
+  min: -100
+  max: 100
   initial: 0
 - key: TRIMY
   description: Yaw Trim
   type: int
-  min: -1000
-  max: 1000
+  min: -100
+  max: 100
   initial: 0
 - key: BTNTRIMUP
   description: Trim up button
