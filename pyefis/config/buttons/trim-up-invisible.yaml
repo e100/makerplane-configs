@@ -7,4 +7,4 @@ repeat_delay: 50
 conditions:
   - when: "CLICKED eq true" 
     actions:
-      - change value: TRIMP,1
+      - change value: TRIMP,0.1
