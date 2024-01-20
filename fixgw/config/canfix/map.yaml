@@ -105,7 +105,7 @@ encoders:
 #     BARO, TRIMP, Center BARO, Center TRIMP
   - { fixid: "ENC1, ENC2, BTN1,    TSBTN4",  canid: 0x300, index: 0 }
 #     TRIMR, TRIMY, Center TRIMR, Center TRIMY
-  - { fixid: "ENC3, ENC4, TSBTN7, TSBTN10", canid: 0x301, index: 0 }
+  - { fixid: "ENC3, ENC4, TSBTN7, TSBTN10", canid: 0x300, index: 1 }
 
 # Generic Switch Inputs
 switches:
