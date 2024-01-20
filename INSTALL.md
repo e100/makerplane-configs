@@ -37,6 +37,11 @@ kernel=kernel8.img
 #sudo apt purge linux-image-rpi-2712
 ```
 
+## diable/remove panel notifications
+```
+sudo apt remove lxplug-updater -y
+```
+
 Reboot
 
 
