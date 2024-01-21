@@ -36,8 +36,8 @@ sed -i 's/# iLevil IP/# iLevil IP\nauto br0:0\niface br0:0 inet static\n  addres
 ### If using CAN all that to the network template too:
 ```
 TODO Need to finish this:
-sed -i 's/# CAN Networks/# CAN Networks\n\nauto can11\n  iface can11 inet manual\n  pre-up \/sbin\/ip link set can11 type can bitrate 500000\n  up \/sbin\/ifconfig can11 up\n  down \/sbin\/ifconfig can11 down\n/g' stratux/image/interfaces.template
-sed -i 's/# CAN Networks/# CAN Networks\n\nauto can10\n  iface can10 inet manual\n  pre-up \/sbin\/ip link set can10 type can bitrate 250000\n  up \/sbin\/ifconfig can10 up\n  down \/sbin\/ifconfig can10 down\n/g' stratux/image/interfaces.template
+sed -i 's/# CAN Networks/# CAN Networks\n\nauto can11\n  iface can11 inet manual\n  pre-up \/sbin\/ip link set can11 type can bitrate 500000 restart-ms 100\n  up \/sbin\/ifconfig can11 up\n  down \/sbin\/ifconfig can11 down\n/g' stratux/image/interfaces.template
+sed -i 's/# CAN Networks/# CAN Networks\n\nauto can10\n  iface can10 inet manual\n  pre-up \/sbin\/ip link set can10 type can bitrate 250000 restart-ms 100\n  up \/sbin\/ifconfig can10 up\n  down \/sbin\/ifconfig can10 down\n/g' stratux/image/interfaces.template
 ```
 
 
