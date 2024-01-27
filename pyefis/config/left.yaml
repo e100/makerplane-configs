@@ -98,15 +98,10 @@ screens:
       rows: 110
       columns: 200
     instruments:
-      - type: include,includes/side-buttons.yaml
-      - type: include,includes/basic_arcs.yaml
-        relative: true
-        row: 0
-        column: 170
       - type: weston
         #disabled: true
         row: 0
-        column: 15
+        column: 0
         span:
           rows: 113
           columns: 155
@@ -116,6 +111,15 @@ screens:
           command: waydroid
           args:
             - show-full-ui
+      - type: include,includes/basic_arcs.yaml
+        relative: true
+        row: 0
+        column: 155
+      - type: include,includes/side-buttons.yaml
+        relative: true
+        row: 0
+        column: 186
+
       
   PFD:
     dbpath: ~/.makerplane/pyefis/CIFP/FAACIFP18
@@ -129,20 +133,19 @@ screens:
       rows: 110
       columns: 200
     instruments:
-      - type: include,includes/side-buttons.yaml
-        relative: true
-        row: 0
-        column: 0
-
       - type: include,includes/virtual_vfr.yaml
         relative: true
         row: 0
-        column: 15
-
+        column: 0
       - type: include,includes/basic_arcs.yaml
         relative: true
         row: 0
-        column: 170
+        column: 155
+      - type: include,includes/side-buttons.yaml
+        relative: true
+        row: 0
+        column: 186
+
           
   EMS:
     module: pyefis.screens.screenbuilder
@@ -154,6 +157,10 @@ screens:
       #draw_grid: true
     instruments:
       - type: include,includes/side-buttons.yaml
+        relative: true
+        row: 0
+        column: 186
+
       - type: ganged_button
         disabled: true
         gang_type: horizontal
@@ -185,7 +192,7 @@ screens:
         type: ganged_vertical_bar_gauge
         gang_type: horizontal
         row: 0
-        column: 15
+        column: 0
         span:
           rows: 55
           columns: 180
@@ -279,7 +286,7 @@ screens:
         type: ganged_vertical_bar_gauge
         gang_type: horizontal
         row: 55
-        column: 15
+        column: 0
         span:
           rows: 55
           columns: 180

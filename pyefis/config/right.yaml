@@ -3,6 +3,8 @@ main:
   FixServer: 127.0.0.1
   FixPort: 3490
   # Screen Geometry
+  #screenWidth: 1280
+  #screenHeight: 720
   #screenWidth: 1024
   #screenHeight: 768
   screenWidth: 1920
@@ -27,8 +29,9 @@ main:
 # a string that represents a key Sequence.  See the documentation for more
 # information about key sequences and actions.
 keybindings:
-  - key: x
+  - key: X
     action: exit
+
   - key: A
     action: Show Previous Screen
 
@@ -77,7 +80,6 @@ outputs:
   APADJ: onchange
   BTNFP: onchange
 
-
 # Screen definitions describe the screens that will be loaded
 # and ready for use.  Each section should start with "Screen."
 # followed by the name.  The only required configuration is
@@ -86,8 +88,8 @@ outputs:
 
 screens:
   MAP:
-    dbpath: /home/eblevins/projects/efis/CIFP/FAACIFP18
-    indexpath: /home/eblevins/projects/efis/CIFP/index.bin
+    dbpath: ~/.makerplane/pyefis/CIFP/FAACIFP18
+    indexpath: ~/.makerplane/pyefis/CIFP/index.bin
     module: pyefis.screens.screenbuilder
     title: Screen Builder
     layout:
@@ -99,15 +101,15 @@ screens:
       - type: include,includes/side-buttons.yaml
         relative: true
         row: 0
-        column: 186
+        column: 0
       - type: include,includes/basic_arcs.yaml
         relative: true
         row: 0
-        column: 0
+        column: 14
       - type: weston
         #disabled: true
         row: 0
-        column: 30
+        column: 45
         span:
           rows: 113
           columns: 155
@@ -119,8 +121,9 @@ screens:
             - show-full-ui
       
   PFD:
-    dbpath: /home/eblevins/projects/efis/CIFP/FAACIFP18
-    indexpath: /home/eblevins/projects/efis/CIFP/index.bin
+    dbpath: ~/.makerplane/pyefis/CIFP/FAACIFP18
+    indexpath: ~/.makerplane/pyefis/CIFP/index.bin
+      #refresh_period: 0.25
     module: pyefis.screens.screenbuilder
     title: Screen Builder
     layout:
@@ -132,17 +135,17 @@ screens:
       - type: include,includes/side-buttons.yaml
         relative: true
         row: 0
-        column: 186
+        column: 0
 
       - type: include,includes/virtual_vfr.yaml
         relative: true
         row: 0
-        column: 30
+        column: 45
 
       - type: include,includes/basic_arcs.yaml
         relative: true
         row: 0
-        column: 0
+        column: 14
           
   EMS:
     module: pyefis.screens.screenbuilder
@@ -154,14 +157,11 @@ screens:
       #draw_grid: true
     instruments:
       - type: include,includes/side-buttons.yaml
-        relative: true
-        row: 0
-        column: 186
       - type: ganged_button
         disabled: true
         gang_type: horizontal
         row: 100
-        column: 0
+        column: 100
         #move:
         #  shrink: 25
         #  justify: top
@@ -188,7 +188,7 @@ screens:
         type: ganged_vertical_bar_gauge
         gang_type: horizontal
         row: 0
-        column: 0
+        column: 15
         span:
           rows: 55
           columns: 180
@@ -282,7 +282,7 @@ screens:
         type: ganged_vertical_bar_gauge
         gang_type: horizontal
         row: 55
-        column: 0
+        column: 15
         span:
           rows: 55
           columns: 180

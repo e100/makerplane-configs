@@ -4,11 +4,11 @@ instruments:
     row: 0
     column: 0
     span:
-      rows: 110
+      rows: 70
       columns: 14.5
     groups:
       - name: Side Buttons
-        gap: 11
+        gap: 6
         instruments:
           -
             options:
