@@ -4,7 +4,7 @@ instruments:
     row: 0
     column: 0
     span:
-      rows: 110
+      rows: 70
       columns: 30
     groups:
       - name: Engine
@@ -18,21 +18,6 @@ instruments:
               dbkey: TACH1
           -
             options:
-              name: Fuel Total
-              dbkey: FUELQT
-          -
-            options:
-              name: Fuel Flow
-              dbkey: FUELF1
-              decimalPlaces: 1
-          -
-            options:
-              name: Coolant
-              temperature: true
-              dbkey: H2OT1
-              showUnits: true
-          -
-            options:
               name: Oil Press
               dbkey: OILP1
           -
@@ -41,3 +26,10 @@ instruments:
               dbkey: OILT1
               temperature: true
               showUnits: true
+          -
+            options:
+              name: Coolant
+              temperature: true
+              dbkey: H2OT1
+              showUnits: true
+
