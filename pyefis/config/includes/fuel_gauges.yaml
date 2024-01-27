@@ -1,0 +1,41 @@
+instruments:
+  - type: ganged_vertical_bar_gauge
+    gang_type: horizontal
+    row: 0
+    column: -2
+    span:
+      rows: 40
+      columns: 50
+    groups:
+      - name: FUEL
+        gap: -10
+        common_options:
+          showUnits: true
+          smallFontPercent: 0.07
+          bigFontPercent: 0.09
+        instruments:
+          -   
+            options:
+              name: "Flow"
+              decPlaces: 0
+              dbkey: FUELF1
+          - 
+            options:
+              name: "Total"
+              decPlaces: 0
+              dbkey: FUELQT
+          -
+            options:
+              name: "Left"
+              decPlaces: 0
+              dbkey: FUELQ1
+          -
+            options:
+              name: "Center"
+              decPlaces: 0
+              dbkey: FUELQ2
+          -
+            options:
+              name: "Right"
+              decPlaces: 0
+              dbkey: FUELQ3
