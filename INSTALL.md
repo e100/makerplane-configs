@@ -28,7 +28,7 @@ sudo raspi-config nonint do_wayland W1
 NOTE: While wayland is the future its inability to reparent windows is currently an issue for pyEFIS if you would like to include a Waydroid window within it
 
 
-## Enable 4k pages so Waydroid works
+## On the PI 5, Enable 4k pages so Waydroid works
 ```
 echo '# 4k pages
 kernel=kernel8.img
@@ -160,7 +160,6 @@ dtoverlay=mcp251xfd,spi1-0,interrupt=24
 '| sudo tee -a /boot/config.txt >/dev/null
 ```
 
-NOTE: We will setup the network interfaces for can10 and can11 later when we setup Stratux
 
 To ensure can10 and can11 do not swap their names we will apply the following udev rule:
 PI4:
@@ -180,9 +179,61 @@ ACTION=="add", SUBSYSTEM=="net", DEVPATH=="/devices/platform/soc/*/*.spi/spi_mas
 '| sudo tee -a /etc/udev/rules.d/80-can.rules >/dev/null
 ```
 
+NOTE: If you plan to install Stratux on this PI, you can skip setting up the can interfaces 
+Install some needed packages:
+```
+sudo apt install -y ifupdown net-tools bridge-utils
+```
+
+Configure /etc/network/interfaces
+```
+sudo apt remove -y network-manager
+sudo apt autoremove -y
+
+echo 'auto lo
+
+iface lo inet loopback
+
+# Bridge for local ethernet and waydroid
+iface eth0 inet manual
+
+auto br0
+allow-hotplug br0
+iface br0 inet dhcp
+  bridge_ports eth0
+  bridge_stp off
+  bridge_waitport 0
+  bridge_fd 0
+
+# iLevil IP
+auto br0:0
+iface br0:0 inet static
+  address 192.168.1.1
+  netmask 255.255.255.0
+
+# CAN Networks
+
+auto can10
+  iface can10 inet manual
+  pre-up /sbin/ip link set can10 type can bitrate 250000 restart-ms 500
+  up /sbin/ifconfig can10 up
+  down /sbin/ifconfig can10 down
+
+
+auto can11
+  iface can11 inet manual
+  pre-up /sbin/ip link set can11 type can bitrate 500000 restart-ms 500
+  up /sbin/ifconfig can11 up
+  down /sbin/ifconfig can11 down' | sudo tee -a /etc/network/interfaces >/dev/null
+```
 
 Reboot
 
+## Disable mouse in vim and preserve other settings
+```
+echo 'source $VIMRUNTIME/defaults.vim
+set mouse=' >> ~/.vimrc
+```
 
 Turn on RDAC and see if it works should get output with:
 candump -cae can10,0:0,#FFFFFFFF
@@ -198,7 +249,7 @@ snap install snapcraft --classic
 sudo snap install lxd
 sudo /snap/bin/lxd init --auto
 sudo usermod -a -G lxd ${USER}
-newgrp lxd # OR reboot
+newgrp lxd
 ```
 It is easiest to just reboot at this step before continuing
 
@@ -218,7 +269,7 @@ git checkout combined
 ### Build the snap and install it
 ```
 snapcraft
-snap install fixgateway_0.3_arm64.snap --dangerous
+sudo snap install fixgateway_0.3_arm64.snap --dangerous
 ```
 NOTE: as snap versions change the filename to install might change.<br>
   dangerous is needed because the snap you just made is not signed.
@@ -228,9 +279,10 @@ You must also read the docs/snapcraft.md for Fix and follow the directions to co
 If using serial ports add yourself to dialout
 sudo usermod -a -G dialout ${USER}
 
-For my setup the following commands, maybe with some slight changes will get everything working:
+For my setup the following commands worked, maybe with some slight changes you will get everything working:
 ```
 sudo usermod -a -G dialout ${USER}
+newgrp dialout
 sudo snap set system experimental.hotplug=true
 sudo systemctl restart snapd.service
 snap interface serial-port --attrs
@@ -249,12 +301,14 @@ Run `fixgateway.client` command, it should open up, type `quit` to exit
 
 ### Clone this repo again
 The FIX Gateway snap runs confined and cannot access files in ~/.makerplane<br>
-So we also place the config files in a folder that the confined snap does have access to.
+So I moved ~/.makerplane into the folder it can access and symlink ~/.makerplane to it<br>
+This way you can still manage everything from ~/.makerplane
 
 ```
-mkdir ~/snap/fixgateway/common
-cd ~/snap/fixgateway/common
-git clone https://github.com/e100/makerplane-configs.git .makerplane
+cd ~
+mkdir -p ~/snap/fixgateway/common
+mv ~/.makerplane  ~/snap/fixgateway/common/.makerplane
+ln -s ~/snap/fixgateway/common/.makerplane ~/.makerplane
 ```
 
 ### Install systemd unit file to auto start FIX Gateway
@@ -285,7 +339,7 @@ NOTE: In the future we will use makerplane repo and specific tag once my changes
 ```
 git checkout improve_snap
 snapcraft
-snap install pyefis_0.1_arm64.snap --dangerous --classic
+sudo snap install pyefis_0.1_arm64.snap --dangerous --classic
 ```
 ### Install the systemd unit file and edit it
 ```
@@ -368,11 +422,12 @@ ANDROID_RUNTIME_ROOT=/apex/com.android.runtime ANDROID_DATA=/data ANDROID_TZDATA
 Use the string of numbers printed by the command to register the device on your Google Account at https://www.google.com/android/uncertified
 
 
-At this point you should reboot and make sure everything so far seems to be working. Then continue onto installing stratuc by reading the stratux/README.md in this repo
+At this point you should reboot and make sure everything so far seems to be working. Then continue onto installing stratux by reading the stratux/README.md in this repo<br>
+NOTE: I only installed Stratux on one PI, not both. The 2nd one gets internet access through the Sttratux using the wired ethernet port.
 
 
 
 
 # Known issues
 ## If pyefis is killed sometimes the waydroid and weston processe are not killed. When pyefis is restarted it is not possible to get the android window working again.
- 
+NOTE: I only installed Stratux on one PI, not both. 
