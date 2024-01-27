@@ -5,10 +5,10 @@ instruments:
     column: -2
     span:
       rows: 40
-      columns: 50
+      columns: 47
     groups:
       - name: FUEL
-        gap: -10
+        gap: -8
         common_options:
           showUnits: true
           smallFontPercent: 0.07

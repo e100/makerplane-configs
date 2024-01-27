@@ -119,7 +119,11 @@ screens:
           command: waydroid
           args:
             - show-full-ui
-      
+      - type: include,includes/fuel_gauges.yaml
+        relative: true
+        row: 70
+        column: 0
+ 
   PFD:
     dbpath: ~/.makerplane/pyefis/CIFP/FAACIFP18
     indexpath: ~/.makerplane/pyefis/CIFP/index.bin
@@ -146,6 +150,11 @@ screens:
         relative: true
         row: 0
         column: 14
+      - type: include,includes/fuel_gauges.yaml
+        relative: true
+        row: 70
+        column: 0
+
           
   EMS:
     module: pyefis.screens.screenbuilder

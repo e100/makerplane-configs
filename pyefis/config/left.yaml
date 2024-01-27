@@ -119,6 +119,10 @@ screens:
         relative: true
         row: 0
         column: 186
+      - type: include,includes/fuel_gauges.yaml
+        relative: true
+        row: 70
+        column: 155
 
       
   PFD:
@@ -145,7 +149,10 @@ screens:
         relative: true
         row: 0
         column: 186
-
+      - type: include,includes/fuel_gauges.yaml
+        relative: true
+        row: 70
+        column: 155
           
   EMS:
     module: pyefis.screens.screenbuilder
