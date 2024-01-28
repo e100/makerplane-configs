@@ -1,6 +1,6 @@
 type: repeat
 text: "+"
-dbkey: TSBTN2
+dbkey: TSBTN{id}2
 transparent: true
 repeat_interval: 100
 repeat_delay: 300

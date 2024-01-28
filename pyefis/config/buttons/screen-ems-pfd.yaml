@@ -1,6 +1,6 @@
 type: simple
 text: ""
-dbkey: TSBTN12
+dbkey: TSBTN{id}12
 condition_keys:
   - CHT11
   - CHT12
@@ -25,7 +25,8 @@ conditions:
     actions:
       - set bg color: red
     continue: true
-  - when: "CLICKED eq true and [ SCREEN eq 'PFD' or SCREEN eq 'MAP' ]" 
+  - when: "CLICKED eq true and SCREEN eq 'PFD'"
+#[ [ SCREEN eq 'PFD' ] or [ SCREEN eq 'MAP' ] ]" 
     actions:
       - show screen: EMS
   - when: "CLICKED eq true and SCREEN eq 'EMS'"

@@ -37,7 +37,7 @@ entries:
   type: bool
   tol: 0
 
-- key: TSBTNs
+- key: TSBTNns
   description: Generic Button %b
   type: bool
   tol: 0

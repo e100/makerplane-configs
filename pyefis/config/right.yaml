@@ -24,6 +24,9 @@ main:
   # If left out the first defined screen will be default
   defaultScreen: MAP
 
+  # nodeID, currently only used in touchscreen buttons
+  # the value will replace {id} in the button's dbkey
+  nodeID: 1
 
 # The keybindings are used to attach keystrokes to actions.  The key can be
 # a string that represents a key Sequence.  See the documentation for more
