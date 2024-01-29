@@ -110,9 +110,9 @@ outputs:
 # Special Input Functions
 encoders:
 #     BARO, TRIMP, Center BARO, Center TRIMP
-  - { fixid: "ENC1, ENC2, BTN1,    TSBTN14",  canid: 0x300, index: 0 }
+  - { fixid: "ENC1, ENC2, BTN1, BTN2", canid: 0x300, index: 0 }
 #     TRIMR, TRIMY, Center TRIMR, Center TRIMY
-  - { fixid: "ENC3, ENC4, TSBTN17, TSBTN110", canid: 0x300, index: 1 }
+  - { fixid: "ENC3, ENC4, BTN3, BTN4", canid: 0x300, index: 1 }
 
 # Generic Switch Inputs
 switches:

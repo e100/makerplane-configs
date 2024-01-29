@@ -124,7 +124,7 @@ connections:
     module: fixgw.plugins.canfix
     # See the python-can documentation for the meaning of these options
     interface: socketcan
-    channel: can10
+    channel: can0
     #interface: serial
     #channel: /dev/ttyUSB0
 
@@ -335,16 +335,32 @@ connections:
         inputs: [ "ENC2" ]
         output: TRIMP
         multiplier: 0.1
+# TRIMP Center
+      - function: set
+        inputs: [ "BTN2" ]
+        value: 0
+        output: TRIMP
 # TRIMR Encoder
       - function: encoder
         inputs: [ "ENC3" ]
         output: TRIMR
         multiplier: 0.1
+# TRIMR Center
+      - function: set
+        inputs: [ "BTN3" ]
+        value: 0
+        output: TRIMr
+
 # TRIMY Encoder
       - function: encoder
         inputs: [ "ENC4" ]
         output: TRIMY
         multiplier: 0.1
+# TRIMY Center
+      - function: set
+        inputs: [ "BTN4" ]
+        value: 0
+        output: TRIMY
 
       # - function: min
       #   inputs: []

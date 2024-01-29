@@ -324,21 +324,36 @@ connections:
         inputs: [ "BTN1" ]
         value: 29.92
         output: BARO
-# TRAIP Encoder
+# TRIMP Encoder
       - function: encoder
         inputs: [ "ENC2" ]
         output: TRIMP
         multiplier: 0.1
+# TRIMP Center
+      - function: set
+        inputs: [ "BTN2" ]
+        value: 0
+        output: TRIMP
 # TRIMR Encoder
       - function: encoder
         inputs: [ "ENC3" ]
         output: TRIMR
         multiplier: 0.1
+# TRIMR Center
+      - function: set
+        inputs: [ "BTN3" ]
+        value: 0
+        output: TRIMr
 # TRIMY Encoder
       - function: encoder
         inputs: [ "ENC4" ]
         output: TRIMY
         multiplier: 0.1
+# TRIMY Center
+      - function: set
+        inputs: [ "BTN4" ]
+        value: 0
+        output: TRIMY
 
       # - function: min
       #   inputs: []
