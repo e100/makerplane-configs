@@ -125,7 +125,7 @@ screens:
       - type: include,includes/fuel_gauges.yaml
         relative: true
         row: 70
-        column: -2
+        column: 0
  
   PFD:
     dbpath: ~/.makerplane/pyefis/CIFP/FAACIFP18
@@ -156,7 +156,7 @@ screens:
       - type: include,includes/fuel_gauges.yaml
         relative: true
         row: 70
-        column: -2
+        column: 0
 
           
   EMS:
@@ -169,6 +169,17 @@ screens:
       #draw_grid: true
     instruments:
       - type: include,includes/side-buttons.yaml
+        relative: true
+        row: 0
+        column: 0
+      - type: include,includes/basic_arcs.yaml
+        relative: true
+        row: 0
+        column: 14
+      - type: include,includes/fuel_gauges.yaml
+        relative: true
+        row: 70
+        column: 0
       - type: ganged_button
         disabled: true
         gang_type: horizontal
@@ -200,10 +211,10 @@ screens:
         type: ganged_vertical_bar_gauge
         gang_type: horizontal
         row: 0
-        column: 15
+        column: 45
         span:
           rows: 55
-          columns: 180
+          columns: 155
         groups:
           - name: RPM
             common_options:
@@ -294,10 +305,10 @@ screens:
         type: ganged_vertical_bar_gauge
         gang_type: horizontal
         row: 55
-        column: 15
+        column: 45
         span:
           rows: 55
-          columns: 180
+          columns: 155
         groups:
           - name: EGT
             #options:

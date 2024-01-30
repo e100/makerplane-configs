@@ -166,10 +166,18 @@ screens:
       columns: 200
       #draw_grid: true
     instruments:
+      - type: include,includes/basic_arcs.yaml
+        relative: true
+        row: 0
+        column: 155
       - type: include,includes/side-buttons.yaml
         relative: true
         row: 0
         column: 186
+      - type: include,includes/fuel_gauges.yaml
+        relative: true
+        row: 70
+        column: 155
 
       - type: ganged_button
         disabled: true
@@ -205,7 +213,7 @@ screens:
         column: 0
         span:
           rows: 55
-          columns: 180
+          columns: 155
         groups:
           - name: RPM
             common_options:
