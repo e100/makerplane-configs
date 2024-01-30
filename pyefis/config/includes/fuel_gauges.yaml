@@ -12,7 +12,7 @@ instruments:
         gap: 0 
         common_options:
           showUnits: true
-          smallFontPercent: 0.07
+          smallFontPercent: 0.065
           bigFontPercent: 0.085
           barWidthPercent: 0.5
           lineWidthPercent: 0.7
