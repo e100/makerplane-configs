@@ -307,7 +307,7 @@ screens:
         column: 0
         span:
           rows: 55
-          columns: 180
+          columns: 155
         groups:
           - name: EGT
             #options:
