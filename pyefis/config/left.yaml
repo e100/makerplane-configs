@@ -22,7 +22,7 @@ main:
   screenColor: (0,0,0)
 
   # If left out the first defined screen will be default
-  defaultScreen: PFD
+  defaultScreen: EMS #PFD
 
   # nodeID, currently only used in touchscreen buttons
   # the value will replace {id} in the button's dbkey
@@ -158,6 +158,8 @@ screens:
         column: 155
           
   EMS:
+    dbpath: ~/.makerplane/pyefis/CIFP/FAACIFP18
+    indexpath: ~/.makerplane/pyefis/CIFP/index.bin
     module: pyefis.screens.screenbuilder
     title: Engine Management New
     layout:
@@ -166,10 +168,21 @@ screens:
       columns: 200
       #draw_grid: true
     instruments:
+      - type: include,includes/virtual_vfr.yaml
+        relative: true
+        row: 0
+        column: 0
+        span:
+          rows: 70
+          columns: 125
       - type: include,includes/basic_arcs.yaml
         relative: true
         row: 0
         column: 155
+      - type: include,includes/power_temp_arcs.yaml
+        relative: true
+        row: 0
+        column: 125
       - type: include,includes/side-buttons.yaml
         relative: true
         row: 0
@@ -178,21 +191,28 @@ screens:
         relative: true
         row: 70
         column: 155
-
+      - type: include,includes/cht_bars.yaml
+        relative: true
+        row: 70
+        column: 123
+      - type: include,includes/egt_bars.yaml
+        relative: true
+        row: 70
+        column: 91
       - type: ganged_button
-        disabled: true
-        gang_type: horizontal
-        row: 100
-        column: 100
+        #disabled: true
+        gang_type: vertical
+        row: 74
+        column: 80
         #move:
         #  shrink: 25
         #  justify: top
         span:
-          rows: 10
-          columns: 200
+          rows: 30
+          columns: 10
         groups:
           - name: Buttons
-            gap: 1
+            gap: 12
             instruments:
               -
                 options:
@@ -209,11 +229,11 @@ screens:
       -
         type: ganged_vertical_bar_gauge
         gang_type: horizontal
-        row: 0
+        row: 70
         column: 0
         span:
-          rows: 55
-          columns: 155
+          rows: 30
+          columns: 80
         groups:
           - name: RPM
             common_options:
@@ -257,19 +277,6 @@ screens:
                   name: EGO
                   decimalPlaces: 0
                   dbkey: MAP1
-          - name: Power
-            common_options:
-              showUnits: true
-            instruments:
-              -
-                options:
-                  name: Volt
-                  decimapPlaces: 1
-                  dbkey: VOLT
-              -
-                options:
-                  name: Amp
-                  dbkey: CURRNT
           - name: Temps
             instruments:
               -
@@ -278,124 +285,6 @@ screens:
                   decimalPlaces: 0
                   dbkey: CAT
                   temperature: true
-              -
-                options:
-                  name: OAT
-                  decimalPlaces: 0
-                  dbkey: OAT
-                  temperature: true
-              -
-                options:
-                  name: COOL
-                  decimalPlaces: 0
-                  dbkey: H2OT1
-                  temperature: true
-              -
-                options:
-                  name: OILT
-                  decimalPlaces: 0
-                  dbkey: OILT1
-                  temperature: true
-              -
-                options:
-                  name: Oil Press
-                  dbkey: OILP1
-      -
-        type: ganged_vertical_bar_gauge
-        gang_type: horizontal
-        row: 55
-        column: 0
-        span:
-          rows: 55
-          columns: 155
-        groups:
-          - name: EGT
-            #options:
-            #  ???? highlight max?
-            common_options:
-              egt_mode_switching: true
-              normalizeRange: 400
-              temperature: true
-              highlightKey: EGTMAX1
-              showUnits: true
-              decPlaces: 0 
-            instruments:
-              -
-                options:
-                  name: "EGT 1"
-                  dbkey: EGT11
-              -
-                options:
-                  name: "EGT 2"
-                  dbkey: EGT12
-              -
-                options:
-                  name: "EGT 3"
-                  dbkey: EGT13
-              -
-                options:
-                  name: "EGT 4"
-                  dbkey: EGT14
-          - name: CHT
-            common_options:
-              temperature: true
-              highlightKey: CHTMAX1
-              showUnits: true
-              decPlaces: 0
-            instruments:
-              -
-                options:
-                  name: "CHT 1"
-                  dbkey: CHT11
-              -
-                options:
-                  name: "CHT 2"
-                  dbkey: CHT12
-              -
-                options:
-                  name: "CHT 3"
-                  dbkey: CHT13
-              -
-                options:
-                  name: "CHT 4"
-                  dbkey: CHT14
-          - name: FUEL
-            common_options:
-              showUnits: true
-            instruments:
-              -
-                options:
-                  name: "Fuel"
-                  decPlaces: 0
-                  dbkey: FUELF1
-              -
-                options:
-                  name: "Fuel"
-                  decPlaces: 0
-                  dbkey: FUELP1
-              -
-                options:
-                  name: "Left"
-                  decPlaces: 0
-                  dbkey: FUELQ1
-              -
-                options:
-                  name: "Center"
-                  decPlaces: 0
-                  dbkey: FUELQ2
-              -
-                options:
-                  name: "Right"
-                  decPlaces: 0
-                  dbkey: FUELQ3
-              -
-                options:
-                  name: "CAT"
-                  decPlaces: 0
-                  temperature: true
-                  dbkey: CAT
-
-
 
 
 # Hooks are user defined modules that are loaded at specific points
