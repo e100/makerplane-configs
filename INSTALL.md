@@ -32,7 +32,7 @@ NOTE: While wayland is the future its inability to reparent windows is currently
 ```
 echo '# 4k pages
 kernel=kernel8.img
-'| sudo tee -a /boot/config.txt >/dev/null
+'| sudo tee -a /boot/firmware/config.txt >/dev/null
 ```
 
 ## diable/remove panel notifications
@@ -45,7 +45,7 @@ If you are using a PCIe SSD you can optionally enable PCIe 3.0 to increase speed
 ```
 echo 'dtparam=pciex1
 dtparam=pciex1_gen=3
-'| sudo tee -a /boot/config.txt >/dev/null
+'| sudo tee -a /boot/firmware/config.txt >/dev/null
 ```
 
 Reboot
@@ -100,7 +100,7 @@ sudo bash pwr_ubuntu.sh
 ```
 echo '# X729 Power
 usb_max_current_enable=1
-'| sudo tee -a /boot/config.txt >/dev/null
+'| sudo tee -a /boot/firmware/config.txt >/dev/null
 ```
 
 ### Setup RTC device on the x729
@@ -109,7 +109,7 @@ Since the x729 already has batteries I decided to use it
 ```
 echo '# X729 RTC
 dtoverlay=i2c-rtc,ds1307
-'| sudo tee -a /boot/config.txt >/dev/null
+'| sudo tee -a /boot/firmware/config.txt >/dev/null
 ```
 
 ### Create udev rule to make this RTC symlinked to /dev/rtc
@@ -163,7 +163,7 @@ dtparam=spi=on <- Needs to be before any other dtoverlay!
 dtoverlay=spi1-3cs
 dtoverlay=mcp251xfd,spi0-0,interrupt=25
 dtoverlay=mcp251xfd,spi1-0,interrupt=24
-'| sudo tee -a /boot/config.txt >/dev/null
+'| sudo tee -a /boot/firmware/config.txt >/dev/null
 ```
 
 
