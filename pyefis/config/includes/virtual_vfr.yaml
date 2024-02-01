@@ -15,7 +15,7 @@ instruments:
       shrink: 12
     options:
       #fontSize: 48
-      fontPercent: 0.07
+      fontPercent: 0.05
       fgcolor: "#aaaaaa"
       bgcolor: "#aaaaaa"
       cdi_enabled: true
