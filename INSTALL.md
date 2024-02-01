@@ -60,7 +60,7 @@ sudo apt install -y git weston vim-nox raspi-config openssh-server i2c-tools pyt
 ## Enable apparmor
 This is optional but improves security:
 ```
-sudo sed --follow-symlinks -i 's/quiet/apparmor=1 security=apparmor quiet/g' /boot/cmdline.txt
+sudo sed --follow-symlinks -i 's/quiet/apparmor=1 security=apparmor quiet/g' /boot/firmware/cmdline.txt
 ```
 
 ## Enable PSI
