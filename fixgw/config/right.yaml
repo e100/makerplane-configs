@@ -343,7 +343,7 @@ connections:
       - function: set
         inputs: [ "BTN3" ]
         value: 0
-        output: TRIMr
+        output: TRIMR
 # TRIMY Encoder
       - function: encoder
         inputs: [ "ENC4" ]
