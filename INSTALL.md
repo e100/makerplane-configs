@@ -354,7 +354,7 @@ Currently pyAvTools has a bug and a new release has not been made yet.
 So we need to make a couple changes to get the latest version:
 ```
 git clone https://github.com/makerplane/pyAvTools.git
-sed -i 's/snapcraft build/snapcraft build\n      pip install \.\/pyAvTools/g' snap/snapcraft.yaml
+sed -i 's/snapcraftctl build/snapcraftctl build\n      pip install \.\/pyAvTools/g' snap/snapcraft.yaml
 ```
 
 With the changes in place we can continue building pyEFIS
