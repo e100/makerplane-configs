@@ -33,13 +33,19 @@ NOTE: While wayland is the future its inability to reparent windows is currently
 echo '# 4k pages
 kernel=kernel8.img
 '| sudo tee -a /boot/config.txt >/dev/null
-
-#sudo apt purge linux-image-rpi-2712
 ```
 
 ## diable/remove panel notifications
 ```
 sudo apt remove lxplug-updater -y
+```
+
+## Enable PCIe 3.0 on Raspberry PI 5 
+If you are using a PCIe SSD you can optionally enable PCIe 3.0 to increase speed.
+```
+echo 'dtparam=pciex1
+dtparam=pciex1_gen=3
+'| sudo tee -a /boot/config.txt >/dev/null
 ```
 
 Reboot
