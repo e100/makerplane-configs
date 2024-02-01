@@ -259,6 +259,11 @@ newgrp lxd
 ```
 It is easiest to just reboot at this step before continuing
 
+## Reboot
+```
+reboot
+```
+
 ## Install FIX Gateway
 I install fix gateway by making a snap. The main advantage is versioning. If some day you update and the new snap is broken, just switch back to the pervious version. Hopefully some day we will get our snaps into the snap store making installing and updating even easier.
 
@@ -292,20 +297,20 @@ newgrp dialout
 sudo snap set system experimental.hotplug=true
 sudo systemctl restart snapd.service
 snap interface serial-port --attrs
-snap connect fixgateway:serial-port snapd:ft232rusbuart
+sudo snap connect fixgateway:serial-port snapd:ft232rusbuart
 
 ```
 
 Granting access to the canbus:
 ```
-snap connect fixgateway:can-bus snapd
+sudo snap connect fixgateway:can-bus snapd
 ```
 
 
 ### Test that the snap is working
 Run `fixgateway.client` command, it should open up, type `quit` to exit
 
-### Clone this repo again
+### Move the .makerplane folder
 The FIX Gateway snap runs confined and cannot access files in ~/.makerplane<br>
 So I moved ~/.makerplane into the folder it can access and symlink ~/.makerplane to it<br>
 This way you can still manage everything from ~/.makerplane
@@ -344,6 +349,16 @@ cd pyEfis
 NOTE: In the future we will use makerplane repo and specific tag once my changes are merged
 ```
 git checkout improve_snap
+```
+Currently pyAvTools has a bug and a new release has not been made yet.
+So we need to make a couple changes to get the latest version:
+```
+git clone https://github.com/makerplane/pyAvTools.git
+sed -i 's/snapcraft build/snapcraft build\n      pip install \.\/pyAvTools/g' snap/snapcraft.yaml
+```
+
+With the changes in place we can continue building pyEFIS
+```
 snapcraft
 sudo snap install pyefis_0.1_arm64.snap --dangerous --classic
 ```
