@@ -5,6 +5,8 @@ instruments:
     span:
       rows: 110
       columns: 155
+    options: 
+      fontPercent: 0.025
   - type: horizontal_situation_indicator
     row: 0
     column: 0
@@ -27,7 +29,8 @@ instruments:
       rows: 110
       columns: 15
     options:
-      fontsize: 28
+      #fontsize: 28
+      fontPercent: 0.25
       number_font_size: 40
       altitude: true
   - type: vsi_pfd
@@ -52,7 +55,7 @@ instruments:
       rows: 110
       columns: 15
     options:
-      fontsize: 40
+      fontPercent: 0.25
   - type: heading_display
     row: 0
     column: 72.5

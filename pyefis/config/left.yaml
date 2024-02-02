@@ -236,8 +236,14 @@ screens:
           columns: 80
         groups:
           - name: RPM
+            gap: 0
             common_options:
               showUnits: false
+              smallFontPercent: 0.060
+              bigFontPercent: 0.085
+              barWidthPercent: 0.5
+              lineWidthPercent: 0.7
+              textGap: 8
             instruments:
               -
                 options:
@@ -251,6 +257,13 @@ screens:
                   dbkey: THR1
                   showUnits: True
           - name: Engine
+            gap: 0
+            common_options:
+              smallFontPercent: 0.060
+              bigFontPercent: 0.085
+              barWidthPercent: 0.5
+              lineWidthPercent: 0.7
+              textGap: 8
             instruments:
               -
                 options:
@@ -278,6 +291,13 @@ screens:
                   decimalPlaces: 0
                   dbkey: MAP1
           - name: Temps
+            gap: 0
+            common_options:
+              smallFontPercent: 0.060
+              bigFontPercent: 0.085
+              barWidthPercent: 0.5
+              lineWidthPercent: 0.7
+              textGap: 8
             instruments:
               -
                 options:
