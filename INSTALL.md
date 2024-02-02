@@ -349,19 +349,10 @@ cd pyEfis
 NOTE: In the future we will use makerplane repo and specific tag once my changes are merged
 ```
 git checkout improve_snap
-```
-Currently pyAvTools has a bug and a new release has not been made yet.
-So we need to make a couple changes to get the latest version:
-```
-git clone https://github.com/makerplane/pyAvTools.git
-sed -i 's/snapcraftctl build/snapcraftctl build\n      pip install \.\/pyAvTools/g' snap/snapcraft.yaml
-```
-
-With the changes in place we can continue building pyEFIS
-```
 snapcraft
 sudo snap install pyefis_0.1_arm64.snap --dangerous --classic
 ```
+
 ### Install the systemd unit file and edit it
 ```
 cd ~/.makerplane/
