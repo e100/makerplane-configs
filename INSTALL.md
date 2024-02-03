@@ -434,7 +434,7 @@ sudo sed --follow-symlinks -i 's/lxc.console.path/lxc.mount.entry = none acct cg
 IF you installed the google play store you will need to self certify this installation before google Play will work.
 First you need to start waydroid, to do that we first run weston:
 ```
-weston
+weston &
 ```
 Then we run the command to start android:
 ```
