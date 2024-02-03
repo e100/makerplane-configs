@@ -500,7 +500,7 @@ Once the shell is open run this command:
 ANDROID_RUNTIME_ROOT=/apex/com.android.runtime ANDROID_DATA=/data ANDROID_TZDATA_ROOT=/apex/com.android.tzdata ANDROID_I18N_ROOT=/apex/com.android.i18n sqlite3 /data/data/com.google.android.gsf/databases/gservices.db "select * from main where name = \"android_id\";"
 ```
 
-Use the string of numbers printed by the command to register the device on your Google Account navigate to `https://www.google.com/android/uncertified` login with you Google Account and enter in the code that was output in the previous command.
+Use the string of numbers printed by the command to register the device on your Google Account navigate to [https://www.google.com/android/uncertified](https://www.google.com/android/uncertified) login with you Google Account and enter in the code that was output in the previous command.
 
 
 At this point you should reboot and make sure everything so far seems to be working. Then continue onto installing stratux by reading the [stratux/README.md](stratux/README.md) in this repo<br>
