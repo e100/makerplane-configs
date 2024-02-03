@@ -290,15 +290,27 @@ You must also read the docs/snapcraft.md for Fix and follow the directions to co
 If using serial ports add yourself to dialout
 sudo usermod -a -G dialout ${USER}
 
-For my setup the following commands worked, maybe with some slight changes you will get everything working:
+For my setup the following commands worked, maybe with some slight changes you will get everything working.
+Add yourself to the dialout group:
 ```
 sudo usermod -a -G dialout ${USER}
 newgrp dialout
+```
+Enable hotplug option in snapd:
+```
 sudo snap set system experimental.hotplug=true
+```
+Restart snapd:
+```
 sudo systemctl restart snapd.service
+```
+List serial ports:
+```
 snap interface serial-port --attrs
+```
+Allow fixgateway to use the serial port:
+```
 sudo snap connect fixgateway:serial-port snapd:ft232rusbuart
-
 ```
 
 Granting access to the canbus:
@@ -420,14 +432,20 @@ sudo sed --follow-symlinks -i 's/lxc.console.path/lxc.mount.entry = none acct cg
 ```
 #### Self Certify Play Store:
 IF you installed the google play store you will need to self certify this installation before google Play will work.
-First you need to start waydroid:
+First you need to start waydroid, to do that we first run weston:
 ```
-weston &
+weston
+```
+Then we run the command to start android:
+```
 WAYLAND_DISPLAY=wayland-1 waydroid show-full-ui
 ```
-Now open the waydroid shell and execute the following command, it will output an android ID:
+In another terminal window or tab open up the waydroid shell:
 ```
 sudo waydroid shell
+```
+Once the shell is open run this command:
+```
 ANDROID_RUNTIME_ROOT=/apex/com.android.runtime ANDROID_DATA=/data ANDROID_TZDATA_ROOT=/apex/com.android.tzdata ANDROID_I18N_ROOT=/apex/com.android.i18n sqlite3 /data/data/com.google.android.gsf/databases/gservices.db "select * from main where name = \"android_id\";"
 ```
 
