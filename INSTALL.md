@@ -190,8 +190,9 @@ By default these are named can0 and can1, but sometimes they would swap places.<
 It is not possible to rename the interfaces if the name is already taken, if can0 and can1 are swapped neither can be renamed to the other.<br>
 This will rename them to can10 and can11 so they do not swap their names.<br><br>
 
-ONLY run the PI4 or the PI5 section below:
-PI4:
+NOTE: Select the correct section below for the PI version you have
+
+PI4 ONLY:
 
 ```
 echo 'ACTION=="add", SUBSYSTEM=="net", DEVPATH=="/devices/platform/soc/*/spi0.0/net/can?", NAME="can10"
@@ -200,7 +201,7 @@ ACTION=="add", SUBSYSTEM=="net", DEVPATH=="/devices/platform/soc/*/spi1.0/net/ca
 '| sudo tee -a /etc/udev/rules.d/80-can.rules >/dev/null
 ```
 
-PI5:
+PI5 ONLY:
 ```
 echo 'ACTION=="add", SUBSYSTEM=="net", DEVPATH=="/devices/platform/axi/*/*.spi/spi_master/spi0/spi0.0/net/can?", NAME="can10"
 ACTION=="add", SUBSYSTEM=="net", DEVPATH=="/devices/platform/axi/*/*.spi/spi_master/spi1/spi1.0/net/can?", NAME="can11"
