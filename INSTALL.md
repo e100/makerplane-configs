@@ -432,10 +432,12 @@ cd ~/.makerplane/pyefis/CIFP/
 Visit https://www.faa.gov/air_traffic/flight_info/aeronav/digital_products/cifp/download/ and copy the link to the latest data.
 
 Download the latest data using the link you copied and unzip it<br>
+
 Replace the link in the following command with the latest version:
 ```
 wget https://aeronav.faa.gov/Upload_313-d/cifp/CIFP_231228.zip
 unzip CIFP_231228.zip
+```
 
 This command will create the index that pyEFIS needs to display the data:
 ```
