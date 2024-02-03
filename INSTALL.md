@@ -66,7 +66,7 @@ sudo sed --follow-symlinks -i 's/quiet/apparmor=1 security=apparmor quiet/g' /bo
 ## Enable PSI
 This is optional, if you plan to use Waydroid it is mandatory
 ```
-sudo sed --follow-symlinks -i 's/quiet/psi=1 quiet/g' /boot/cmdline.txt
+sudo sed --follow-symlinks -i 's/quiet/psi=1 quiet/g' /boot/firmware/cmdline.txt
 ```
 
 ## Clone this repo
