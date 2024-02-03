@@ -25,6 +25,7 @@ cp sensors.go stratux/main/
 ```
 sed -i 's/# allow-hotplug eth0 # configured by ifplugd/# Bridge for local ethernet and waydroid/g' stratux/image/interfaces.template 
 sed -i 's/iface eth0 inet dhcp/iface eth0 inet manual\n\nauto br0\niface br0 inet static\n  address 192.168.2.1\n  broadcast 192.168.2.255\n  netmask 255.255.255.0\n  bridge_ports eth0\n  bridge_stp off \n  bridge_waitport 0\n  bridge_fd 0\n\n# iLevil IP\n\n# CAN Networks/g' stratux/image/interfaces.template
+sed -i 's/allow-hotplug wlan0/auto wlan0/' stratux/image/interfaces.template
 ```
 
 ### If using the iFly plugin in FIX Gateway
