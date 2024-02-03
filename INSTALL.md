@@ -6,12 +6,12 @@ First I imaged the boot disk using the Raspberry Pi imager with Raspberry Pi OS 
 I connected the ethernet port but you could use WiFi instead
 
 ## Open Chrome
-Open Chrome and navigate to my profile on github: `https://github.com/e100/`
-Click on Repositories, then click on the repository named `makerplane-configs`
+Open Chrome and navigate to my profile on github: `https://github.com/e100/`<br>
+Click on Repositories, then click on the repository named `makerplane-configs`<rb>
 In the file list, click on INSTALL.md to pull up this page.
 
-So you can easily return to this page after rebooting we will change some settings in Chrome.
-Click on the three dots on the top right then click settings.
+So you can easily return to this page after rebooting we will change some settings in Chrome.<br>
+Click on the three dots on the top right then click settings.<br>
 On the left click `On start-up` then select the option `Continue where you left off`
 
 ## Initial Setup
@@ -49,7 +49,7 @@ This just removes the desktop notifications, we do not need to be informed of an
 sudo apt remove lxplug-updater -y
 ```
 
-## Enable PCIe 3.0 on Raspberry PI 5 
+## Optional - Enable PCIe 3.0 on Raspberry PI 5 
 If you are using a PCIe SSD you can optionally enable PCIe 3.0 to increase speed.
 ```
 echo 'dtparam=pciex1
@@ -66,19 +66,20 @@ sudo apt update
 sudo apt install -y git weston vim-nox raspi-config openssh-server i2c-tools python3-smbus python3-pip python3-pil git can-utils util-linux-extra snapd x11-utils
 ```
 
-## Enable apparmor
+## Optional - Enable apparmor
 This is optional but improves security:
 ```
 sudo sed --follow-symlinks -i 's/quiet/apparmor=1 security=apparmor quiet/g' /boot/firmware/cmdline.txt
 ```
 
-## Enable PSI
+## Optional - Enable PSI
 This is optional, if you plan to use Waydroid it is mandatory
 ```
 sudo sed --follow-symlinks -i 's/quiet/psi=1 quiet/g' /boot/firmware/cmdline.txt
 ```
 
 ## Clone this repo
+Everything related to the installation will be located in the folder `~/.makerplane`
 
 ```
 cd ~
@@ -87,10 +88,8 @@ cd .makerplane
 ```
 ![git clone](/images/git-clone.png)
 
-## Install software for the x729 UPS board
-
-NOTES: I2C and SPI are enabled by default in Ubuntu image so no need to enable them.
-If using another image you might need to enable those options using `sudo raspi-config`
+## Optional - Install software for the x729 UPS board
+This will setup the software for the x729, if you are not using this device you can skip any section related to it.<br>
 
 ```
 cd ~/.makerplane
@@ -101,27 +100,33 @@ cd x729
 git checkout ubuntu
 ```
 ### Setup shutdown on power loss:
+Answer yes to the questions when asked, this will setup the software to gracefully shutdown when the power is disconnected allowing us to power the PI from a simple on/off switch.
 ```
 sudo bash pwr_ubuntu.sh
 ```
 
-### Set option to allow USB Power 
+### Set option to allow USB Power
+When the PI is powered from the header pins it is necessary to add this configuration if you want the USB ports to provide maximum power to any connected devices. 
 ```
 echo '# X729 Power
 usb_max_current_enable=1
 '| sudo tee -a /boot/firmware/config.txt >/dev/null
 ```
 
-### Setup RTC device on the x729
+### Optional - Setup RTC device on the x729
 This is optional, you could use the RPI 5's internal RTC by adding a battery.<br>
-Since the x729 already has batteries I decided to use it
+Since the x729 already has batteries I decided to use it instead of the PIs RTC.
+
+#### Configure the RTC hardware
+This will add the settings needed for the RTC hardware:
 ```
 echo '# X729 RTC
 dtoverlay=i2c-rtc,ds1307
 '| sudo tee -a /boot/firmware/config.txt >/dev/null
 ```
 
-### Create udev rule to make this RTC symlinked to /dev/rtc
+#### Create udev rule to make this RTC symlinked to /dev/rtc
+This is to ensure the x729 RTC is used.
 
 ```
 echo 'SUBSYSTEM=="rtc", KERNEL=="rtc1", SYMLINK+="rtc", OPTIONS+="link_priority=10", TAG+="systemd"
@@ -156,16 +161,9 @@ sudo systemctl enable systemd-timesyncd.service
 ```
 
 
-# Not sure if this is needed on raspberry pi os or not, did not do this:
-# not on ubuntu, but this is needed on RPI OS
-#sudo apt-get -y remove fake-hwclock
-#sudo update-rc.d -f fake-hwclock remove
-#sudo systemctl disable fake-hwclock
-#sudo vi /lib/udev/hwclock-set
-#Comment out all except the dev= line
-#reboot
-
-## Setup waveshare CAN FD hat
+## Optional - Setup waveshare CAN FD hat
+This adds the configurations needed to enable the Waveshare CAN FD HAT.<br>
+This is only needed if you are using that HAT
 ```
 echo '# Waveshare CAN FD HAT
 dtparam=spi=on <- Needs to be before any other dtoverlay!
@@ -175,8 +173,11 @@ dtoverlay=mcp251xfd,spi1-0,interrupt=24
 '| sudo tee -a /boot/firmware/config.txt >/dev/null
 ```
 
+By default these are named can0 and can1, but sometimes they would swap places.<br>
+It is not possible to rename the interfaces if the name is already taken, if can0 and can1 are swapped neither can be renamed to the other.<br>
+This will rename them to can10 and can11 so they do not swap their names.<br><br>
 
-To ensure can10 and can11 do not swap their names we will apply the following udev rule:
+ONLY run the PI4 or the PI5 section below:
 PI4:
 
 ```
@@ -194,7 +195,6 @@ ACTION=="add", SUBSYSTEM=="net", DEVPATH=="/devices/platform/soc/*/*.spi/spi_mas
 '| sudo tee -a /etc/udev/rules.d/80-can.rules >/dev/null
 ```
 
-NOTE: If you plan to install Stratux on this PI, you can skip setting up the can interfaces 
 Install some needed packages:
 ```
 sudo apt install -y ifupdown net-tools bridge-utils
@@ -242,23 +242,29 @@ auto can11
   down /sbin/ifconfig can11 down' | sudo tee -a /etc/network/interfaces >/dev/null
 ```
 
-Reboot
+Now we should reboot
 
-## Disable mouse in vim and preserve other settings
+## Optional - Disable mouse in vim and preserve other settings
+This is my personal preference and disables the mouse in vim without removing the other default settings.
 ```
 echo 'source $VIMRUNTIME/defaults.vim
 set mouse=' >> ~/.vimrc
 ```
 
+## Optional - if the RDAC is connected you could check to see if CAN10 is working or not:
 Turn on RDAC and see if it works should get output with:
+```
 candump -cae can10,0:0,#FFFFFFFF
+```
 
-
-## Pair BT keyboard/mouse app
+## Optional - Pair BT keyboard/mouse app
 I use an app on my phone that acts as a keyboard.
 Handy to use in the airplane should you need a keyboard for some reason
 
 ## Install snapcraft
+I prefer to deploy pyEFIS and FIX-Gateway as snaps. Ideally the MakerPlane community will some day publish snaps so you can install the software with `snap install pyefis` but until then you can make your own snaps.<br>
+With snaps you could, for example, compile and test future updates at home, then copy the new snaps to a flash drive and update your airplane when you get there. If something goes wrong, snap's versioning allows you to easily revert the change too!<br>
+Install snapcraft:
 ```
 snap install snapcraft --classic
 sudo snap install lxd
@@ -274,19 +280,20 @@ reboot
 ```
 
 ## Install FIX Gateway
-I install fix gateway by making a snap. The main advantage is versioning. If some day you update and the new snap is broken, just switch back to the pervious version. Hopefully some day we will get our snaps into the snap store making installing and updating even easier.
-
+To install FIX Gateway we will first clone my repository. At the time of writing this the numerous improvements I have made are not merged into Makerplanes's repository. When that happens I will update these instructions to use their repo instead of mine.
 ```
 cd ~/.makerplane/setup
 git clone https://github.com/e100/FIX-Gateway.git
 cd FIX-Gateway
 ```
 ### Currently:
-Once everything is merged into the makerplan repo we will use their repo not my fork
+Now checkout the branch with the most recent changes:
 ```
 git checkout combined
 ```
+
 ### Build the snap and install it
+This will build and install FIX-Gateway:
 ```
 snapcraft
 sudo snap install fixgateway_0.3_arm64.snap --dangerous
@@ -295,9 +302,7 @@ NOTE: as snap versions change the filename to install might change.<br>
   dangerous is needed because the snap you just made is not signed.
 
 ### Might need additional configuration
-You must also read the docs/snapcraft.md for Fix and follow the directions to complete setup
-If using serial ports add yourself to dialout
-sudo usermod -a -G dialout ${USER}
+You must also read the docs/snapcraft.md for Fix and follow the directions to complete setup<br>
 
 For my setup the following commands worked, maybe with some slight changes you will get everything working.
 Add yourself to the dialout group:
@@ -309,7 +314,7 @@ Enable hotplug option in snapd:
 ```
 sudo snap set system experimental.hotplug=true
 ```
-Restart snapd:
+Restart snapd to apply the hotplug change:
 ```
 sudo systemctl restart snapd.service
 ```
@@ -322,19 +327,23 @@ Allow fixgateway to use the serial port:
 sudo snap connect fixgateway:serial-port snapd:ft232rusbuart
 ```
 
-Granting access to the canbus:
+Allow fixgateway to use the canbus:
 ```
 sudo snap connect fixgateway:can-bus snapd
 ```
 
 
 ### Test that the snap is working
-Run `fixgateway.client` command, it should open up, type `quit` to exit
+Run `fixgateway.client` command, it should open up, type `quit` to exit:
+```
+fixgateway.client
+```
+
 
 ### Move the .makerplane folder
 The FIX Gateway snap runs confined and cannot access files in ~/.makerplane<br>
-So I moved ~/.makerplane into the folder it can access and symlink ~/.makerplane to it<br>
-This way you can still manage everything from ~/.makerplane
+So I moved ~/.makerplane into a folder that it can access and symlink ~/.makerplane to it<br>
+This way you can still manage everything from ~/.makerplane and have a single location of all of your configuration files.
 
 ```
 cd ~
@@ -344,6 +353,7 @@ ln -s ~/snap/fixgateway/common/.makerplane ~/.makerplane
 ```
 
 ### Install systemd unit file to auto start FIX Gateway
+This is a systemd unit file that defines how to run the FIX-Gateway:
 ```
 cd ~/.makerplane/
 mkdir -p ~/.config/systemd/user
@@ -352,7 +362,7 @@ cp systemd/fixgateway.service ~/.config/systemd/user/
 NOTE: Edit `~/.config/systemd/user/fixgateway.service` and change the config file to use if needed.
 ![FIX Gateway config](/images/fix-config.png)
 
-### Configure autostart
+### Enable autostart
 This command will setup the FIX Gateway service to start automatically after reboot. It will also automatically be restarted should it crash for any reason.
 
 ```
@@ -361,20 +371,26 @@ systemctl enable --user fixgateway.service
 
 
 ## Install pyEFIS
+We will again use my fork of pyEFIS, I will update this to use the Makerplane repository once my changes have been merged:
 ```
 cd ~/.makerplane/setup
 git clone https://github.com/e100/pyEfis.git
 cd pyEfis
 ```
+
 ### Build and install:
-NOTE: In the future we will use makerplane repo and specific tag once my changes are merged
+Checkout my most recent changes:
 ```
 git checkout improve_snap
+```
+
+Now build and install pyEFIS:
+```
 snapcraft
 sudo snap install pyefis_0.1_arm64.snap --dangerous --classic
 ```
 
-### Install the systemd unit file and edit it
+### Install the systemd unit file for pyEFIS and edit it
 ```
 cd ~/.makerplane/
 cp systemd/pyefis.service ~/.config/systemd/user/
@@ -383,13 +399,15 @@ When copying the systemd unit file also edit the exec line and set the config fi
 ExecStart=/snap/bin/pyefis --config-file /home/eblevins/.makerplane/pyefis/config/left.yaml
 
 ### Configure autostart
+This will enable auto start of pyEFIS on reboot:
 ```
 systemctl enable --user pyefis.service
 ```
 
-### Download the data for Virtual VFR and index it
+### Optional - Download the data for Virtual VFR and index it
 NOTE: This is optional and only needed if you are using the VirtualVFR instrument<br>
-This data should be updated periodically
+Virtual VFS will show a 3D rendering of airport runways along with a glide slop indicator, it is a rudimentary `Synthetic Vision` that you will see on commercial a comercial PFD.
+This data should also be updated periodically
 
 #### Create directory for the CIFP data
 ```
@@ -398,14 +416,15 @@ cd ~/.makerplane/pyefis/CIFP/
 ```
 
 #### Download the CIFP Data
-Visit https://www.faa.gov/air_traffic/flight_info/aeronav/digital_products/cifp/download/ and copyt the link to the latest data.
+Visit https://www.faa.gov/air_traffic/flight_info/aeronav/digital_products/cifp/download/ and copy the link to the latest data.
 
-Download the latest data using the link you copied and unzip it
+Download the latest data using the link you copied and unzip it<br>
+Replace the link in the following command with the latest version:
 ```
 wget https://aeronav.faa.gov/Upload_313-d/cifp/CIFP_231228.zip
 unzip CIFP_231228.zip
-```
-Create the index:
+
+This command will create the index that pyEFIS needs to display the data:
 ```
 pyefis.makecifpindex FAACIFP18
 ```
@@ -414,59 +433,68 @@ When updating in the future just delete the CIFP directory and start over at the
 
 
 ### Install waydroid
-This is optional and only needed if you plan to use android applications in the EFIS.
+This is optional and only needed if you plan to use android applications in the EFIS.<br>
+Install waydroid:
 
 ```
 sudo apt install curl ca-certificates -y
 curl https://repo.waydro.id | sudo bash
 sudo apt install -y libglibutil libgbinder python3-gbinder waydroid
 ```
+
 #### Install lineago OS
-NOTE: Remove the -s GAPPS if you do not want google play
+NOTE: Remove the `-s GAPPS` if you do not want google play
+This wil download and install Lineage OS:
+
 ```
 sudo waydroid init -s GAPPS
 ```
 
 #### Fix apparmor TODO Not sure if this helped or not yet
-https://github.com/waydroid/waydroid/issues/631
+This is related to this bug: https://github.com/waydroid/waydroid/issues/631
 ```
 cd /etc/apparmor.d/
 sudo ln -s lxc/lxc-waydroid .
 ```
 
 #### Fix permissions errors
-https://github.com/waydroid/waydroid/issues/1065
+This is related to this bug: https://github.com/waydroid/waydroid/issues/1065
 ```
 sudo sed --follow-symlinks -i 's/lxc.console.path/lxc.mount.entry = none acct cgroup2 rw,nosuid,nodev,noexec,relatime,nsdelegate,memory_recursiveprot 0 0\n\nlxc.console.path/g' /var/lib/waydroid/lxc/waydroid/config
 ```
+
 #### Self Certify Play Store:
 IF you installed the google play store you will need to self certify this installation before google Play will work.
 First you need to start waydroid, to do that we first run weston:
 ```
 weston &
 ```
+
 Then we run the command to start android:
 ```
 WAYLAND_DISPLAY=wayland-1 waydroid show-full-ui
 ```
+
 In another terminal window or tab open up the waydroid shell:
 ```
 sudo waydroid shell
 ```
+
 Once the shell is open run this command:
 ```
 ANDROID_RUNTIME_ROOT=/apex/com.android.runtime ANDROID_DATA=/data ANDROID_TZDATA_ROOT=/apex/com.android.tzdata ANDROID_I18N_ROOT=/apex/com.android.i18n sqlite3 /data/data/com.google.android.gsf/databases/gservices.db "select * from main where name = \"android_id\";"
 ```
 
-Use the string of numbers printed by the command to register the device on your Google Account at https://www.google.com/android/uncertified
+Use the string of numbers printed by the command to register the device on your Google Account navigate to `https://www.google.com/android/uncertified` login with you Google Account and enter in the code that was output in the previous command.
 
 
-At this point you should reboot and make sure everything so far seems to be working. Then continue onto installing stratux by reading the stratux/README.md in this repo<br>
+At this point you should reboot and make sure everything so far seems to be working. Then continue onto installing stratux by reading the [stratux/README.md](stratux/README.md) in this repo<br>
 NOTE: I only installed Stratux on one PI, not both. The 2nd one gets internet access through the Sttratux using the wired ethernet port.
 
 
 
 
 # Known issues
-## If pyefis is killed sometimes the waydroid and weston processe are not killed. When pyefis is restarted it is not possible to get the android window working again.
-NOTE: I only installed Stratux on one PI, not both. 
+## Waydroid window stops working
+If pyefis is killed sometimes the waydroid and weston processe are not killed. When pyefis is restarted it is not possible to get the android window working again.<br>
+I have only seen this when using `systemctl stop`, or `kill` to exit pyEFIS. By default you can press x on the keyboard to exit and this usually works well allowing Android to work when pyEFIS is restarted.
