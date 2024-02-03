@@ -51,6 +51,7 @@ sudo ln -s /etc /overlay/robase/etc
 Build:
 ```
 cd stratux
+sed -i 's/#cgo CFLAGS: -L/#cgo CFLAGS: -I/' godump978/godump978_exports.go
 make
 ```
 Install:
