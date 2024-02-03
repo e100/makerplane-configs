@@ -22,7 +22,7 @@ main:
   screenColor: (0,0,0)
 
   # If left out the first defined screen will be default
-  defaultScreen: EMS #PFD
+  defaultScreen: PFD
 
   # nodeID, currently only used in touchscreen buttons
   # the value will replace {id} in the button's dbkey
