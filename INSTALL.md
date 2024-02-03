@@ -2,13 +2,20 @@
 ## Image the drive
 First I imaged the boot disk using the Raspberry Pi imager with Raspberry Pi OS bookworm 64bit
 ![Raspberry Pi Imager](/images/rpi-imager.png)
-TODO Update image
-TODO Include screenshot of settings
 
 I connected the ethernet port but you could use WiFi instead
 
+## Open Chrome
+Open Chrome and navigate to my profile on github: `https://github.com/e100/`
+Click on Repositories, then click on the repository named `makerplane-configs`
+In the file list, click on INSTALL.md to pull up this page.
+
+So you can easily return to this page after rebooting we will change some settings in Chrome.
+Click on the three dots on the top right then click settings.
+On the left click `On start-up` then select the option `Continue where you left off`
+
 ## Initial Setup
-The first thing we need to do is install the latest updates, change a few options then reboot
+After booting the PI for the first time the first thing we need to do is install the latest updates, change a few options then reboot
 
 ### Install the latest updates
 Open a terminal window and run:
@@ -25,10 +32,11 @@ sudo raspi-config nonint do_spi 0
 sudo raspi-config nonint do_i2c 0
 sudo raspi-config nonint do_wayland W1
 ```
-NOTE: While wayland is the future its inability to reparent windows is currently an issue for pyEFIS if you would like to include a Waydroid window within it
+NOTE: While wayland is the future its inability to reparent windows is currently an issue for pyEFIS if you would like to include a Waydroid window within it. Hopefully in the future we can incorporate a Wayland compositor within pyEFIS.
 
 
 ## On the PI 5, Enable 4k pages so Waydroid works
+Only perform this step if you are using a PI 5 and plan to also use Waydroid.
 ```
 echo '# 4k pages
 kernel=kernel8.img
@@ -36,6 +44,7 @@ kernel=kernel8.img
 ```
 
 ## diable/remove panel notifications
+This just removes the desktop notifications, we do not need to be informed of an update being avaliable while landing...
 ```
 sudo apt remove lxplug-updater -y
 ```
@@ -48,7 +57,7 @@ dtparam=pciex1_gen=3
 '| sudo tee -a /boot/firmware/config.txt >/dev/null
 ```
 
-Reboot
+Now it is time to reboot.
 
 
 ## Installing software needed
