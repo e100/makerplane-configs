@@ -35,14 +35,14 @@ The issue is iFly only sends to the IP address 192.168.1.1 so we need that addre
 sed -i 's/# iLevil IP/# iLevil IP\nauto br0:0\niface br0:0 inet static\n  address 192.168.1.1\n  netmask 255.255.255.0/g' stratux/image/interfaces.template
 ```
 
-### If using CAN all that to the network template too:
+### If using CAN add that to the network template too:
 ```
 sed -i 's/# CAN Networks/# CAN Networks\n\nauto can11\n  iface can11 inet manual\n  pre-up \/sbin\/ip link set can11 type can bitrate 500000 restart-ms 500\n  up \/sbin\/ifconfig can11 up\n  down \/sbin\/ifconfig can11 down\n/g' stratux/image/interfaces.template
 sed -i 's/# CAN Networks/# CAN Networks\n\nauto can10\n  iface can10 inet manual\n  pre-up \/sbin\/ip link set can10 type can bitrate 250000 restart-ms 500\n  up \/sbin\/ifconfig can10 up\n  down \/sbin\/ifconfig can10 down\n/g' stratux/image/interfaces.template
 ```
 
 
-### Create some directories and links so editing network settings in stratus GUI works
+### Create some directories and links so editing network settings in stratux GUI works
 ```
 sudo mkdir -p /overlay/robase
 sudo ln -s /etc /overlay/robase/etc
@@ -74,8 +74,6 @@ sudo systemctl disable systemd-resolved.service
 sudo systemctl disable wpa_supplicant
 sudo systemctl disable systemd-timesyncd
 ```
-So far did none of the disables to see what is really needed
-
 ### Create dnsmasq config for local ethernet
 You will likely want to customize this.<br>
 I set a static IP address for each waydroid install on the network and for other FIX Gateway servers.
@@ -127,14 +125,7 @@ sudo apt autoremove -y
 ```
 Now reboot 
 
-#######
-Need to add this to /etc/network/interfaces:
-auto wlan0
+# Potential issues
+I hadd issues with wlan0 starting on its own. Changing `allow-hotplug` to `auto` seems to help, however I also suspect that a heat issue might be part of the problem. I think the fan on the stock PI cooler turns on at too high of a tempature. My x729 UPS with fan seems to compensate well for this.
 
-Without it the wifi does not always come up
-
-This seems to be a heat issue.
-The ubuntu kernel is not regulating temp properly
-Also should add the rfkill options to the cmdline.txt
-do not think the auto wlan0 is needed
 
