@@ -25,11 +25,24 @@ sudo apt dist-upgrade -y
 ```
 ![Installing Updates](/images/apt.png)
 
-### enable SPI, I2C, X11 and disable screen blanking
+### Change equired settings
+Disable screen blanking, we do not want the display to turn off in flight!
 ```
 sudo raspi-config nonint do_blanking 1
+```
+
+Enable spi:
+```
 sudo raspi-config nonint do_spi 0
+```
+
+Enable i2c:
+```
 sudo raspi-config nonint do_i2c 0
+```
+
+Disable wayland and use x11:
+```
 sudo raspi-config nonint do_wayland W1
 ```
 NOTE: While wayland is the future its inability to reparent windows is currently an issue for pyEFIS if you would like to include a Waydroid window within it. Hopefully in the future we can incorporate a Wayland compositor within pyEFIS.
