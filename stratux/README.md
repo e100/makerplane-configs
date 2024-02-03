@@ -68,10 +68,10 @@ sudo systemctl disable fancontrol.service
 
 ### Disable other services that should not run automatically
 ```
-systemctl disable dnsmasq # Only did this on so far
-systemctl disable systemd-resolved.service # did not do this
-systemctl disable wpa_supplicant # did this
-systemctl disable systemd-timesyncd #did this
+sudo systemctl disable dnsmasq # Only did this on so far
+sudo systemctl disable systemd-resolved.service # did not do this
+sudo systemctl disable wpa_supplicant # did this
+sudo systemctl disable systemd-timesyncd #did this
 ```
 So far did none of the disables to see what is really needed
 
