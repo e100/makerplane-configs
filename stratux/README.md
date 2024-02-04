@@ -72,7 +72,6 @@ sudo systemctl disable fancontrol.service
 sudo systemctl disable dnsmasq
 sudo systemctl disable systemd-resolved.service
 sudo systemctl disable wpa_supplicant
-sudo systemctl disable systemd-timesyncd
 ```
 ### Create dnsmasq config for local ethernet
 You will likely want to customize this.<br>
