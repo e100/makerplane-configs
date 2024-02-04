@@ -21,30 +21,30 @@ instruments:
           -
             options:
               name: "Fuel"
-              decPlaces: 0
+              decimalPlaces: 0
               dbkey: FUELP1
           -   
             options:
               name: "Flow"
-              decPlaces: 0
+              decimalPlaces: 1
               dbkey: FUELF1
           - 
             options:
               name: "Total"
-              decPlaces: 0
+              decimalPlaces: 0
               dbkey: FUELQT
           -
             options:
               name: "Left"
-              decPlaces: 0
+              decimalPlaces: 1
               dbkey: FUELQ1
           -
             options:
               name: "Center"
-              decPlaces: 0
+              decimalPlaces: 1
               dbkey: FUELQ2
           -
             options:
               name: "Right"
-              decPlaces: 0
+              decimalPlaces: 1
               dbkey: FUELQ3
