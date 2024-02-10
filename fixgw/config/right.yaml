@@ -24,6 +24,15 @@ initialization files:
 # itself. See the FIX-Gateway documentation for specific connection plugin
 # configuration options.
 connections:
+  data_recorder:
+    load: yes
+    module: fixgw.plugins.data_recorder
+    # Prefix of keys you want to record, ie BTN would record BTN1, BTN2, BTN3, etc etc
+    key_prefixes: [ AGL, ALAT, ALONG, ALT, AP, BARO, BTN, CAS, CHT, COURSE, CURRNT, DALT, EGT, FTIME, FUEL, GS, H2OT, HEAD, IAS, LAT, LEADER, LONG, OIL, PALT, PITCH, QVOTE, ROLL, TACH, TAS, TALT, THR, TIMEL, TZONE, TIMEZH, TIMEZM, TIMEZS, TRACK, TRIM, TSBTN, VOLT, VS, WP, YAW ]
+    # How often in ms should data be recorded
+    frequency: 500 #ms
+    filepath: "{CONFIG}/../fdr"
+
   # Network FIX Protocol Interface
   netfix:
     load: yes
