@@ -117,7 +117,7 @@ encoders:
 # Generic Switch Inputs
 switches:
 # These are currently here jsut to prevent exception
-    - {  fixid: "TSBTN112,TSBTN12,APADJ",
+    - {  fixid: "TSBTN112,APADJ,TSBTN212,APADJ",
         toggle: "APADJ",
          canid: 0x308, 
          index: 0, 
