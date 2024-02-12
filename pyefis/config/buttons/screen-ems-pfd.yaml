@@ -16,7 +16,7 @@ conditions:
       - set text: PFD
       - set bg color: lightgray
     continue: true
-  - when: "SCREEN eq 'PFD' or SCREEN eq 'MAP'"
+  - when: "SCREEN ne 'EMX'"
     actions:
       - set text: EMS
       - set bg color: lightgray
@@ -25,7 +25,7 @@ conditions:
     actions:
       - set bg color: red
     continue: true
-  - when: "CLICKED eq true and [ [ SCREEN eq 'PFD' ] or [ SCREEN eq 'MAP' ] ]" 
+  - when: "CLICKED eq true and SCREEN ne 'EMS'"
     actions:
       - show screen: EMS
   - when: "CLICKED eq true and SCREEN eq 'EMS'"

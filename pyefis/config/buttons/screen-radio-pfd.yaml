@@ -7,12 +7,12 @@ conditions:
       - set text: PFD
       - set bg color: lightgray
     continue: true
-  - when: "SCREEN eq 'PFD' or SCREEN eq 'EMS'"
+  - when: "SCREEN ne 'RADIO'"
     actions:
       - set text: RADIO
       - set bg color: lightgray
     continue: true
-  - when: "CLICKED eq true and [ SCREEN eq 'PFD' or SCREEN eq 'EMS' ]" 
+  - when: "CLICKED eq true and [ SCREEN ne 'RADIO' ]"
     actions:
       - show screen: RADIO
   - when: "CLICKED eq true and SCREEN eq 'RADIO'"
