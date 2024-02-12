@@ -156,7 +156,38 @@ screens:
         relative: true
         row: 70
         column: 155
-          
+  
+  RADIO:
+    dbpath: ~/.makerplane/pyefis/CIFP/FAACIFP18
+    indexpath: ~/.makerplane/pyefis/CIFP/index.bin
+    module: pyefis.screens.screenbuilder
+    title: Radio Screen
+    layout:
+      type: grid #Splits the screen into evenly sized grids where each grid can contain a single insturment
+      rows: 110
+      columns: 200
+      #draw_grid: true
+    instruments:
+      - type: include,includes/virtual_vfr.yaml
+        relative: true
+        row: 0
+        column: 0
+        span:
+          rows: 70
+          columns: 125
+      - type: include,includes/basic_arcs.yaml
+        relative: true
+        row: 0
+        column: 155
+      - type: include,includes/power_temp_arcs.yaml
+        relative: true
+        row: 0
+        column: 125
+      - type: include,includes/side-buttons.yaml
+        relative: true
+        row: 0
+        column: 186
+        
   EMS:
     dbpath: ~/.makerplane/pyefis/CIFP/FAACIFP18
     indexpath: ~/.makerplane/pyefis/CIFP/index.bin
