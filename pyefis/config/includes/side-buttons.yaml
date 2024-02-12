@@ -18,6 +18,9 @@ instruments:
               config: buttons/screen-map-pfd.yaml
           -
             options:
+              config: buttons/screen-radio-pfd.yaml
+          -
+            options:
               config: buttons/units.yaml
           -
             options:
