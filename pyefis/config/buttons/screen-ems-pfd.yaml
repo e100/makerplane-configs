@@ -16,7 +16,7 @@ conditions:
       - set text: PFD
       - set bg color: lightgray
     continue: true
-  - when: "SCREEN ne 'EMX'"
+  - when: "SCREEN ne 'EMS'"
     actions:
       - set text: EMS
       - set bg color: lightgray
