@@ -963,3 +963,27 @@ entries:
   min: 0
   max: 12
 
+- key: COMRXVOLd
+  description: RX Volume
+  type: float
+  initial: 0.0
+  tol: 300
+  min: 0
+  max: 12
+
+- key: COMINTVOLd
+  description: Intercom Volume
+  type: float
+  initial: 0.0
+  tol: 300
+  min: 0
+  max: 12
+
+- key: COMAUDVOLd
+  description: Audio input volume ( not 100% sure this exists in the v16 )
+  type: float
+  initial: 0.0
+  tol: 300
+  min: 0
+  max: 12
+
