@@ -226,17 +226,22 @@ instruments:
     options:
       config: buttons/trim-down-invisible.yaml
   - type: horizontal_bar_gauge
-    row: 99
+    ratio: 3
+    row: 100
     column: 12
     span:
-      rows: 20
+      rows: 10
       columns: 28
     options:
       name: Yaw
+      barWidthPercent: 0.25
       decimapPlaces: 0
       showUnits: false
       showValue: false
       dbkey: TRIMY
+# Before I made Yaw go off screen, but with scaling and recursive includes working this causes the instrument to not scal as one would expect
+# With some fixes to the horizontal bars we could likely make this look better without having to push it off the screen
+# For now, I'll accept that it is slightly skinnier than desired
   - type: horizontal_bar_gauge
     row: 89
     column: 12
