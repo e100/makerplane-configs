@@ -1,6 +1,7 @@
 instruments:
   - type: ganged_arc_gauge
     gang_type: vertical
+    display_state: 1
     row: 0
     column: 0
     span:
@@ -22,14 +23,47 @@ instruments:
               dbkey: OILP1
           -
             options:
+              name: Coolant
+              temperature: true
+              dbkey: H2OT1
+              showUnits: true
+          -
+            options:
+              name: Volts
+              dbkey: VOLT
+              decimapPlaces: 1
+  - type: ganged_arc_gauge
+    gang_type: vertical
+    display_state: 2
+    row: 0
+    column: 0
+    span:
+      rows: 70
+      columns: 30
+    groups:
+      - name: Engine
+        common_options:
+          nameLocation: right
+          decimalPlaces: 0
+        instruments:
+          -
+            options:
+              name: RPM
+              dbkey: TACH1
+          -
+            options:
               name: Oil Temp
               dbkey: OILT1
               temperature: true
               showUnits: true
           -
             options:
-              name: Coolant
+              name: OAT
+              dbkey: OAT
               temperature: true
-              dbkey: H2OT1
               showUnits: true
-
+          -
+            options:
+              name: Amps
+              dbkey: CURRNT
+              decimapPlaces: 1
