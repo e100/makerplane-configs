@@ -6,7 +6,7 @@ instruments:
       rows: 110
       columns: 155
     options: 
-      fontPercent: 0.025
+      font_percent: 0.025
   - type: horizontal_situation_indicator
     row: 0
     column: 0
@@ -17,7 +17,7 @@ instruments:
       shrink: 12
     options:
       #fontSize: 48
-      fontPercent: 0.05
+      font_percent: 0.05
       fgcolor: "#aaaaaa"
       bgcolor: "#aaaaaa"
       cdi_enabled: true
@@ -30,7 +30,7 @@ instruments:
       columns: 15
     options:
       #fontsize: 28
-      fontPercent: 0.25
+      font_percent: 0.25
       number_font_size: 40
       altitude: true
   - type: vsi_pfd
@@ -55,7 +55,7 @@ instruments:
       rows: 110
       columns: 15
     options:
-      fontPercent: 0.25
+      font_percent: 0.25
   - type: heading_display
     row: 0
     column: 72.5
@@ -66,7 +66,7 @@ instruments:
       bg_color: "#00000000"
       fg_color: "#FFFFFF"
       #fontSize: 5 #47
-      fontPercent: 0.65
+      font_percent: 0.65
   - type: static_text
     row: 0
     column: 0
@@ -83,6 +83,7 @@ instruments:
       columns: 35
     options:
       _dbkey: TIMEZ
+      #fontName: DSEG14 Modern Mini, Bold
   - type: value_text
     row: 5
     column: 97
