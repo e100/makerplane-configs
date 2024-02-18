@@ -8,6 +8,7 @@ variables:
   t: 3  # Fuel Tanks
   n: 5  # Nodes
   s: 20 # Touchscreen buttons
+  d: 4  # MGL V16 Radios
 
 entries:
 - key: QVOTEn
@@ -876,4 +877,89 @@ entries:
   type: str
   tol: 50000
   initial: ""
+
+
+# Radio
+- key: COMACTFREQd
+  description: Radio Active Frequency
+  type: float
+  initial: 121.500
+  min: 100
+  max: 200
+  tol: 200
+
+- key: COMACTNAMEd
+  description: Name of the frequency ( from a saved setting )
+  type: str
+  initial: "Emergency"
+
+- key: COMSTDFREQd
+  description: Radio Standby Frequency
+  type: float
+  initial: 121.500
+  min: 100
+  max: 200
+  tol: 200
+
+- key: COMSTDNAMEd
+  description: Name of the frequency ( from a saved setting )
+  type: str
+  initial: "Emergency"
+
+- key: COMACTTXd
+  description: True when radio is transmitting on active channel
+  type: bool
+  initial: False
+  tol: 300
+
+- key: COMACTRXd
+  description: True when radio is receiving on active channel
+  type: bool
+  initial: False
+  tol: 300
+
+- key: COMSTDRXd
+  description: True when radio is receiving on active channel
+  type: bool
+  initial: False
+  tol: 300
+
+- key: COMSQUELCHd
+  description: RX Squelch
+  type: float
+  initial: 0.0
+  tol: 300
+  min: 0
+  max: 10
+
+- key: COMVSWRd
+  description: SWR
+  type: float
+  initial: 0.0
+  tol: 300
+  min: 0
+  max: 4
+- key: COMTXPWRd
+  description: Watts of TX Power
+  type: float
+  initial: 0.0
+  tol: 300
+  min: 0
+  max: 12
+
+- key: COMACTRXLEVELd
+  description: Active Frequency RX Level
+  type: float
+  initial: 0.0
+  tol: 300
+  min: 0
+  max: 12
+
+- key: COMSTDRXLEVELd
+  description: Standby Frequency RX Level
+  type: float
+  initial: 0.0
+  tol: 300
+  min: 0
+  max: 12
 
