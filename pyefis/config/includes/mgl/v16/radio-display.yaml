@@ -1,0 +1,55 @@
+instruments:
+  - type: include,includes/mgl/v16/volumes.yaml
+    relative: true
+    row: 0
+    column: 0
+    span:
+      rows: 40
+      columns: 30
+  - type: ganged_static_text
+    gang_type: horizontal
+    row: 0
+    column: 30
+    span:
+      rows: 5
+      columns: 70
+    groups:
+      - name: Freq Desc
+        gap: 35
+        common_options:
+          font_percent: 0.90
+        instruments:
+          -
+            options:
+              text: "Active:"
+          -
+            options:
+              text: "Standby:"
+  - type: include,includes/mgl/v16/active-display.yaml
+    relative: true
+    row: 5
+    column: 30
+#    span:
+#      rows: 27
+#      columns: 42
+  - type: numeric_display
+    gang_type: horizontal
+    row: 5
+    column: 70
+    span:
+      rows: 8
+      columns: 35
+    options:
+      decimalPlaces: 3
+      dbkey: COMSTDFREQ{radio_id}
+  - type: button
+    row: 5
+    column: 60
+    span:
+      rows: 8
+      columns: 10
+    move:
+      shrink: 12
+    options:
+      config: buttons/mgl/v16/swap-active-standby.yaml
+
