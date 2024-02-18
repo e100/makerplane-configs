@@ -21,14 +21,14 @@ instruments:
     row: 14
     column: 0
     span:
-      rows: 5
-      columns: 5
+      rows: 6
+      columns: 6
     options:
       config: buttons/mgl/v16/active-rx-status.yaml
   - type: horizontal_bar_gauge
     ratio: 3
     row: 13
-    column: 6
+    column: 7
     span:
       rows: 8
       columns: 24
@@ -41,7 +41,7 @@ instruments:
   - type: horizontal_bar_gauge
     ratio: 3
     row: 16.5
-    column: 6
+    column: 7
     span:
       rows: 8
       columns: 24
@@ -52,17 +52,17 @@ instruments:
       showValue: false
       dbkey: COMSQUELCH{radio_id}
   - type: button
-    row: 20
+    row: 21.5
     column: 0
     span:
-      rows: 5
-      columns: 5
+      rows: 6
+      columns: 6
     options:
       config: buttons/mgl/v16/active-tx-status.yaml
   - type: horizontal_bar_gauge
     ratio: 3
     row: 20
-    column: 6
+    column: 7
     span:
       rows: 8
       columns: 24
@@ -75,7 +75,7 @@ instruments:
   - type: horizontal_bar_gauge
     ratio: 3
     row: 23.5
-    column: 6
+    column: 7
     span:
       rows: 8
       columns: 24
