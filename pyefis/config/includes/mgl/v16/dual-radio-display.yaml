@@ -1,0 +1,22 @@
+instruments:
+  - type: include,includes/mgl/v16/radio-display.yaml
+    replace:
+      radio_id: 1 # {radio_id} is replaced anywhere it appears in the included config
+                  # Maybe you have two radios COMACTTX{radio_id} -> COMACTTX1
+    relative: true
+    row: 70
+    column: 0
+#    span:
+#      rows: 40
+#      columns: 100
+  - type: include,includes/mgl/v16/radio-display.yaml
+    replace:
+      radio_id: 2 # {radio_id} is replaced anywhere it appears in the included config
+                  # Maybe you have two radios COMACTTX{radio_id} -> COMACTTX1
+    relative: true
+    row: 00
+    column: 0
+    span:
+      rows: 15
+      columns: 40
+

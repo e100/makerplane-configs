@@ -51,6 +51,15 @@ TSBTN{id}14 is used by buttons/units.yaml
 TSBTN{id}15 is used by buttons/leader.yaml
 It is only used as an indicator
 
+### TSBTN{id}16
+TSBTN{id}16 is used by buttons/screen-radio-pfd.yaml
+Changes between RADIO and PFD screens
+
+
+### TSBTN{id}17
+TSBTN{id}17 is used by buttons/radio-swap.yaml
+It is used to swap the active and standby frequencies
+
 ## Physical Buttons
 ### BTN1 of ENC1
 BTN1 resets BARO to 29.92
