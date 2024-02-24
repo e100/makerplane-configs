@@ -17,9 +17,10 @@ list:
     Identifier: K6CM
     Frequency: 122.900 Mhz
     set:
-      COMACTFREQSET{radio_id}: 122.900 
+      COMACTFREQSET{radio_id}: 122900 
+
   - Name: Knox County
     Identifier: K4I3
     Frequency: 122.800 Mhz
     set:
-      COMACTFREQSET{radio_id}: 122.800
+      COMACTFREQSET{radio_id}: 122800

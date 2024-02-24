@@ -4,7 +4,7 @@ variables:
   a: 8  # Generic Analogs
   b: 30 # Generic Buttons
   g: 4  # Egt Buttons
-  r: 4  # Encoders
+  r: 5  # Encoders
   t: 3  # Fuel Tanks
   n: 5  # Nodes
   s: 20 # Touchscreen buttons
@@ -987,3 +987,9 @@ entries:
   min: 0
   max: 12
 
+- key: COMACTFREQSETd
+  description: Sets the frequency of the radio, 0 is ignored
+  type: int
+  initial: 0
+  min: 0
+  max: 300000
