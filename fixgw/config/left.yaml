@@ -460,12 +460,18 @@ connections:
     # See the python-can documentation for the meaning of these options
     interface: socketcan
     channel: can10
+    v16:
+      default_id: 1
+    # If you have two v16 it needs to be on a different can bus.
+    # Or if your rdac and v16 are on different can bus
+    # Then you need to make a while new mgl section with different can settings
+    # instead of mgl: you could name it something else such as mgl2:      
     rdac:
       default_id: 1
-      sendd:
-          EGT12:
-            id: 2
-            key: TC1
+#      send: 
+#          EGT12:
+#            id: 2
+#            key: TC1
       get:
         EGT11:
           key: TC1

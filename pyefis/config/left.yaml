@@ -170,6 +170,7 @@ screens:
         display_state: 2
         replace:
           radio_id: 1 
+
   RADIO:
     dbpath: ~/.makerplane/pyefis/CIFP/FAACIFP18
     indexpath: ~/.makerplane/pyefis/CIFP/index.bin
@@ -182,6 +183,7 @@ screens:
       #draw_grid: true
     instruments:
       - type: include,includes/virtual_vfr.yaml
+        disabled: false
         relative: true
         row: 0
         column: 0
@@ -210,7 +212,18 @@ screens:
                       # Maybe you have two radios COMACTTX{radio_id} -> COMACTTX1
         relative: true
         row: 70
-        column: 0 
+        column: 0
+      - type: include,includes/mgl/v16/radio-display.yaml
+        disabled: true
+        replace:
+          radio_id: 2 # {radio_id} is replaced anywhere it appears in the included config
+                      # Maybe you have two radios COMACTTX{radio_id} -> COMACTTX1
+        relative: true
+        row: 0
+        column: 0
+        span:
+          rows: 18
+          columns: 75 
   EMS:
     dbpath: ~/.makerplane/pyefis/CIFP/FAACIFP18
     indexpath: ~/.makerplane/pyefis/CIFP/index.bin

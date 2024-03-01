@@ -678,7 +678,7 @@ entries:
   max: 90.0
   units: deg
   initial: 0.0
-  tol: 2000
+  tol: 20000
 
 - key: LONG
   description: Longitude
@@ -687,7 +687,7 @@ entries:
   max: 180.0
   units: deg
   initial: 0.0
-  tol: 2000
+  tol: 20000
 
 - key: TIMEZ
   description: Zulu Time String
@@ -993,3 +993,8 @@ entries:
   initial: 0
   min: 0
   max: 300000
+
+- key: COMACTNAMESETd
+  description: Sets the name of the frequency. the plugin will set COMACTNAMEd to this value when COMACTFREQSETd is tuned unless COMACTNAMESETd is empty string
+  type: str
+  initial: ""
