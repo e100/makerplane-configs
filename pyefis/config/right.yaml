@@ -91,8 +91,8 @@ outputs:
 
 screens:
   MAP:
-    dbpath: ~/.makerplane/pyefis/CIFP/FAACIFP18
-    indexpath: ~/.makerplane/pyefis/CIFP/index.bin
+    dbpath: ~/makerplane/pyefis/CIFP/FAACIFP18
+    indexpath: ~/makerplane/pyefis/CIFP/index.bin
     module: pyefis.screens.screenbuilder
     title: Screen Builder
     layout:
@@ -128,8 +128,8 @@ screens:
         column: 0
  
   PFD:
-    dbpath: ~/.makerplane/pyefis/CIFP/FAACIFP18
-    indexpath: ~/.makerplane/pyefis/CIFP/index.bin
+    dbpath: ~/makerplane/pyefis/CIFP/FAACIFP18
+    indexpath: ~/makerplane/pyefis/CIFP/index.bin
       #refresh_period: 0.25
     module: pyefis.screens.screenbuilder
     title: Screen Builder
@@ -159,8 +159,8 @@ screens:
         column: 0
 
   RADIO:
-    dbpath: ~/.makerplane/pyefis/CIFP/FAACIFP18
-    indexpath: ~/.makerplane/pyefis/CIFP/index.bin
+    dbpath: ~/makerplane/pyefis/CIFP/FAACIFP18
+    indexpath: ~/makerplane/pyefis/CIFP/index.bin
     module: pyefis.screens.screenbuilder
     title: Radio screen
     layout:
@@ -195,8 +195,8 @@ screens:
 
           
   EMS:
-    dbpath: ~/.makerplane/pyefis/CIFP/FAACIFP18
-    indexpath: ~/.makerplane/pyefis/CIFP/index.bin
+    dbpath: ~/makerplane/pyefis/CIFP/FAACIFP18
+    indexpath: ~/makerplane/pyefis/CIFP/index.bin
     module: pyefis.screens.screenbuilder
     title: Engine Management New
     layout:
