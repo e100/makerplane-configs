@@ -11,6 +11,7 @@ instruments:
       - name: FUEL
         gap: 0 
         common_options:
+          segments: 22
           showUnits: true
           smallFontPercent: 0.060
           bigFontPercent: 0.085

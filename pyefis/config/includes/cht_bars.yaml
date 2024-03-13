@@ -11,6 +11,7 @@ instruments:
       - name: CHT
         gap: 0
         common_options:
+          segments: 22
           temperature: true
           highlightKey: CHTMAX1
           decimalPlaces: 0

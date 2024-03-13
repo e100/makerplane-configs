@@ -11,6 +11,7 @@ instruments:
         common_options:
           nameLocation: right
           decimalPlaces: 0
+          segments: 28
         instruments:
           -
             options:

@@ -11,6 +11,7 @@ instruments:
       - name: EGT
         gap: 0
         common_options:
+          segments: 22
           egt_mode_switching: true
           normalizeRange: 400
           temperature: true
