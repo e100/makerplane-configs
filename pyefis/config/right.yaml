@@ -24,7 +24,7 @@ main:
   screenColor: (0,0,0)
 
   # If left out the first defined screen will be default
-  defaultScreen: EMS #MAP
+  defaultScreen: PFD
 
   # nodeID, currently only used in touchscreen buttons
   # the value will replace {id} in the button's dbkey
@@ -92,7 +92,7 @@ outputs:
 # the screen
 
 screens:
-  MAP:
+  ANDROID:
     dbpath: ~/makerplane/pyefis/CIFP/FAACIFP18
     indexpath: ~/makerplane/pyefis/CIFP/index.bin
     module: pyefis.screens.screenbuilder
@@ -102,6 +102,9 @@ screens:
       #draw_grid: true
       rows: 110
       columns: 200
+      display_state:
+        interval: 3000
+        states: 2
     instruments:
       - type: include,includes/side-buttons.yaml
         relative: true
@@ -128,6 +131,17 @@ screens:
         relative: true
         row: 70
         column: 0
+        display_state: 1
+      - type: include,includes/mgl/v16/active-display.yaml
+        #relative: true
+        row: 70
+        column: 0
+        span:
+          rows: 40
+          columns: 45
+        display_state: 2
+        replace:
+          radio_id: 1
  
   PFD:
     dbpath: ~/makerplane/pyefis/CIFP/FAACIFP18
@@ -140,6 +154,10 @@ screens:
       #draw_grid: true
       rows: 110
       columns: 200
+      columns: 200
+      display_state:
+        interval: 3000
+        states: 2
     instruments:
       - type: include,includes/side-buttons.yaml
         relative: true
@@ -159,6 +177,17 @@ screens:
         relative: true
         row: 70
         column: 0
+        display_state: 1
+      - type: include,includes/mgl/v16/active-display.yaml
+        #relative: true
+        row: 70
+        column: 0
+        span:
+          rows: 40
+          columns: 45
+        display_state: 2
+        replace:
+          radio_id: 1
 
   RADIO:
     dbpath: ~/makerplane/pyefis/CIFP/FAACIFP18
@@ -194,6 +223,13 @@ screens:
         relative: true
         row: 70
         column: 0
+      - type: include,includes/mgl/v16/radio-display.yaml
+        replace:
+          radio_id: 1 # {radio_id} is replaced anywhere it appears in the included config
+                      # Maybe you have two radios COMACTTX{radio_id} -> COMACTTX1
+        relative: true
+        row: 70
+        column: 45
 
           
   EMS:
@@ -206,6 +242,10 @@ screens:
       rows: 110
       columns: 200
       #draw_grid: true
+      columns: 200
+      display_state:
+        interval: 3000
+        states: 2
     instruments:
       - type: include,includes/virtual_vfr.yaml
         relative: true
@@ -230,6 +270,17 @@ screens:
         relative: true
         row: 70
         column: 0
+        display_state: 1
+      - type: include,includes/mgl/v16/active-display.yaml
+        #relative: true
+        row: 70
+        column: 0
+        span:
+          rows: 40
+          columns: 45
+        display_state: 2
+        replace:
+          radio_id: 1
       - type: include,includes/cht_bars.yaml
         relative: true
         row: 70
