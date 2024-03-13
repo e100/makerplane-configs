@@ -106,21 +106,12 @@ screens:
         interval: 3000
         states: 2
     instruments:
-      - type: value_text
-        row: 100
-        column: 0
-        span:
-          rows: 10
-          columns: 155
-        options:
-          _dbkey: APMSG
-          font_percent: 0.9
       - type: weston
         #disabled: true
         row: 0
         column: 0
         span:
-          rows: 100
+          rows: 110
           columns: 155
         options:
           socket: pyefis-waydroid-1
@@ -207,15 +198,6 @@ screens:
       columns: 200
       #draw_grid: true
     instruments:
-      - type: value_text
-        row: 101
-        column: 30
-        span:
-          rows: 9
-          columns: 60
-        options:
-          _dbkey: APMSG
-          font_percent: 0.9
       - type: include,includes/virtual_vfr.yaml
         disabled: false
         relative: true
@@ -272,15 +254,6 @@ screens:
         interval: 3000
         states: 2
     instruments:
-      - type: value_text
-        row: 100
-        column: 00
-        span:
-          rows: 10
-          columns: 80
-        options:
-          _dbkey: APMSG
-          font_percent: 0.9
       - type: include,includes/virtual_vfr.yaml
         #relative: true
         row: 0
