@@ -2,10 +2,10 @@ instruments:
   - type: ganged_vertical_bar_gauge
     gang_type: horizontal
     ratio: 0.2
-    row: 0
+    row: 1.5
     column: 0
     span:
-      rows: 40
+      rows: 36
       columns: 30
     groups:
       - name: Volume
