@@ -318,84 +318,12 @@ screens:
                   config: buttons/egt-reset-peak.yaml
 
       -
-        type: ganged_vertical_bar_gauge
-        gang_type: horizontal
-        row: 70
+        type: include,includes/megasquirt_bars.yaml
+        row: 71.5
         column: 120
         span:
-          rows: 30
+          rows: 34
           columns: 80
-        groups:
-          - name: RPM
-            gap: 0
-            common_options:
-              showUnits: false
-              smallFontPercent: 0.060
-              bigFontPercent: 0.085
-              barWidthPercent: 0.5
-              lineWidthPercent: 0.7
-              textGap: 8
-            instruments:
-              -
-                options:
-                  name: RPM
-                  decimalPlaces: 0
-                  dbkey: TACH1
-              -
-                options:
-                  name: TPS
-                  decimalPlaces: 2
-                  dbkey: THR1
-                  showUnits: True
-          - name: Engine
-            gap: 0
-            common_options:
-              smallFontPercent: 0.060
-              bigFontPercent: 0.085
-              barWidthPercent: 0.5
-              lineWidthPercent: 0.7
-              textGap: 8
-            instruments:
-              -
-                options:
-                  name: MAP
-                  decimalPlaces: 0
-                  dbkey: MAP1
-              -
-                options:
-                  name: IT
-                  decimalPlaces: 0
-                  dbkey: MAP1
-              -
-                options:
-                  name: AFR
-                  decimalPlaces: 0
-                  dbkey: MAP1
-              -
-                options:
-                  name: AFRT
-                  decimalPlaces: 0
-                  dbkey: MAP1
-              -
-                options:
-                  name: EGO
-                  decimalPlaces: 0
-                  dbkey: MAP1
-          - name: Temps
-            gap: 0
-            common_options:
-              smallFontPercent: 0.060
-              bigFontPercent: 0.085
-              barWidthPercent: 0.5
-              lineWidthPercent: 0.7
-              textGap: 8
-            instruments:
-              -
-                options:
-                  name: IAT
-                  decimalPlaces: 0
-                  dbkey: CAT
-                  temperature: true
 
 
 
