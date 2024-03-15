@@ -46,7 +46,15 @@ instruments:
       altitude: true
       majorDiv: 100
       minorDiv: 50
-
+  - type: static_text
+    row: 49.4
+    column: 129.8
+    span:
+      rows: 2.2
+      columns: 3
+    options:
+      text: VSI
+      font_mask: VSI
   - type: airspeed_tape
     row: 5
     column: 0
