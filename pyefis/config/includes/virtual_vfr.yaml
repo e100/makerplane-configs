@@ -216,7 +216,7 @@ instruments:
       decimalPlaces: 0
   - type: vertical_bar_gauge
     row: 79
-    column: -1
+    column: 13 
     span:
       rows: 29
       columns: 13
@@ -228,7 +228,7 @@ instruments:
       dbkey: TRIMP
   - type: button
     row: 78
-    column: 1
+    column: 15
     span:
       rows: 12
       columns: 9
@@ -236,7 +236,7 @@ instruments:
       config: buttons/trim-up-invisible.yaml
   - type: button
     row: 90
-    column: 1
+    column: 15
     span:
       rows: 10
       columns: 9
@@ -244,7 +244,7 @@ instruments:
       config: buttons/trim-center-invisible.yaml
   - type: button
     row: 100
-    column: 1
+    column: 15
     span:
       rows: 10
       columns: 9
@@ -252,10 +252,10 @@ instruments:
       config: buttons/trim-down-invisible.yaml
   - type: horizontal_bar_gauge
     ratio: 3
-    row: 100
-    column: 12
+    row: 101
+    column: 26
     span:
-      rows: 10
+      rows: 9
       columns: 28
     options:
       name: Yaw
@@ -268,10 +268,11 @@ instruments:
 # With some fixes to the horizontal bars we could likely make this look better without having to push it off the screen
 # For now, I'll accept that it is slightly skinnier than desired
   - type: horizontal_bar_gauge
-    row: 89
-    column: 12
+    row: 91
+    column: 26
+    ratio: 3 
     span:
-      rows: 20
+      rows: 9
       columns: 28
     options:
       name: Roll
@@ -281,7 +282,7 @@ instruments:
       dbkey: TRIMR
   - type: button
     row: 100
-    column: 11
+    column: 25
     span:
       rows: 10
       columns: 10
@@ -289,7 +290,7 @@ instruments:
       config: buttons/trim-yaw-left-invisible.yaml
   - type: button
     row: 100
-    column: 21
+    column: 35
     span:
       rows: 10
       columns: 10
@@ -297,7 +298,7 @@ instruments:
       config: buttons/trim-yaw-center-invisible.yaml
   - type: button
     row: 100
-    column: 31
+    column: 45
     span:
       rows: 10
       columns: 10
@@ -305,7 +306,7 @@ instruments:
       config: buttons/trim-yaw-right-invisible.yaml
   - type: button
     row: 90
-    column: 11
+    column: 25
     span:
       rows: 10
       columns: 10
@@ -313,7 +314,7 @@ instruments:
       config: buttons/trim-roll-left-invisible.yaml
   - type: button
     row: 90
-    column: 21
+    column: 35
     span:
       rows: 10
       columns: 10
@@ -321,7 +322,7 @@ instruments:
       config: buttons/trim-roll-center-invisible.yaml
   - type: button
     row: 90
-    column: 31
+    column: 45
     span:
       rows: 10
       columns: 10
