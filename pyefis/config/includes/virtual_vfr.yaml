@@ -86,20 +86,20 @@ instruments:
       font_mask: "Auto_Pilot:"
   - type: value_text
     row: 0
-    column: 97
+    column: 112
     span:
       rows: 5
-      columns: 35
+      columns: 28
     options:
       _dbkey: TIMEZ
       font_mask: "HH:MM:SS ZZZ"
       #fontName: DSEG14 Modern Mini, Bold
   - type: value_text
     row: 5
-    column: 97
+    column: 112
     span:
       rows: 5
-      columns: 35
+      columns: 28
     options:
       _dbkey: TIMEL
       font_mask: "HH:MM:SS ZZZ"
