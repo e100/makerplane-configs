@@ -33,22 +33,20 @@ instruments:
       font_percent: 0.24
       #number_font_size: 40
       altitude: true
-  - type: vsi_pfd
-    row: 0
-    column: 130
+  - type: altimeter_tape
+    row: 30
+    column: 127
     span:
       rows: 50
-      columns: 10
-  - type: numeric_display
-    row: 50
-    column: 128.5
-    span:
-      rows: 5
-      columns: 12
-    options:
-      font_mask: "0000"
-      decimalPlaces: 0
+      columns: 13
+    options: 
       dbkey: VS
+      font_mask: "00000"
+      total_decimals: 5
+      altitude: true
+      majorDiv: 100
+      minorDiv: 50
+
   - type: airspeed_tape
     row: 5
     column: 0
