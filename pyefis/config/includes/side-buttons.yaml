@@ -13,21 +13,28 @@ instruments:
           -
             options:
               config: buttons/screen-ems-pfd.yaml
+              encoder_order: 11
           -
             options:
               config: buttons/screen-map-pfd.yaml
+              encoder_order: 12
           -
             options:
               config: buttons/screen-radio-pfd.yaml
+              encoder_order: 13
           -
             options:
               config: buttons/units.yaml
+              encoder_order: 14
           -
             options:
               config: buttons/auto-pilot-adjust.yaml
+              encoder_order: 15
           -
             options:
               config: buttons/auto-pilot-heading-hold.yaml
+              encoder_order: 16
           -
             options:
               config: buttons/auto-pilot-flight-plan.yaml
+              encoder_order: 17

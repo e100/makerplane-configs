@@ -97,6 +97,8 @@ screens:
     indexpath: ~/makerplane/pyefis/CIFP/index.bin
     module: pyefis.screens.screenbuilder
     title: Screen Builder
+    encoder: ENC2
+    encoder_button: BTN2
     layout:
       type: grid #Splits the screen into evenly sized grids where each grid can contain a single insturment
       #draw_grid: true
@@ -149,6 +151,8 @@ screens:
       #refresh_period: 0.25
     module: pyefis.screens.screenbuilder
     title: Screen Builder
+    encoder: ENC2
+    encoder_button: BTN2
     layout:
       type: grid #Splits the screen into evenly sized grids where each grid can contain a single insturment
       #draw_grid: true
@@ -194,6 +198,8 @@ screens:
     indexpath: ~/makerplane/pyefis/CIFP/index.bin
     module: pyefis.screens.screenbuilder
     title: Radio screen
+    encoder: ENC2
+    encoder_button: BTN2
     layout:
       type: grid #Splits the screen into evenly sized grids where each grid can contain a single insturment
       rows: 110
@@ -237,6 +243,8 @@ screens:
     indexpath: ~/makerplane/pyefis/CIFP/index.bin
     module: pyefis.screens.screenbuilder
     title: Engine Management New
+    encoder: ENC2
+    encoder_button: BTN2
     layout:
       type: grid #Splits the screen into evenly sized grids where each grid can contain a single insturment
       rows: 110

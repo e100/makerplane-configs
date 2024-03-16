@@ -12,6 +12,7 @@ instruments:
       font_mask: "000.000"
       decimalPlaces: 3
       dbkey: COMACTFREQ{radio_id}
+      encoder_order: 24
   - type: value_text
     row: 8
     column: 0
@@ -55,6 +56,7 @@ instruments:
       columns: 24
     options:
       name: Squelch
+      encoder_order: 25
       bar_divisor: 2.5
       decimapPlaces: 0
       showUnits: false

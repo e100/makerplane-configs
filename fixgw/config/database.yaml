@@ -930,7 +930,7 @@ entries:
   initial: 0.0
   tol: 300
   min: 0
-  max: 10
+  max: 31
 
 - key: COMVSWRd
   description: SWR
@@ -939,6 +939,7 @@ entries:
   tol: 300
   min: 0
   max: 4
+
 - key: COMTXPWRd
   description: Watts of TX Power
   type: float
@@ -969,7 +970,7 @@ entries:
   initial: 0.0
   tol: 300
   min: 0
-  max: 12
+  max: 31
 
 - key: COMINTVOLd
   description: Intercom Volume
@@ -977,7 +978,7 @@ entries:
   initial: 0.0
   tol: 300
   min: 0
-  max: 12
+  max: 31
 
 - key: COMAUDVOLd
   description: Audio input volume ( not 100% sure this exists in the v16 )
@@ -985,7 +986,7 @@ entries:
   initial: 0.0
   tol: 300
   min: 0
-  max: 12
+  max: 31
 
 - key: COMACTFREQSETd
   description: Sets the frequency of the radio, 0 is ignored

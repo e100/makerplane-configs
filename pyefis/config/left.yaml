@@ -97,6 +97,8 @@ screens:
     indexpath: ~/makerplane/pyefis/CIFP/index.bin
     module: pyefis.screens.screenbuilder
     title: Screen Builder
+    encoder: ENC1
+    encoder_button: BTN1
     layout:
       type: grid #Splits the screen into evenly sized grids where each grid can contain a single insturment
       #draw_grid: true
@@ -150,6 +152,8 @@ screens:
       #refresh_period: 0.25
     module: pyefis.screens.screenbuilder
     title: Screen Builder
+    encoder: ENC1
+    encoder_button: BTN1 
     layout:
       type: grid #Splits the screen into evenly sized grids where each grid can contain a single insturment
       #draw_grid: true
@@ -192,6 +196,8 @@ screens:
     indexpath: ~/makerplane/pyefis/CIFP/index.bin
     module: pyefis.screens.screenbuilder
     title: Radio Screen
+    encoder: ENC1
+    encoder_button: BTN1
     layout:
       type: grid #Splits the screen into evenly sized grids where each grid can contain a single insturment
       rows: 110
@@ -245,6 +251,8 @@ screens:
     indexpath: ~/makerplane/pyefis/CIFP/index.bin
     module: pyefis.screens.screenbuilder
     title: Engine Management New
+    encoder: ENC1
+    encoder_button: BTN1
     layout:
       type: grid #Splits the screen into evenly sized grids where each grid can contain a single insturment
       rows: 110
@@ -316,15 +324,19 @@ screens:
               -
                 options:
                   config: buttons/egt-Normalize.yaml
+                  encoder_order: 31
               -
                 options:
                   config: buttons/egt-Lean.yaml
+                  encoder_order: 32
               -
                 options:
                   config: buttons/egt-Peak.yaml
+                  encoder_order: 33
               -
                 options:
                   config: buttons/egt-reset-peak.yaml
+                  encoder_order: 34
       -
         type: include,includes/megasquirt_bars.yaml
         row: 71.5
