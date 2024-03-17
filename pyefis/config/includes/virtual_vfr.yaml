@@ -18,8 +18,8 @@ instruments:
     options:
       #fontSize: 48
       font_percent: 0.05
-      fgcolor: "#aaaaaa"
-      bgcolor: "#aaaaaa"
+      fg_color: "#aaaaaa"
+      bg_color: "#aaaaaa"
       cdi_enabled: true
       gsi_enabled: true
   - type: altimeter_tape
@@ -131,7 +131,7 @@ instruments:
     options:
       font_mask: "00.00"
       dbkey: BARO
-      decimalPlaces: 2
+      decimal_places: 2
       pressure: true
   - type: button
     row: 83
@@ -168,7 +168,7 @@ instruments:
     options:
       font_mask: "10000"
       dbkey: DALT
-      decimalPlaces: 0
+      decimal_places: 0
       altitude: true
   - type: static_text
     row: 100
@@ -189,7 +189,7 @@ instruments:
     options:
       font_mask: "10000"
       dbkey: PALT
-      decimalPlaces: 0
+      decimal_places: 0
       altitude: true
   - type: static_text
     row: 105
@@ -212,8 +212,8 @@ instruments:
       units_font_mask: "oF"
       dbkey: OAT
       temperature: true
-      showUnits: true
-      decimalPlaces: 0
+      show_units: true
+      decimal_places: 0
   - type: vertical_bar_gauge
     row: 79
     column: 13 
@@ -223,8 +223,8 @@ instruments:
     options:
       name: Pitch
       decimapPlaces: 0
-      showUnits: false
-      showValue: false
+      show_units: false
+      show_value: false
       dbkey: TRIMP
   - type: button
     row: 78
@@ -259,10 +259,10 @@ instruments:
       columns: 28
     options:
       name: Yaw
-      barWidthPercent: 0.25
+      bar_width_percent: 0.25
       decimapPlaces: 0
-      showUnits: false
-      showValue: false
+      show_units: false
+      show_value: false
       dbkey: TRIMY
 # Before I made Yaw go off screen, but with scaling and recursive includes working this causes the instrument to not scal as one would expect
 # With some fixes to the horizontal bars we could likely make this look better without having to push it off the screen
@@ -277,8 +277,8 @@ instruments:
     options:
       name: Roll
       decimapPlaces: 0
-      showUnits: false
-      showValue: false
+      show_units: false
+      show_value: false
       dbkey: TRIMR
   - type: button
     row: 100

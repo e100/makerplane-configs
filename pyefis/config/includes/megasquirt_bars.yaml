@@ -12,75 +12,75 @@ instruments:
         gap: 0
         common_options:
           segments: 22
-          showUnits: false
-          smallFontPercent: 0.060
-          bigFontPercent: 0.085
-          barWidthPercent: 0.5
-          lineWidthPercent: 0.7
-          textGap: 8
+          show_units: false
+          small_font_percent: 0.060
+          big_font_percent: 0.085
+          bar_width_percent: 0.5
+          line_width_percent: 0.7
+          text_gap: 8
         instruments:
 
           -
             options:
               name: RPM
-              decimalPlaces: 0
+              decimal_places: 0
               dbkey: TACH1
           -
             options:
               name: TPS
-              decimalPlaces: 2
+              decimal_places: 2
               dbkey: THR1
-              showUnits: True
+              show_units: True
       - name: Engine
         gap: 0
         common_options:
           segments: 22
-          smallFontPercent: 0.060
-          bigFontPercent: 0.085
-          barWidthPercent: 0.5
-          lineWidthPercent: 0.7
-          textGap: 8
-          showUnits: False
+          small_font_percent: 0.060
+          big_font_percent: 0.085
+          bar_width_percent: 0.5
+          line_width_percent: 0.7
+          text_gap: 8
+          show_units: False
         instruments:
           -
             options:
               name: MAP
-              decimalPlaces: 0
+              decimal_places: 0
               dbkey: MAP1
           -
             options:
               name: IT
-              decimalPlaces: 0
+              decimal_places: 0
               dbkey: MAP1
           -
             options:
               name: AFR
-              decimalPlaces: 0
+              decimal_places: 0
               dbkey: MAP1
           -
             options:
               name: AFRT
-              decimalPlaces: 0
+              decimal_places: 0
               dbkey: MAP1
           -
             options:
               name: EGO
-              decimalPlaces: 0
+              decimal_places: 0
               dbkey: MAP1
       - name: Temps
         gap: 0
         common_options:
           segments: 22
-          smallFontPercent: 0.060
-          bigFontPercent: 0.085
-          barWidthPercent: 0.5
-          lineWidthPercent: 0.7
-          textGap: 8
+          small_font_percent: 0.060
+          big_font_percent: 0.085
+          bar_width_percent: 0.5
+          line_width_percent: 0.7
+          text_gap: 8
         instruments:
           -
             options:
               name: IAT
-              decimalPlaces: 0
+              decimal_places: 0
               dbkey: CAT
               temperature: true
 
