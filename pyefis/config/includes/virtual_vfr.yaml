@@ -222,7 +222,7 @@ instruments:
       columns: 13
     options:
       name: Pitch
-      decimapPlaces: 0
+      decimal_places: 0
       show_units: false
       show_value: false
       dbkey: TRIMP
@@ -260,7 +260,7 @@ instruments:
     options:
       name: Yaw
       bar_width_percent: 0.25
-      decimapPlaces: 0
+      decimal_places: 0
       show_units: false
       show_value: false
       dbkey: TRIMY
@@ -276,7 +276,7 @@ instruments:
       columns: 28
     options:
       name: Roll
-      decimapPlaces: 0
+      decimal_places: 0
       show_units: false
       show_value: false
       dbkey: TRIMR
