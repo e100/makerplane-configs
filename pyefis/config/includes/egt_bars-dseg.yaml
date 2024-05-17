@@ -1,0 +1,49 @@
+instruments:
+  - type: ganged_vertical_bar_gauge
+    gang_type: horizontal
+    ratio: 0.2
+    row: 0
+    column: 0
+    span:
+      rows: 40
+      columns: 30 
+    groups:
+      - name: EGT
+        gap: 0
+        common_options:
+          segments: 22
+          egt_mode_switching: true
+          normalize_range: 400
+          temperature: true
+          highlight_key: EGTMAX1
+          decimal_places: 0
+          show_units: true
+          small_font_percent: 0.060
+          big_font_percent: 0.085
+          bar_width_percent: 0.5
+          line_width_percent: 0.7
+          text_gap: 8
+          font_ghost_mask: "~~~~"
+          font_family: "DSEG14 Classic"
+          font_mask: "0000"
+          name_font_mask: '~~~~'
+          name_font_ghost_mask: '~~~~'
+          units_font_mask: '~~~'
+          units_font_ghost_mask: '~~~'
+        instruments:
+          -
+            options:
+              name: "EGT1"
+              dbkey: EGT11
+          -
+            options:
+              name: "EGT2"
+              dbkey: EGT12
+          -
+            options:
+              name: "EGT3"
+              dbkey: EGT13
+          -
+            options:
+              name: "EGT4"
+              dbkey: EGT14

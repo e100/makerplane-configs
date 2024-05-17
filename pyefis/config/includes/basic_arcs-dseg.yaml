@@ -1,0 +1,92 @@
+instruments:
+  - type: ganged_arc_gauge
+    gang_type: vertical
+    display_state: 1
+    row: 0
+    column: 0
+    span:
+      rows: 70
+      columns: 30
+    groups:
+      - name: Engine
+        common_options:
+          name_location: right
+          decimal_places: 0
+          segments: 28
+          font_ghost_mask: "~~~~"
+          font_family: "DSEG14 Classic"
+          font_mask: "0000"
+          units_font_ghost_mask: "~~"
+          units_font_mask: '~~'
+          name_font_mask: '~~~~~~~~~'
+          name_font_ghost_mask: '~~~~~~~~~'
+        instruments:
+          -
+            options:
+              name: RPM
+              dbkey: TACH1
+          -
+            options:
+              name: Oil!Press
+              dbkey: OILP1
+              font_ghost_mask: "~~~"
+          -
+            options:
+              name: Coolant
+              temperature: true
+              dbkey: H2OT1
+              #show_units: true
+              font_ghost_mask: "~~~"
+              decimal_places: 1
+          -
+            options:
+              name: Volts
+              dbkey: VOLT
+              decimal_places: 1
+              font_ghost_mask: "~~~"
+  - type: ganged_arc_gauge
+    gang_type: vertical
+    display_state: 2
+    row: 0
+    column: 0
+    span:
+      rows: 70
+      columns: 30
+    groups:
+      - name: Engine
+        common_options:
+          name_location: right
+          decimal_places: 0
+          segments: 28
+          font_ghost_mask: "~~~~"
+          font_family: "DSEG14 Classic"
+          font_mask: "0000"
+          units_font_ghost_mask: "~~"
+          units_font_mask: '~~'
+          name_font_mask: '~~~~~~~~~'
+          name_font_ghost_mask: '~~~~~~~~~'
+        instruments:
+          -
+            options:
+              name: RPM
+              dbkey: TACH1
+          -
+            options:
+              name: Oil!Temp
+              dbkey: OILT1
+              temperature: true
+              show_units: true
+              font_ghost_mask: "~~~"
+          -
+            options:
+              name: OAT
+              dbkey: OAT
+              temperature: true
+              show_units: true
+              font_ghost_mask: "~~~"
+          -
+            options:
+              name: Amps
+              dbkey: CURRNT
+              decimal_places: 1
+              font_ghost_mask: "~~~"
