@@ -15,6 +15,9 @@ enabled:
   TRIM_CONTROLS: true
   PRESSURE_DISPLAY: true
 
+includes:
+  BUTTON_GROUP1: includes/buttons/vertical/screen_changing_PFD-EMS-MAP-RADIO-AP-Units.yaml
+
 
 #gauges:
 #  ARC1:
