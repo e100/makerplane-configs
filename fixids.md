@@ -45,20 +45,36 @@ TSBTN{id}12 is used by buttons/screen-ems-pfd.yaml
 TSBTN{id}13 is used by buttons/screen-map-pfd.yaml
 
 ### TSBTN{id}14
-TSBTN{id}14 is used by buttons/units.yaml
+TSBTN{id}13 is used by buttons/screen-radio-pfd.yaml
 
 ### TSBTN{id}15
+TSBTN{id}14 is used by buttons/units.yaml
+
+### TSBTN{id}16
 TSBTN{id}15 is used by buttons/leader.yaml
 It is only used as an indicator
 
-### TSBTN{id}16
-TSBTN{id}16 is used by buttons/screen-radio-pfd.yaml
-Changes between RADIO and PFD screens
-
-
 ### TSBTN{id}17
-TSBTN{id}17 is used by buttons/radio-swap.yaml
+TSBTN{id}17 is used by buttons/mgl/v16/swap-active-standby.yaml
 It is used to swap the active and standby frequencies
+
+### TSBTN{id}18
+buttons/screen-sixpack-pfd.yaml
+
+### TSBTN{id}19 
+buttons/screen-android-pfd.yaml
+
+### TSBTN{id}20
+pyefis/config/buttons/screen-ems2-pfd.yaml
+
+### TSBTN{id}21
+pyefis/config/buttons/mgl/v16/active-tx-status.yaml
+
+### TSBTN{id}22
+pyefis/config/buttons/mgl/v16/active-rx-status.yaml
+
+### TSBTN{id}23
+pyefis/config/buttons/mgl/v16/standby-rx-status.yaml
 
 ## Physical Buttons
 ### BTN1 of ENC1
