@@ -132,14 +132,6 @@ CRUISE mode is Heading Hold<br>
 GUIDED mode is Flight Plan<br>
 TRIM mode allows manual control of the TRIM tabs<br>
 
-### BTNHH
-BTNHH is the button to activate Heading Hold mode<br>
-This must be output from pyEFIS to the Fix Gateway<br>
-
-### BTNFP
-BTNFP is the button to activate Flight Plan mode of the auto pilot<br>
-This must be output from pyEFIS to the Fix Gateway
-
 ### APADJ
 APDJ is used to adjust altitude or heading while the auto pilot is enaged.<br>
 This must be output from pyefis to the Fix Gateway<br>
