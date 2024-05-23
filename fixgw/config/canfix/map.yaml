@@ -131,7 +131,8 @@ switches:
          canid: 0x309,
          index: 0,
          owner: False,
-         nodespecific: True
+         nodespecific: True,
+         require_leader: False
 
       }
 #    - { fixid: "BTN11,BTN12,BTN13,BTN14,BTN15,BTN16,BTN17,BTN18,BTN19,BTN20", canid: 0x309, index: 0, owner: False }
