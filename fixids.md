@@ -76,6 +76,15 @@ pyefis/config/buttons/mgl/v16/active-rx-status.yaml
 ### TSBTN{id}23
 pyefis/config/buttons/mgl/v16/standby-rx-status.yaml
 
+### TSBTN{id}24
+buttons/auto-pilot-adjust.yaml
+
+### TSBTN{id}25
+buttons/auto-pilot-heading-hold.yaml
+
+### TSBTN{id}26
+buttons/auto-pilot-flight-plan.yaml
+
 ## Physical Buttons
 ### BTN1 of ENC1
 BTN1 resets BARO to 29.92
