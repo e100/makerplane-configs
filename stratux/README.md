@@ -85,7 +85,7 @@ interface=br0
 dhcp-option=br0,3,192.168.2.1
 dhcp-option=br0,6,192.168.2.1
 dhcp-range=interface:br0,192.168.2.128,192.168.2.254,24h
-dhcp-host=00:16:3e:f9:d3:04,hawk1_android,192.168.2.20,30d
+dhcp-host=d8:3a:dd:f7:4e:b0,hawk2,192.168.2.2,30d
 '| sudo tee -a /etc/dnsmasq.d/stratux-dnsmasq-eth0.conf >/dev/null
 ```
 
