@@ -57,7 +57,7 @@ connections:
   - connections/compute.yaml
   #- connections/dimmer.yaml
   #- connections/grand_rapids_eis.yaml
-  - connections/stratux.yaml
+  #- connections/stratux.yaml
   - connections/mavlink.yaml
   - connections/ifly.yaml
   - connections/megasquirt.yaml
