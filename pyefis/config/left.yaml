@@ -130,13 +130,13 @@ logging:
   loggers:
     '':
       # messages with levels below the one given will not be logged
-      #level: DEBUG
-      level: INFO
+      level: DEBUG
+      #level: INFO
       #level: WARNING
       #level: ERROR
       #level: CRITICAL
 
-      handlers: [stderr ] #, file]
+      handlers: [stderr, file]
       propagate: True
 
   formatters:
@@ -151,12 +151,12 @@ logging:
       formatter: standard
       stream: ext://sys.stderr
 
-#    file:
-#      class: logging.FileHandler
-#      formatter: standard
-#      filename: fixgw.log
-#      mode: w
-      #mode: a
+    file:
+      class: logging.FileHandler
+      formatter: standard
+      filename: {SNAP_USER_COMMON}/fixgw.log
+      mode: w
+      mode: a
 
     syslog:
       class: logging.handlers.SysLogHandler
