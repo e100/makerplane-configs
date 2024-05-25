@@ -92,20 +92,46 @@ sudo sed --follow-symlinks -i 's/quiet/psi=1 quiet/g' /boot/firmware/cmdline.txt
 ```
 
 ## Clone this repo
-Everything related to the installation will be located in the folder `~/.makerplane`
+Everything related to the installation will be located in the folder `~/makerplane`
 
 ```
 cd ~
-git clone https://github.com/e100/makerplane-configs.git .makerplane
-cd .makerplane
+git clone https://github.com/e100/makerplane-configs.git makerplane
+cd makerplane
 ```
 ![git clone](/images/git-clone.png)
+
+## Optional - Change splash screen to Makerplane logo
+First make a copy of a theme:
+```
+sudo cp -rp /usr/share/plymouth/themes/pix /usr/share/plymouth/themes/makerplane
+```
+Replace the splash.png with the Makerplane logog
+```
+sudo cp ~/makerplane/images/Makerplane_Pi_Logo_Screen.png /usr/share/plymouth/themes/makerplane/splash.png
+```
+
+Set the theme and update initrd:
+```
+sudo plymouth-set-default-theme --rebuild-initrd makerplane
+```
+
+Setup wallpaper to Makerplane logo:
+```
+pcmanfm --set-wallpaper ~/makerplane/images/Makerplane_Pi_Logo_Screen.png
+```
+
+Auto-Hide menu bar???:
+```
+.config/wf-panel-pi.ini 
+```
+Hide desktop icons, from GUI appearance settings desktop tab uncheck three checkboxes at the bottom
 
 ## Optional - Install software for the x729 UPS board
 This will setup the software for the x729, if you are not using this device you can skip any section related to it.<br>
 
 ```
-cd ~/.makerplane
+cd ~/makerplane
 mkdir setup
 cd setup
 git clone https://github.com/e100/x729
@@ -296,7 +322,7 @@ reboot
 ## Install FIX Gateway
 To install FIX Gateway we will first clone my repository. At the time of writing this the numerous improvements I have made are not merged into Makerplanes's repository. When that happens I will update these instructions to use their repo instead of mine.
 ```
-cd ~/.makerplane/setup
+cd ~/makerplane/setup
 git clone https://github.com/e100/FIX-Gateway.git
 cd FIX-Gateway
 ```
@@ -354,22 +380,22 @@ fixgateway.client
 ```
 
 
-### Move the .makerplane folder
-The FIX Gateway snap runs confined and cannot access files in ~/.makerplane<br>
-So I moved ~/.makerplane into a folder that it can access and symlink ~/.makerplane to it<br>
-This way you can still manage everything from ~/.makerplane and have a single location of all of your configuration files.
+### Move the makerplane folder
+The FIX Gateway snap runs confined and cannot access files in ~/makerplane<br>
+So I moved ~/makerplane into a folder that it can access and symlink ~/makerplane to it<br>
+This way you can still manage everything from ~/makerplane and have a single location of all of your configuration files.
 
 ```
 cd ~
 mkdir -p ~/snap/fixgateway/common
-mv ~/.makerplane  ~/snap/fixgateway/common/.makerplane
-ln -s ~/snap/fixgateway/common/.makerplane ~/.makerplane
+mv ~/makerplane  ~/snap/fixgateway/common/makerplane
+ln -s ~/snap/fixgateway/common/makerplane ~/makerplane
 ```
 
 ### Install systemd unit file to auto start FIX Gateway
 This is a systemd unit file that defines how to run the FIX-Gateway:
 ```
-cd ~/.makerplane/
+cd ~/makerplane/
 mkdir -p ~/.config/systemd/user
 cp systemd/fixgateway.service ~/.config/systemd/user/
 ```
@@ -387,7 +413,7 @@ systemctl enable --user fixgateway.service
 ## Install pyEFIS
 We will again use my fork of pyEFIS, I will update this to use the Makerplane repository once my changes have been merged:
 ```
-cd ~/.makerplane/setup
+cd ~/makerplane/setup
 git clone https://github.com/e100/pyEfis.git
 cd pyEfis
 ```
@@ -406,11 +432,11 @@ sudo snap install pyefis_0.1_arm64.snap --dangerous --classic
 
 ### Install the systemd unit file for pyEFIS and edit it
 ```
-cd ~/.makerplane/
+cd ~/makerplane/
 cp systemd/pyefis.service ~/.config/systemd/user/
 ```
 When copying the systemd unit file also edit the exec line and set the config file to the left or right as needed
-ExecStart=/snap/bin/pyefis --config-file /home/eblevins/.makerplane/pyefis/config/left.yaml
+ExecStart=/snap/bin/pyefis --config-file /home/eblevins/makerplane/pyefis/config/left.yaml
 
 ### Configure autostart
 This will enable auto start of pyEFIS on reboot:
@@ -425,8 +451,8 @@ This data should also be updated periodically
 
 #### Create directory for the CIFP data
 ```
-mkdir ~/.makerplane/pyefis/CIFP/
-cd ~/.makerplane/pyefis/CIFP/
+mkdir ~/makerplane/pyefis/CIFP/
+cd ~/makerplane/pyefis/CIFP/
 ```
 
 #### Download the CIFP Data
