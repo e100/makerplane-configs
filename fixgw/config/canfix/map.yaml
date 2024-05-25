@@ -105,7 +105,7 @@ outputs:
   - { fixid: "TRIMR", canid: 0x313, index: 0, owner: False, on_change: False, require_leader: False }
   - { fixid: "TRIMY", canid: 0x314, index: 0, owner: False, on_change: False, require_leader: False }
   - { fixid: "DALT",  canid: 0x408, index: 0, owner: False, on_change: True}
-  - {  fixid: "MAVADJ,MAVREQADJ,MAVREQTRIM,MAVREQCRUISE,MAVREQGUIDED,MAVREQAUTOTUNE,MAVWPVALID",
+  - {  fixid: "MAVADJ,MAVREQADJ,MAVREQTRIM,MAVREQCRUISE,MAVREQGUIDED,MAVREQAUTOTUNE",
          canid: 0x309,
          index: 0,
          owner: False,
@@ -135,7 +135,7 @@ switches:
          canid: 0x308, 
          index: 0, 
          owner: False }
-    - {  fixid: "MAVADJ,MAVREQADJ,MAVREQTRIM,MAVREQCRUISE,MAVREQGUIDED,MAVREQAUTOTUNE,MAVWPVALID",
+    - {  fixid: "MAVADJ,MAVREQADJ,MAVREQTRIM,MAVREQCRUISE,MAVREQGUIDED,MAVREQAUTOTUNE",
          canid: 0x309,
          index: 0,
          owner: False,
