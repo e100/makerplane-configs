@@ -1,18 +1,29 @@
 auto start: True
-
+# For help configuring your screen layout visit:
+# https://github.com/makerplane/pyEfis/blob/master/docs/screenbuilder.md
 main:
   # IP information for network adapter
   FixServer: 127.0.0.1
   FixPort: 3490
+
+  # Menu timeout in ms
+  # All this does is set fix key MENUITEM to True after a timeout
+  # Individual buttons need to have conditions that will show/hide the button
+  # based on the value of MENUITEM
+  # The main buttons included by default have such logic
+  # Uncomment the next line to enable this feature:
+  #button_timeout: 10000 
+
   # Screen Geometry
+  # Defaults to screen size if screenWidth or screenHeight is not defined
   #screenWidth: 1280
   #screenHeight: 720
   #screenWidth: 1024
   #screenHeight: 768
-  screenWidth: 1920
+  #screenWidth: 1920
   #screenHeight: 540
   #screenHeight: 550
-  screenHeight: 1080
+  #screenHeight: 1080
   #screenWidth: 640
   #screenHeight: 480
   #screenWidth: 3840
@@ -80,9 +91,11 @@ keybindings:
 #  TRIMR: onchange
 #  TRIMY: onchange
 #  APREQ: onchange
-#  BTNHH: onchange
 #  APADJ: onchange
-#  BTNFP: onchange
+
+# No need to change this.
+# To customize
+preferences: preferences.yaml
 
 # Screen definitions describe the screens that will be loaded
 # and ready for use.  Each section should start with "Screen."
@@ -91,259 +104,14 @@ keybindings:
 # the screen
 
 screens:
-  ANDROID:
-    dbpath: ~/makerplane/pyefis/CIFP/FAACIFP18
-    indexpath: ~/makerplane/pyefis/CIFP/index.bin
-    module: pyefis.screens.screenbuilder
-    title: Screen Builder
-    encoder: ENC1
-    encoder_button: BTN1
-    layout:
-      type: grid #Splits the screen into evenly sized grids where each grid can contain a single insturment
-      #draw_grid: true
-      rows: 110
-      columns: 200
-      display_state:
-        interval: 3000
-        states: 2
-    instruments:
-      - type: weston
-        #disabled: true
-        row: 0
-        column: 0
-        span:
-          rows: 110
-          columns: 155
-        options:
-          socket: pyefis-waydroid-1
-          ini: weston.ini
-          command: waydroid
-          args:
-            - show-full-ui
-      - type: include,includes/basic_arcs.yaml
-        relative: true
-        row: 0
-        column: 155
-      - type: include,includes/side-buttons.yaml
-        relative: true
-        row: 0
-        column: 186
-      - type: include,includes/fuel_gauges.yaml
-        relative: true
-        row: 70
-        column: 155
-        display_state: 1
-      - type: include,includes/mgl/v16/active-display.yaml
-        #relative: true
-        row: 70
-        column: 156
-        span:
-          rows: 40
-          columns: 45
-        display_state: 2
-        replace:
-          radio_id: 1
-
-      
-  PFD:
-    dbpath: ~/makerplane/pyefis/CIFP/FAACIFP18
-    indexpath: ~/makerplane/pyefis/CIFP/index.bin
-      #refresh_period: 0.25
-    module: pyefis.screens.screenbuilder
-    title: Screen Builder
-    encoder: ENC1
-    encoder_button: BTN1 
-    layout:
-      type: grid #Splits the screen into evenly sized grids where each grid can contain a single insturment
-      #draw_grid: true
-      rows: 110
-      columns: 200
-      display_state:
-        interval: 3000
-        states: 2
-    instruments:
-      - type: include,includes/virtual_vfr.yaml
-        relative: true
-        row: 0
-        column: 0
-      - type: include,includes/basic_arcs.yaml
-        relative: true
-        row: 0
-        column: 155
-      - type: include,includes/side-buttons.yaml
-        relative: true
-        row: 0
-        column: 186
-      - type: include,includes/fuel_gauges.yaml
-        relative: true
-        row: 70
-        column: 155
-        display_state: 1
-      - type: include,includes/mgl/v16/active-display.yaml
-        #relative: true
-        row: 70
-        column: 156
-        span:
-          rows: 40
-          columns: 45
-        display_state: 2
-        replace:
-          radio_id: 1 
-
-  RADIO:
-    dbpath: ~/makerplane/pyefis/CIFP/FAACIFP18
-    indexpath: ~/makerplane/pyefis/CIFP/index.bin
-    module: pyefis.screens.screenbuilder
-    title: Radio Screen
-    encoder: ENC1
-    encoder_button: BTN1
-    layout:
-      type: grid #Splits the screen into evenly sized grids where each grid can contain a single insturment
-      rows: 110
-      columns: 200
-      #draw_grid: true
-    instruments:
-      - type: include,includes/virtual_vfr.yaml
-        disabled: false
-        relative: true
-        row: 0
-        column: 0
-        span:
-          rows: 70
-          columns: 125
-      - type: include,includes/basic_arcs.yaml
-        relative: true
-        row: 0
-        column: 155
-      - type: include,includes/power_temp_arcs.yaml
-        relative: true
-        row: 0
-        column: 125
-      - type: include,includes/side-buttons.yaml
-        relative: true
-        row: 0
-        column: 186
-      - type: include,includes/fuel_gauges.yaml
-        relative: true
-        row: 70
-        column: 155
-      - type: include,includes/mgl/v16/radio-display.yaml
-        replace:
-          radio_id: 1 # {radio_id} is replaced anywhere it appears in the included config
-                      # Maybe you have two radios COMACTTX{radio_id} -> COMACTTX1
-        relative: true
-        row: 70
-        column: 0
-      - type: include,includes/mgl/v16/radio-display.yaml
-        disabled: true
-        replace:
-          radio_id: 2 # {radio_id} is replaced anywhere it appears in the included config
-                      # Maybe you have two radios COMACTTX{radio_id} -> COMACTTX1
-        relative: true
-        row: 0
-        column: 0
-        span:
-          rows: 18
-          columns: 75 
-  EMS:
-    dbpath: ~/makerplane/pyefis/CIFP/FAACIFP18
-    indexpath: ~/makerplane/pyefis/CIFP/index.bin
-    module: pyefis.screens.screenbuilder
-    title: Engine Management New
-    encoder: ENC1
-    encoder_button: BTN1
-    layout:
-      type: grid #Splits the screen into evenly sized grids where each grid can contain a single insturment
-      rows: 110
-      columns: 200
-      draw_grid: false
-      display_state:
-        interval: 3000
-        states: 2
-    instruments:
-      - type: include,includes/virtual_vfr.yaml
-        #relative: true
-        row: 0
-        column: 0
-        span:
-          rows: 70
-          columns: 125
-      - type: include,includes/basic_arcs.yaml
-        relative: true
-        row: 0
-        column: 155
-      - type: include,includes/power_temp_arcs.yaml
-        relative: true
-        row: 0
-        column: 125
-      - type: include,includes/side-buttons.yaml
-        relative: true
-        row: 0
-        column: 186
-      - type: include,includes/fuel_gauges.yaml
-        relative: true
-        row: 70
-        column: 155
-        display_state: 1
-      - type: include,includes/mgl/v16/active-display.yaml
-        #relative: true
-        row: 70
-        column: 156
-        span:
-          rows: 40
-          columns: 45
-        display_state: 2
-        replace:
-          radio_id: 1
-      - type: include,includes/cht_bars.yaml
-        relative: true
-        row: 70
-        column: 123
-      - type: include,includes/egt_bars.yaml
-        relative: true
-        row: 70
-        column: 91
-      - type: ganged_button
-        #disabled: true
-        gang_type: vertical
-        row: 74
-        column: 80
-        #move:
-        #  shrink: 25
-        #  justify: top
-        span:
-          rows: 30
-          columns: 10
-        groups:
-          - name: Buttons
-            gap: 12
-            common_options:
-              font_mask: Normalize
-            instruments:
-              -
-                options:
-                  config: buttons/egt-Normalize.yaml
-                  encoder_order: 31
-              -
-                options:
-                  config: buttons/egt-Lean.yaml
-                  encoder_order: 32
-              -
-                options:
-                  config: buttons/egt-Peak.yaml
-                  encoder_order: 33
-              -
-                options:
-                  config: buttons/egt-reset-peak.yaml
-                  encoder_order: 34
-      -
-        type: include,includes/megasquirt_bars.yaml
-        row: 71.5
-        column: 0
-        span:
-          rows: 34
-          columns: 80
-
+  include: 
+  - screens/sixpack.yaml
+  - screens/android.yaml
+  - screens/pfd.yaml
+  - screens/radio.yaml
+  - screens/ems.yaml
+  - screens/ems2.yaml
+ 
 # Hooks are user defined modules that are loaded at specific points
 # in the programs execution.  Right now their is only one place and
 # it is right after all of the initialization and just before the

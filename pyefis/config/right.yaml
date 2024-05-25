@@ -1,18 +1,29 @@
 auto start: True
-
+# For help configuring your screen layout visit:
+# https://github.com/makerplane/pyEfis/blob/master/docs/screenbuilder.md
 main:
   # IP information for network adapter
   FixServer: 127.0.0.1
   FixPort: 3490
+
+  # Menu timeout in ms
+  # All this does is set fix key MENUITEM to True after a timeout
+  # Individual buttons need to have conditions that will show/hide the button
+  # based on the value of MENUITEM
+  # The main buttons included by default have such logic
+  # Uncomment the next line to enable this feature:
+  #button_timeout: 10000 
+
   # Screen Geometry
+  # Defaults to screen size if screenWidth or screenHeight is not defined
   #screenWidth: 1280
   #screenHeight: 720
   #screenWidth: 1024
   #screenHeight: 768
-  screenWidth: 1920
+  #screenWidth: 1920
   #screenHeight: 540
   #screenHeight: 550
-  screenHeight: 1080
+  #screenHeight: 1080
   #screenWidth: 640
   #screenHeight: 480
   #screenWidth: 3840
@@ -80,9 +91,11 @@ keybindings:
 #  TRIMR: onchange
 #  TRIMY: onchange
 #  APREQ: onchange
-#  BTNHH: onchange
 #  APADJ: onchange
-#  BTNFP: onchange
+
+# No need to change this.
+# To customize
+preferences: preferences.yaml
 
 # Screen definitions describe the screens that will be loaded
 # and ready for use.  Each section should start with "Screen."
@@ -91,249 +104,14 @@ keybindings:
 # the screen
 
 screens:
-  ANDROID:
-    dbpath: ~/makerplane/pyefis/CIFP/FAACIFP18
-    indexpath: ~/makerplane/pyefis/CIFP/index.bin
-    module: pyefis.screens.screenbuilder
-    title: Screen Builder
-    encoder: ENC2
-    encoder_button: BTN2
-    layout:
-      type: grid #Splits the screen into evenly sized grids where each grid can contain a single insturment
-      #draw_grid: true
-      rows: 110
-      columns: 200
-      display_state:
-        interval: 3000
-        states: 2
-    instruments:
-      - type: include,includes/side-buttons.yaml
-        relative: true
-        row: 0
-        column: 0
-      - type: include,includes/basic_arcs.yaml
-        relative: true
-        row: 0
-        column: 14
-      - type: weston
-        #disabled: true
-        row: 0
-        column: 45
-        span:
-          rows: 113
-          columns: 155
-        options:
-          socket: pyefis-waydroid-1
-          ini: weston.ini
-          command: waydroid
-          args:
-            - show-full-ui
-      - type: include,includes/fuel_gauges.yaml
-        relative: true
-        row: 70
-        column: 0
-        display_state: 1
-      - type: include,includes/mgl/v16/active-display.yaml
-        #relative: true
-        row: 70
-        column: 0
-        span:
-          rows: 40
-          columns: 45
-        display_state: 2
-        replace:
-          radio_id: 1
+  include: 
+  - screens/sixpack.yaml
+  - screens/android.yaml
+  - screens/pfd.yaml
+  - screens/radio.yaml
+  - screens/ems.yaml
+  - screens/ems2.yaml
  
-  PFD:
-    dbpath: ~/makerplane/pyefis/CIFP/FAACIFP18
-    indexpath: ~/makerplane/pyefis/CIFP/index.bin
-      #refresh_period: 0.25
-    module: pyefis.screens.screenbuilder
-    title: Screen Builder
-    encoder: ENC2
-    encoder_button: BTN2
-    layout:
-      type: grid #Splits the screen into evenly sized grids where each grid can contain a single insturment
-      #draw_grid: true
-      rows: 110
-      columns: 200
-      columns: 200
-      display_state:
-        interval: 3000
-        states: 2
-    instruments:
-      - type: include,includes/side-buttons.yaml
-        relative: true
-        row: 0
-        column: 0
-
-      - type: include,includes/virtual_vfr.yaml
-        relative: true
-        row: 0
-        column: 45
-
-      - type: include,includes/basic_arcs.yaml
-        relative: true
-        row: 0
-        column: 14
-      - type: include,includes/fuel_gauges.yaml
-        relative: true
-        row: 70
-        column: 0
-        display_state: 1
-      - type: include,includes/mgl/v16/active-display.yaml
-        #relative: true
-        row: 70
-        column: 0
-        span:
-          rows: 40
-          columns: 45
-        display_state: 2
-        replace:
-          radio_id: 1
-
-  RADIO:
-    dbpath: ~/makerplane/pyefis/CIFP/FAACIFP18
-    indexpath: ~/makerplane/pyefis/CIFP/index.bin
-    module: pyefis.screens.screenbuilder
-    title: Radio screen
-    encoder: ENC2
-    encoder_button: BTN2
-    layout:
-      type: grid #Splits the screen into evenly sized grids where each grid can contain a single insturment
-      rows: 110
-      columns: 200
-      #draw_grid: true
-    instruments:
-      - type: include,includes/virtual_vfr.yaml
-        relative: true
-        row: 0
-        column: 75
-        span:
-          rows: 70
-          columns: 125
-      - type: include,includes/side-buttons.yaml
-        relative: true
-        row: 0
-        column: 0
-      - type: include,includes/basic_arcs.yaml
-        relative: true
-        row: 0
-        column: 14
-      - type: include,includes/power_temp_arcs.yaml
-        relative: true
-        row: 0
-        column: 45
-      - type: include,includes/fuel_gauges.yaml
-        relative: true
-        row: 70
-        column: 0
-      - type: include,includes/mgl/v16/radio-display.yaml
-        replace:
-          radio_id: 1 # {radio_id} is replaced anywhere it appears in the included config
-                      # Maybe you have two radios COMACTTX{radio_id} -> COMACTTX1
-        relative: true
-        row: 70
-        column: 45
-
-          
-  EMS:
-    dbpath: ~/makerplane/pyefis/CIFP/FAACIFP18
-    indexpath: ~/makerplane/pyefis/CIFP/index.bin
-    module: pyefis.screens.screenbuilder
-    title: Engine Management New
-    encoder: ENC2
-    encoder_button: BTN2
-    layout:
-      type: grid #Splits the screen into evenly sized grids where each grid can contain a single insturment
-      rows: 110
-      columns: 200
-      #draw_grid: true
-      columns: 200
-      display_state:
-        interval: 3000
-        states: 2
-    instruments:
-      - type: include,includes/virtual_vfr.yaml
-        relative: true
-        row: 0
-        column: 75
-        span:
-          rows: 70
-          columns: 125
-      - type: include,includes/side-buttons.yaml
-        relative: true
-        row: 0
-        column: 0
-      - type: include,includes/basic_arcs.yaml
-        relative: true
-        row: 0
-        column: 14
-      - type: include,includes/power_temp_arcs.yaml
-        relative: true
-        row: 0
-        column: 45
-      - type: include,includes/fuel_gauges.yaml
-        relative: true
-        row: 70
-        column: 0
-        display_state: 1
-      - type: include,includes/mgl/v16/active-display.yaml
-        #relative: true
-        row: 70
-        column: 0
-        span:
-          rows: 40
-          columns: 45
-        display_state: 2
-        replace:
-          radio_id: 1
-      - type: include,includes/cht_bars.yaml
-        relative: true
-        row: 70
-        column: 80
-      - type: include,includes/egt_bars.yaml
-        relative: true
-        row: 70
-        column: 47
-      - type: ganged_button
-        #disabled: true
-        gang_type: vertical
-        row: 74
-        column: 111
-        #move:
-        #  shrink: 25
-        #  justify: top
-        span:
-          rows: 30
-          columns: 10
-        groups:
-          - name: Buttons
-            gap: 12
-            instruments:
-              -
-                options:
-                  config: buttons/egt-Normalize.yaml
-              -
-                options:
-                  config: buttons/egt-Lean.yaml
-              -
-                options:
-                  config: buttons/egt-Peak.yaml
-              -
-                options:
-                  config: buttons/egt-reset-peak.yaml
-
-      -
-        type: include,includes/megasquirt_bars.yaml
-        row: 71.5
-        column: 120
-        span:
-          rows: 34
-          columns: 80
-
-
-
 # Hooks are user defined modules that are loaded at specific points
 # in the programs execution.  Right now their is only one place and
 # it is right after all of the initialization and just before the
