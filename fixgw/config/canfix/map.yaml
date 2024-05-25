@@ -105,17 +105,16 @@ outputs:
   - { fixid: "TRIMR", canid: 0x313, index: 0, owner: False, on_change: False, require_leader: False }
   - { fixid: "TRIMY", canid: 0x314, index: 0, owner: False, on_change: False, require_leader: False }
   - { fixid: "DALT",  canid: 0x408, index: 0, owner: False, on_change: True}
-  - {  fixid: "MAVADJ,MAVREQADJ,MAVREQTRIM,MAVREQCRUISE,MAVREQGUIDED,MAVREQAUTOTUNE",
+  - {  fixid: "MAVADJ,MAVREQADJ,MAVREQTRIM,MAVREQCRUISE,MAVREQGUIDED,MAVREQAUTOTUNE,MAVWPVALID",
          canid: 0x309,
          index: 0,
          owner: False,
          on_change: True,
          require_leader: False
     }
-  - { fixid: "WPNAME", canid: 0x480, index: 0, on_change:True, require_leader: True }
-
-  - { fixid: "WPLAT", canid: 0x481, index: 0, on_change:True, require_leader: True }
-  - { fixid: "WPLON", canid: 0x482, index: 0, on_change:True, require_leader: True }
+  - { fixid: "WPNAME", canid: 0x480, index: 0, on_change:False, require_leader: True }
+  - { fixid: "WPLAT", canid: 0x481, index: 0, on_change:False, require_leader: True }
+  - { fixid: "WPLON", canid: 0x482, index: 0, on_change:False, require_leader: True }
 
 #    - { fixid: "BTN1,BTN2", canid: 0x308, index: 0, owner: False }
 #    - { fixid: "BTN11,BTN12,BTN13,BTN14,BTN15,BTN16,BTN17,BTN18,BTN19,BTN20", canid: 0x309, index: 0, owner: False }
@@ -135,7 +134,7 @@ switches:
          canid: 0x308, 
          index: 0, 
          owner: False }
-    - {  fixid: "MAVADJ,MAVREQADJ,MAVREQTRIM,MAVREQCRUISE,MAVREQGUIDED,MAVREQAUTOTUNE",
+    - {  fixid: "MAVADJ,MAVREQADJ,MAVREQTRIM,MAVREQCRUISE,MAVREQGUIDED,MAVREQAUTOTUNE,MAVWPVALID",
          canid: 0x309,
          index: 0,
          owner: False,
