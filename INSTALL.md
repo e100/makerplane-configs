@@ -105,6 +105,9 @@ cd makerplane
 First make a copy of a theme:
 ```
 sudo cp -rp /usr/share/plymouth/themes/pix /usr/share/plymouth/themes/makerplane
+sudo mv /usr/share/plymouth/themes/makerplane/pix.plymouth /usr/share/plymouth/themes/makerplane/makerplane.plymouth
+sudo mv /usr/share/plymouth/themes/makerplane/pix.script /usr/share/plymouth/themes/makerplane/makerplane.script
+
 ```
 Replace the splash.png with the Makerplane logog
 ```
