@@ -124,10 +124,7 @@ Setup wallpaper to Makerplane logo:
 pcmanfm --set-wallpaper ~/makerplane/images/Makerplane_Pi_Logo_Screen.png
 ```
 
-Auto-Hide menu bar???:
-```
-.config/wf-panel-pi.ini 
-```
+Auto-Hide menu bar by right clicking task bar and selecting panel settings, advanced tab, Minimize panel when not in use, set to 0 pixels
 Hide desktop icons, from GUI appearance settings desktop tab uncheck three checkboxes at the bottom
 
 ## Optional - Install software for the x729 UPS board
