@@ -109,7 +109,7 @@ outputs:
          canid: 0x309,
          index: 0,
          owner: False,
-         on_change: True,
+         on_change: False, # Send whenever set, useful for temporary communication loss or reboots
          require_leader: False
     }
   - { fixid: "WPNAME", canid: 0x480, index: 0, on_change:False, require_leader: True }
