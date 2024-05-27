@@ -18,6 +18,11 @@ enabled:
 includes:
   BUTTON_GROUP1: includes/buttons/vertical/screen_changing_PFD-EMS-MAP-RADIO-AP-Units.yaml
   HMI_ENCODER_BUTTONS: hmi/encoder_input_left.yaml
+  HMI_ENCODER_BUTTONS: hmi/encoder_input_right.yaml
+  SCREEN_ANDROID: screens/android.yaml
+  SCREEN_PFD: screens/pfd.yaml
+  SCREEN_RADIO: screens/radio.yaml
+  SCREEN_EMS: screens/ems.yaml
 
 #gauges:
 #  ARC1:
