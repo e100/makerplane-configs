@@ -1,0 +1,26 @@
+# Make changes to includes and enabled in this file.
+# see preferences.yaml for a list of options
+
+# IF you need a custom config file, make one anc change the filename here:
+includes:
+  QUORUM_CONFIG: connections/quorum_right.yaml
+  CANFIX_CONFIG: connections/canfix_left.yaml
+  MEGASQUIRT_CONFIG: connections/megasquirt_dakota_hawk.yaml
+  MGL_CONFIG: connections/mgl_dakota_hawk.yaml
+# This section is used to turn things on or off
+enabled:
+  QUORUM: true
+  DATA_RECORDER: true
+  NETFIX: true
+  COMMAND: false
+  CANFIX: true
+  SYSTEM: true
+  ANNUNCIATE: true
+  COMPUTE: true
+  STRATUX: false
+  MAVLINK: true
+  IFLY: true
+  MEGASQUIRT: true
+  MGL: true
+  DEMO: false
+
