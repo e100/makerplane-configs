@@ -21,7 +21,6 @@ includes:
   MAIN_CONFIG: main/left.yaml
   BUTTON_GROUP1: includes/buttons/vertical/screen_changing_PFD-EMS-MAP-RADIO-AP-Units.yaml
   HMI_ENCODER_BUTTONS: hmi/encoder_input_left.yaml
-  HMI_ENCODER_BUTTONS: hmi/encoder_input_right.yaml
   SCREEN_CONFIG: screens/dakoata_hawk.yaml
   SCREEN_ANDROID: screens/android.yaml
   SCREEN_PFD: screens/pfd.yaml
