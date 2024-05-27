@@ -11,6 +11,7 @@ style:
 
 enabled:
   AUTO_START: true
+  MAIN_CONFIG: main/left.yaml
   VSI_BALL: false
   VSI_TAPE: true
   TRIM_CONTROLS: true
