@@ -1,0 +1,26 @@
+# Edit this file to make changes.
+# format is the same as preferences.yaml
+# Any section defined here will override what is in
+# the preferences.yaml
+#style: [ ]
+style:
+ - basic
+# - dseg
+# - ghost
+ - segmented
+
+enabled:
+  VSI_BALL: false
+  VSI_TAPE: true
+  TRIM_CONTROLS: true
+  PRESSURE_DISPLAY: true
+
+includes:
+  BUTTON_GROUP1: includes/buttons/vertical/screen_changing_PFD-EMS-MAP-RADIO-AP-Units.yaml
+  HMI_ENCODER_BUTTONS: hmi/encoder_input_left.yaml
+
+#gauges:
+#  ARC1:
+#    disabled: True
+#  BAR37:
+#    disabled: True

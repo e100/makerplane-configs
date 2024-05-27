@@ -17,7 +17,7 @@ enabled:
 
 includes:
   BUTTON_GROUP1: includes/buttons/vertical/screen_changing_PFD-EMS-MAP-RADIO-AP-Units.yaml
-
+  HMI_ENCODER_BUTTONS: hmi/encoder_input_right.yaml
 
 #gauges:
 #  ARC1:
