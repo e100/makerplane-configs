@@ -10,6 +10,7 @@ style:
  - segmented
 
 enabled:
+  AUTO_START: true
   VSI_BALL: false
   VSI_TAPE: true
   TRIM_CONTROLS: true
@@ -22,6 +23,7 @@ includes:
   SCREEN_PFD: screens/pfd-left-buttons.yaml
   SCREEN_RADIO: screens/radio-left-buttons.yaml
   SCREEN_EMS: screens/ems-left-buttons.yaml
+  LOGGING_CONFIG: logging/file-debug.yaml
 
 #gauges:
 #  ARC1:
