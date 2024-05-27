@@ -9,7 +9,7 @@ canfix:
   #channel: /dev/ttyUSB0
 
   # This file controls the
-  mapfile: "{CONFIG}/canfix/map.yaml"
+  mapfile: "{CONFIG}/canfix/map_dakota_hawk.yaml"
   # The following is our Node Identification Information
   # See the CAN-FIX Protocol Specification for more information
   node: 146     # CAN-FIX Node ID
