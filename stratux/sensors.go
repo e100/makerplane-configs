@@ -387,6 +387,8 @@ func processGPS(result map[string]string) {
 	    mySituation.GPSPositionSampleRate = 20
 
 	    mySituation.GPSHorizontalAccuracy = 20 // Neded to GPS to be valid, must be < 30
+	    //mySituation.GPSTrueCourse = 100
+	    mySituation.GPSGroundSpeed = 10
         }
 
     }
@@ -532,7 +534,7 @@ func oldsensorAttitudeSender() {
 
             // If we have valid AHRS info, then update mySituation.
             mySituation.muAttitude.Lock()
-            if s.Valid() {
+            if true { //s.Valid() {
                 roll, pitch, heading = s.RollPitchHeading()
                 mySituation.AHRSRoll = roll / ahrs.Deg
                 mySituation.AHRSPitch = pitch / ahrs.Deg
@@ -542,7 +544,7 @@ func oldsensorAttitudeSender() {
                 }
 
                 //TODO westphae: until magnetometer calibration is performed, no mag heading
-                mySituation.AHRSMagHeading = ahrs.Invalid
+                mySituation.AHRSMagHeading = heading //ahrs.Invalid
                 mySituation.AHRSSlipSkid = s.SlipSkid()
                 mySituation.AHRSTurnRate = s.RateOfTurn()
                 mySituation.AHRSGLoad = s.GLoad()
@@ -713,11 +715,12 @@ func updateAHRSStatus() {
             // TODO, handle when invalid
             mySituation.muAttitude.Lock()
             mySituation.muBaro.Lock()
-            if myData.valid {
+            if true { //myData.valid {
                 mySituation.AHRSRoll = myData.roll
                 mySituation.AHRSPitch = myData.pitch 
                 mySituation.AHRSGyroHeading = myData.heading
                 mySituation.AHRSMagHeading = myData.heading //TODO Fix this
+		mySituation.GPSTrueCourse = float32(myData.heading) //TODO Fix this
                 mySituation.AHRSSlipSkid = 0
                 mySituation.AHRSTurnRate = 0
                 mySituation.AHRSGLoad = 0
