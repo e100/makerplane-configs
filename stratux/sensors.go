@@ -68,6 +68,13 @@ var (
 var gpsKeys = map[string]bool{
     "LONG": true,
     "LAT": true,
+    "GPS_SATS_VISIBLE": true,
+    "GPS_FIX_TYPE": true,
+    "GPS_ACCURACY_HORIZ": true,
+    "GPS_ACCURACY_VERTICAL": true,
+    "GS": true,
+    "GPS_ELLIPSOID_ALT": true,
+    "ALT": true,
 }
 
 
@@ -357,38 +364,57 @@ func sensorAttitudeSender() {
 
 
 func processGPS(result map[string]string) {
-    log.Printf("Data1:", result["value"])
+    //log.Printf("Data1:", result["value"])
     if gpsKeys[result["key"]] {
-	log.Printf("Data2:", result["key"],result["value"])
+	//log.Printf("Data2:", result["key"],result["value"])
         if false { //result["old"] == "0" || result["fail"] == "0" || result["bad"] == "0" {
-            log.Printf("OLD")
+            //log.Printf("OLD")
             // Flag gps as bad
         } else {
             // Lock mutex?
-	    log.Printf("Data:", result["value"])
+	    //log.Printf("Data:", result["value"])
             switch result["key"] {
                 case "LAT":
 	            val, _ := strconv.ParseFloat(result["value"],64)
                     mySituation.GPSLatitude = float32(val)
-		    log.Printf("LAT: ", result["value"])
+		    //log.Printf("LAT: ", result["value"])
                 case "LONG":
 		    val, _ := strconv.ParseFloat(result["value"],64)
                     mySituation.GPSLongitude = float32(val)
-
+		case "GPS_SATS_VISIBLE":
+			val, _ := strconv.ParseInt(result["value"], 10, 16)
+			mySituation.GPSSatellitesSeen = uint16(val)
+                        mySituation.GPSSatellites = uint16(val)
+                        mySituation.GPSSatellitesTracked = uint16(val)
+		case "GPS_FIX_TYPE":
+		    val, _ := strconv.ParseInt(result["value"], 10, 8)
+                    mySituation.GPSFixQuality = uint8(val) // TODO Do we need to convert anything here?
+		    // 0 or 1 from fix it 0 here
+		    // 2 from fix is 1 here
+		    // 3 or higher from fix is 2 here
+                case "GPS_ACCURACY_HORIZ":
+		    val, _ := strconv.ParseFloat(result["value"],64)
+		    mySituation.GPSHorizontalAccuracy = float32(val * 0.3048) // ft to meters
+                case "GPS_ACCURACY_VERTICAL":
+                    val, _ := strconv.ParseFloat(result["value"],64)
+                    mySituation.GPSHorizontalAccuracy = float32(val * 0.3048) // ft to meters
+		case "GS": 
+		    val, _ := strconv.ParseFloat(result["value"],64) // Should be knots in and out
+		    mySituation.GPSGroundSpeed = val
+		case "GPS_ELLIPSOID_ALT":
+	            val, _ := strconv.ParseFloat(result["value"],64) //should be ft in and out
+		    mySituation.GPSHeightAboveEllipsoid = float32(val)
+		case "ALT":
+		    val, _ := strconv.ParseFloat(result["value"],64)
+		    mySituation.GPSAltitudeMSL = float32(val) 
             }
 	    // TODO
-	    mySituation.GPSFixQuality = 2
 	    mySituation.GPSLastFixLocalTime = stratuxClock.Time
 	    mySituation.GPSLastValidNMEAMessageTime = stratuxClock.Time
-            mySituation.GPSSatellites = 10
-	    mySituation.GPSSatellitesTracked = 9
-	    mySituation.GPSSatellitesSeen = 12
 	    // see calculateNavRate in gps.go, seems we need the performance stats
 	    mySituation.GPSPositionSampleRate = 20
 
-	    mySituation.GPSHorizontalAccuracy = 20 // Neded to GPS to be valid, must be < 30
 	    //mySituation.GPSTrueCourse = 100
-	    mySituation.GPSGroundSpeed = 10
         }
 
     }
