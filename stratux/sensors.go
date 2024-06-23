@@ -85,6 +85,7 @@ var imuKeys = map[string]bool{
     "HEAD": true,
     "ANORM": true,
     "ALAT": true,
+    "ROT": true,
 }
 
 var pressKeys = map[string]bool{
@@ -413,6 +414,8 @@ func processIMU(result map[string]string) {
                 mySituation.AHRSGLoad, _ = strconv.ParseFloat(result["value"],64)
             case "ALAT":
                 mySituation.AHRSSlipSkid, _ = strconv.ParseFloat(result["value"],64) 
+            case "ROT":
+		mySituation.AHRSTurnRate, _ = strconv.ParseFloat(result["value"],64)
 		//mySituation.AHRSGyroHeading = ahrs.Invalid
                 //mySituation.AHRSMagHeading = ahrs.Invalid
                 //mySituation.AHRSSlipSkid = ahrs.Invalid
@@ -422,7 +425,6 @@ func processIMU(result map[string]string) {
         //mySituation.muAttitude.Unlock()
         }
 	//mySituation.AHRSSlipSkid  = 0
-	mySituation.AHRSTurnRate = 0
         mySituation.AHRSGLoadMin = 0
 	mySituation.AHRSLastAttitudeTime = stratuxClock.Time
     }
