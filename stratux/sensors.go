@@ -84,6 +84,7 @@ var imuKeys = map[string]bool{
     "PITCH": true,
     "HEAD": true,
     "ANORM": true,
+    "ALAT": true,
 }
 
 var pressKeys = map[string]bool{
@@ -105,7 +106,7 @@ func initI2CSensors() {
             // still want to update status in case external GPS delivers pressure data (OGN Tracker, SoftRF with BMP)
             // This usually happens on X86, where there is no embd supported I2C
             fmt.Println("Panic during i2c initialization!")
-            //go updateAHRSStatus()
+            go updateAHRSStatus()
         }
     }()
     //embd.SetHost(embd.HostRPi, 3)
@@ -113,14 +114,14 @@ func initI2CSensors() {
     go pollSensors()
     log.Printf("After poll sensors")
     go sensorAttitudeSender()
-    //go updateAHRSStatus()
+    go updateAHRSStatus()
 }
 
 func pollSensors() {
     timer := time.NewTicker(4 * time.Second)
     for {
         <-timer.C
-        log.Printf("Poll Sensors")
+        //log.Printf("Poll Sensors")
                 if !myConnected {
                         myConnected = initConnection()
             log.Printf("Init Connection")
@@ -363,37 +364,33 @@ func sensorAttitudeSender() {
                 // GPS ground track valid?
                 if isGPSGroundTrackValid() {
                     msg++
-                    log.Printf("GroundValid")
 	        }
 
                 // IMU is being used 
                 imu = globalSettings.IMU_Sensor_Enabled && globalStatus.IMUConnected
                 if imu {
                     msg += 1 << 1
-		    log.Printf("IMU Valid")
                 }
                 // BMP is being used
                 if (globalSettings.BMP_Sensor_Enabled && globalStatus.BMPConnected) || isTempPressValid() {
                     msg += 1 << 2
-		    log.Printf("BMP Valid")
                 }
                 mySituation.AHRSStatus = msg
-		log.Printf("mySituation.AHRSStatus: %s", mySituation.AHRSStatus)
-		makeAHRSGDL90Report() // Send whether or not valid - the function will invalidate the values as appropriate
-		makeAHRSSimReport()
-		makeAHRSLevilReport()
+		//makeAHRSGDL90Report() // Send whether or not valid - the function will invalidate the values as appropriate
+		//makeAHRSSimReport()
+		//makeAHRSLevilReport()
 
         }
     }
 }
 
 func processIMU(result map[string]string) {
-    log.Printf("%s, %s",result["key"], result["value"])
+    //log.Printf("%s, %s",result["key"], result["value"])
 
     if imuKeys[result["key"]] {
         //result["old"] == "0" || result["fail"] == "0" || result["bad"] == "0" {
         //mySituation.muAttitude.Lock()
-	log.Printf("%s, %s",result["key"], result["value"])
+	//log.Printf("%s, %s",result["key"], result["value"])
         switch result["key"] {
             case "ROLL":
 //		if result["old"] == "1" || result["fail"] == "1" || result["bad"] == "1" {
@@ -414,7 +411,9 @@ func processIMU(result map[string]string) {
 
             case "ANORM":
                 mySituation.AHRSGLoad, _ = strconv.ParseFloat(result["value"],64)
-                //mySituation.AHRSGyroHeading = ahrs.Invalid
+            case "ALAT":
+                mySituation.AHRSSlipSkid, _ = strconv.ParseFloat(result["value"],64) 
+		//mySituation.AHRSGyroHeading = ahrs.Invalid
                 //mySituation.AHRSMagHeading = ahrs.Invalid
                 //mySituation.AHRSSlipSkid = ahrs.Invalid
                 //mySituation.AHRSTurnRate = ahrs.Invalid
@@ -422,7 +421,7 @@ func processIMU(result map[string]string) {
 
         //mySituation.muAttitude.Unlock()
         }
-	mySituation.AHRSSlipSkid  = 0
+	//mySituation.AHRSSlipSkid  = 0
 	mySituation.AHRSTurnRate = 0
         mySituation.AHRSGLoadMin = 0
 	mySituation.AHRSLastAttitudeTime = stratuxClock.Time
@@ -506,7 +505,7 @@ func processGPS(result map[string]string) {
                     mySituation.GPSVerticalAccuracy = float32(val * 0.3048) // ft to meters
 		case "GS": 
 		    val, _ := strconv.ParseFloat(result["value"],64) // Should be knots in and out
-		    mySituation.GPSGroundSpeed = val + 10
+		    mySituation.GPSGroundSpeed = val
 		case "GPS_ELLIPSOID_ALT":
 	            val, _ := strconv.ParseFloat(result["value"],64) //should be ft in and out
 		    mySituation.GPSHeightAboveEllipsoid = float32(val)
@@ -843,40 +842,6 @@ func updateAHRSStatus() {
                 msg += 1 << 2
             }  
             mySituation.AHRSStatus = msg
-
-            // TODO, handle when invalid
-            mySituation.muAttitude.Lock()
-            mySituation.muBaro.Lock()
-            if true { //myData.valid {
-                mySituation.AHRSRoll = myData.roll
-                mySituation.AHRSPitch = myData.pitch 
-                //mySituation.AHRSGyroHeading = myData.heading
-                //mySituation.AHRSMagHeading = myData.heading //TODO Fix this
-		mySituation.GPSTrueCourse = float32(myData.heading) //TODO Fix this
-                mySituation.AHRSSlipSkid = 0
-                mySituation.AHRSTurnRate = 0
-                mySituation.AHRSGLoad = 0
-                mySituation.AHRSGLoadMin = 0
-                mySituation.BaroLastMeasurementTime = stratuxClock.Time
-                mySituation.BaroTemperature = float32(myData.temp)
-                mySituation.BaroPressureAltitude = float32(myData.altitude)
-                mySituation.AHRSLastAttitudeTime = stratuxClock.Time
-                // TODO need to get and set all of the data
-
-            } else {
-                mySituation.AHRSRoll = ahrs.Invalid
-                mySituation.AHRSPitch = ahrs.Invalid
-                mySituation.AHRSGyroHeading = ahrs.Invalid
-                mySituation.AHRSMagHeading = ahrs.Invalid
-                mySituation.AHRSSlipSkid = ahrs.Invalid
-                mySituation.AHRSTurnRate = ahrs.Invalid
-                mySituation.AHRSGLoad = ahrs.Invalid
-                mySituation.AHRSGLoadMin = ahrs.Invalid
-                mySituation.AHRSGLoadMax = 0
-                mySituation.AHRSLastAttitudeTime = time.Time{}
-            }
-            mySituation.muAttitude.Unlock()
-            mySituation.muBaro.Unlock()
 
             makeAHRSGDL90Report() // Send whether or not valid - the function will invalidate the values as appropriate
             makeAHRSSimReport()
