@@ -143,6 +143,7 @@ Answer yes to the questions when asked, this will setup the software to graceful
 ```
 sudo bash pwr_ubuntu.sh
 ```
+NOTE: I have noticed that sometimes it does not shutdown when power is lost. In the cases this has happend I had use ssh to log into the PI from another computer. Need to resolve this so it will always shutdown on power loss.
 
 ### Set option to allow USB Power
 When the PI is powered from the header pins it is necessary to add this configuration if you want the USB ports to provide maximum power to any connected devices. 
@@ -273,13 +274,14 @@ auto can10
   pre-up /sbin/ip link set can10 type can bitrate 250000 restart-ms 500
   up /sbin/ifconfig can10 up
   down /sbin/ifconfig can10 down
-
+  post-up /sbin/ip link set can10 txqueuelen 1000
 
 auto can11
   iface can11 inet manual
   pre-up /sbin/ip link set can11 type can bitrate 500000 restart-ms 500
   up /sbin/ifconfig can11 up
-  down /sbin/ifconfig can11 down' | sudo tee -a /etc/network/interfaces >/dev/null
+  down /sbin/ifconfig can11 down
+  post-up /sbin/ip link set can11 txqueuelen 1000' | sudo tee -a /etc/network/interfaces >/dev/null
 ```
 
 Now we should reboot
@@ -301,9 +303,9 @@ candump -cae can10,0:0,#FFFFFFFF
 I use an app on my phone that acts as a keyboard.
 Handy to use in the airplane should you need a keyboard for some reason
 
-## Install snapcraft
-I prefer to deploy pyEFIS and FIX-Gateway as snaps. Ideally the MakerPlane community will some day publish snaps so you can install the software with `snap install pyefis` but until then you can make your own snaps.<br>
-With snaps you could, for example, compile and test future updates at home, then copy the new snaps to a flash drive and update your airplane when you get there. If something goes wrong, snap's versioning allows you to easily revert the change too!<br>
+## Optional - Install snapcraft
+This is only needed if you want to make your own snaps for development purposes.
+
 Install snapcraft:
 ```
 snap install snapcraft --classic
@@ -320,26 +322,10 @@ reboot
 ```
 
 ## Install FIX Gateway
-To install FIX Gateway we will first clone my repository. At the time of writing this the numerous improvements I have made are not merged into Makerplanes's repository. When that happens I will update these instructions to use their repo instead of mine.
+To install FIX Gateway use snap:
 ```
-cd ~/makerplane/setup
-git clone https://github.com/e100/FIX-Gateway.git
-cd FIX-Gateway
+sudo snap install fixgateway
 ```
-### Currently:
-Now checkout the branch with the most recent changes:
-```
-git checkout combined
-```
-
-### Build the snap and install it
-This will build and install FIX-Gateway:
-```
-snapcraft
-sudo snap install fixgateway_0.3_arm64.snap --dangerous
-```
-NOTE: as snap versions change the filename to install might change.<br>
-  dangerous is needed because the snap you just made is not signed.
 
 ### Might need additional configuration
 You must also read the docs/snapcraft.md for Fix and follow the directions to complete setup<br>
@@ -380,98 +366,15 @@ fixgateway.client
 ```
 
 
-### Move the makerplane folder
-The FIX Gateway snap runs confined and cannot access files in ~/makerplane<br>
-So I moved ~/makerplane into a folder that it can access and symlink ~/makerplane to it<br>
-This way you can still manage everything from ~/makerplane and have a single location of all of your configuration files.
-
-```
-cd ~
-mkdir -p ~/snap/fixgateway/common
-mv ~/makerplane  ~/snap/fixgateway/common/makerplane
-ln -s ~/snap/fixgateway/common/makerplane ~/makerplane
-```
-
-### Install systemd unit file to auto start FIX Gateway
-This is a systemd unit file that defines how to run the FIX-Gateway:
-```
-cd ~/makerplane/
-mkdir -p ~/.config/systemd/user
-cp systemd/fixgateway.service ~/.config/systemd/user/
-```
-NOTE: Edit `~/.config/systemd/user/fixgateway.service` and change the config file to use if needed.
-![FIX Gateway config](/images/fix-config.png)
-
-### Enable autostart
-This command will setup the FIX Gateway service to start automatically after reboot. It will also automatically be restarted should it crash for any reason.
-
-```
-systemctl enable --user fixgateway.service
-```
-
-
 ## Install pyEFIS
-We will again use my fork of pyEFIS, I will update this to use the Makerplane repository once my changes have been merged:
+Install pyefis with snap:
 ```
-cd ~/makerplane/setup
-git clone https://github.com/e100/pyEfis.git
-cd pyEfis
+sudo snap install pyefis
 ```
 
-### Build and install:
-Checkout my most recent changes:
-```
-git checkout improve_snap
-```
+Installing pyefis will also install the content snap faa-cifp-data, this contains the FAA CIFP data needed for the Virtual VFR feature to work.
+This is all automated so nothing extra is required.
 
-Now build and install pyEFIS:
-```
-snapcraft
-sudo snap install pyefis_0.1_arm64.snap --dangerous --classic
-```
-
-### Install the systemd unit file for pyEFIS and edit it
-```
-cd ~/makerplane/
-cp systemd/pyefis.service ~/.config/systemd/user/
-```
-When copying the systemd unit file also edit the exec line and set the config file to the left or right as needed
-ExecStart=/snap/bin/pyefis --config-file /home/eblevins/makerplane/pyefis/config/left.yaml
-
-### Configure autostart
-This will enable auto start of pyEFIS on reboot:
-```
-systemctl enable --user pyefis.service
-```
-
-### Optional - Download the data for Virtual VFR and index it
-NOTE: This is optional and only needed if you are using the VirtualVFR instrument<br>
-Virtual VFS will show a 3D rendering of airport runways along with a glide slop indicator, it is a rudimentary `Synthetic Vision` that you will see on commercial a comercial PFD.
-This data should also be updated periodically
-
-#### Create directory for the CIFP data
-```
-mkdir ~/makerplane/pyefis/CIFP/
-cd ~/makerplane/pyefis/CIFP/
-```
-
-#### Download the CIFP Data
-Visit https://www.faa.gov/air_traffic/flight_info/aeronav/digital_products/cifp/download/ and copy the link to the latest data.
-
-Download the latest data using the link you copied and unzip it<br>
-
-Replace the link in the following command with the latest version:
-```
-wget https://aeronav.faa.gov/Upload_313-d/cifp/CIFP_231228.zip
-unzip CIFP_231228.zip
-```
-
-This command will create the index that pyEFIS needs to display the data:
-```
-pyefis.makecifpindex FAACIFP18
-```
-
-When updating in the future just delete the CIFP directory and start over at the beginning of this section
 
 
 ### Install waydroid
@@ -516,6 +419,10 @@ Then we run the command to start android:
 ```
 WAYLAND_DISPLAY=wayland-1 waydroid show-full-ui
 ```
+NOTE, you might need to use this command instead:
+```
+WAYLAND_DISPLAY=wayland-0 waydroid show-full-ui
+```
 
 In another terminal window or tab open up the waydroid shell:
 ```
@@ -533,10 +440,29 @@ Use the string of numbers printed by the command to register the device on your 
 At this point you should reboot and make sure everything so far seems to be working. Then continue onto installing stratux by reading the [stratux/README.md](stratux/README.md) in this repo<br>
 NOTE: I only installed Stratux on one PI, not both. The 2nd one gets internet access through the Sttratux using the wired ethernet port.
 
+#### waydroid service
+For waydroid to start/restart when needed for pyefis we need to setup a service that monitors for the right conditions.
+
+You might need to make this directory:
+```
+mkdir -p ~/.config/systemd/user/
+```
+
+Now symlink the waydroid-monitor service into that folder:
+```
+ln -s /snap/pyefis/current/extras/waydroid-monitor.service ~/.config/systemd/user/waydroid-monitor.service
+```
+
+Enable the waydroid monitor
+```
+systemctl --user enable waydroid-monitor.service
+```
+
+Start the waydroid monitor:
+```
+systemctl --user start waydroid-monitor.service
+```
+
+With this monitor running if you navigate to a page setup to show waydroid you will see Lineage OS boot up.
 
 
-
-# Known issues
-## Waydroid window stops working
-If pyefis is killed sometimes the waydroid and weston processe are not killed. When pyefis is restarted it is not possible to get the android window working again.<br>
-I have only seen this when using `systemctl stop`, or `kill` to exit pyEFIS. By default you can press x on the keyboard to exit and this usually works well allowing Android to work when pyEFIS is restarted.
