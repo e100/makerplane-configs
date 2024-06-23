@@ -94,7 +94,10 @@ Setup waydroid to use the br0 network.
 ```
 sudo sed -i 's/waydroid0/br0/g' /var/lib/waydroid/lxc/waydroid/config
 ```
-
+### Needed to enable the patched sensors.go:
+```
+sudo sed -i 's/\/dev\/ttyAMA0/fixgateway/g' /boot/stratux.conf
+```
 ## Reboot
 
 ## Configure Stratux
