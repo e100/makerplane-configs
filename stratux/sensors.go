@@ -75,8 +75,22 @@ var gpsKeys = map[string]bool{
     "GS": true,
     "GPS_ELLIPSOID_ALT": true,
     "ALT": true,
+    "COURSE": true,
+//    "ALAT": true,
 }
 
+var imuKeys = map[string]bool{
+    "ROLL": true,
+    "PITCH": true,
+    "HEAD": true,
+    "ANORM": true,
+}
+
+var pressKeys = map[string]bool{
+    "OAT": true,
+    "PALT": true,
+    "AIRPRESS": true,
+}
 
 func initI2CSensors() {
     // This is where things are init
@@ -91,7 +105,7 @@ func initI2CSensors() {
             // still want to update status in case external GPS delivers pressure data (OGN Tracker, SoftRF with BMP)
             // This usually happens on X86, where there is no embd supported I2C
             fmt.Println("Panic during i2c initialization!")
-            go updateAHRSStatus()
+            //go updateAHRSStatus()
         }
     }()
     //embd.SetHost(embd.HostRPi, 3)
@@ -99,7 +113,7 @@ func initI2CSensors() {
     go pollSensors()
     log.Printf("After poll sensors")
     go sensorAttitudeSender()
-    go updateAHRSStatus()
+    //go updateAHRSStatus()
 }
 
 func pollSensors() {
@@ -113,14 +127,14 @@ func pollSensors() {
         }        
         // If it's not currently connected, try connecting to pressure sensor
         if globalSettings.BMP_Sensor_Enabled && !globalStatus.BMPConnected {
-            globalStatus.BMPConnected = initPressureSensor() // I2C temperature and pressure altitude.
+            globalStatus.BMPConnected = initFix(pressKeys) // I2C temperature and pressure altitude.
             //go tempAndPressureSender()
             log.Printf("Init Pressure")
         }
 
         // If it's not currently connected, try connecting to IMU
         if globalSettings.IMU_Sensor_Enabled && !globalStatus.IMUConnected {
-            globalStatus.IMUConnected = initIMU() // I2C accel/gyro/mag.
+            globalStatus.IMUConnected = initFix(imuKeys) // I2C accel/gyro/mag.
             log.Printf("Init IMU")
             if globalStatus.IMUConnected {
                 log.Printf("IMU Connected")
@@ -128,7 +142,10 @@ func pollSensors() {
         }
 
         if globalSettings.GpsManualDevice == "fixgateway" && !globalStatus.GPS_connected {
-            globalStatus.GPS_connected = initFixGPS() 
+            globalStatus.GPS_connected = initFix(gpsKeys) 
+            //if globalStatus.GPS_connected {
+            globalStatus.GPS_detected_type = GPS_TYPE_NETWORK
+            //}
         }
     }
 }
@@ -152,24 +169,6 @@ func initConnection() (ok bool) {
 
 }
 
-func initFixGPS() (ok bool) {
-    if myConnected {
-        log.Printf("Init FIX Gateway GPS")
-        // Subscribe to ROLL PITCH
-        for key := range gpsKeys {
-            var err error
-            _, err = myFixConnection.Write([]byte("@s"+key+"\n"))
-            // TODO Would be best to ensure the subscription is acked
-            if err != nil {
-                  return false
-            }
-        }
-        globalStatus.GPS_detected_type = GPS_TYPE_NETWORK //| (globalStatus.GPS_detected_type & 0xf0)
-	log.Printf("Init FIX Gateway GPS GOOD!")
-        return true
-    }
-    return false
-}
 
 //  if v == bmp388.ChipId || v == bmp388.ChipId390 {
 //      log.Printf("BMP-388 detected")
@@ -199,6 +198,23 @@ func initPressureSensor() (ok bool) {
             // TODO Would be best to ensure the subscription is acked
             if err != nil {
                  return false
+            }
+        }
+        return true
+    }
+    return false
+}
+
+func initFix(fixKeys map[string]bool) (ok bool) {
+    if myConnected {
+        // Subscribe to ROLL PITCH
+        for key := range fixKeys {
+            var err error
+            _, err = myFixConnection.Write([]byte("@s"+key+"\n"))
+	    log.Printf("Request Fix subscription for: %s", key)
+            // TODO Would be best to ensure the subscription is acked
+            if err != nil {
+                  return false
             }
         }
         return true
@@ -273,24 +289,6 @@ func tempAndPressureSender() {
     //mySituation.BaroVerticalSpeed = 99999
 }
 
-func initIMU() (ok bool) {
-    if myConnected {
-        log.Printf("Init IMU")
-        // Subscribe to ROLL PITCH
-        keys := []string{"ROLL", "PITCH", "HEAD"}
-        for _, key := range keys {
-            var err error
-            _, err = myFixConnection.Write([]byte("@s"+key+"\n"))
-            // TODO Would be best to ensure the subscription is acked
-            if err != nil {
-                  return false
-            }
-        }
-        return true
-    }
-    return false
-}
-
 func sensorAttitudeSender() {
     log.Printf("Attitude Sender")
         //var (
@@ -299,7 +297,14 @@ func sensorAttitudeSender() {
                 //mpuError, magError   error
                 //failNum              uint8
         //)
+
+    var (
+        msg    uint8
+        imu    bool
+    )
+
     var re = regexp.MustCompile(`(?P<key>\w*);(?P<value>\d|.*);(?P<ann>\d)(?P<old>\d)(?P<bad>\d)(?P<fail>\d)(?P<secfail>\d)`)
+    var re2 = regexp.MustCompile(`(?P<at>@)(?P<flag>.)(?P<key>\w*)`)
     if globalSettings.IMU_Sensor_Enabled {
              log.Printf("IMU Enabled")
     }
@@ -324,7 +329,18 @@ func sensorAttitudeSender() {
                 }
                 m := re.FindStringSubmatch(data)
                 if m == nil {
-                    log.Printf("error parsing: ", string(data))
+                    // This seems to happen when the ack for subscribe is pushed
+		    f := re2.FindStringSubmatch(data)
+		    if f == nil {
+                        log.Printf("error parsing: ", string(data))
+		    } else {
+			if f[1] == "@" && f[2] == "s" {
+			    log.Printf("Subscription confirmed for: %s", f[3])
+			} else {
+                            log.Printf("error parsing: ", string(data))
+			}
+	            }
+
                     continue
                 }
                 result := make(map[string]string)
@@ -334,34 +350,115 @@ func sensorAttitudeSender() {
                     }
                 }
 		//log.Printf("data: ", string(data))
-                processGPS(result)
-                //log.Printf(result["key"])
-                myData.mu.Lock()
-                //log.Printf(result["value"])
-                
-                switch result["key"] {
-                    case "ROLL":
-                        myData.roll, _ = strconv.ParseFloat(result["value"],64)
-                    case "PITCH":
-                        myData.pitch,_ = strconv.ParseFloat(result["value"],64)
-                    case "HEAD":
-                        myData.heading,_ = strconv.ParseFloat(result["value"],64)
-                    case "OAT": 
-                        myData.temp,_ = strconv.ParseFloat(result["value"],64)
-                    case "PALT": 
-                        myData.altitude,_ = strconv.ParseFloat(result["value"],64)
+		//log.Printf(result["value"])
+		//log.Printf("%s, %s",result["key"], result["value"])
+
+		processGPS(result)
+		//log.Printf("1")
+                processPress(result)
+		//log.Printf("3")
+                processIMU(result)
+		//log.Printf("3")
+                msg = 0
+                // GPS ground track valid?
+                if isGPSGroundTrackValid() {
+                    msg++
+                    log.Printf("GroundValid")
+	        }
+
+                // IMU is being used 
+                imu = globalSettings.IMU_Sensor_Enabled && globalStatus.IMUConnected
+                if imu {
+                    msg += 1 << 1
+		    log.Printf("IMU Valid")
                 }
-                if result["old"] == "0" || result["fail"] == "0" {
-                    myData.valid = true
-                } else {
-                    myData.valid = false
+                // BMP is being used
+                if (globalSettings.BMP_Sensor_Enabled && globalStatus.BMPConnected) || isTempPressValid() {
+                    msg += 1 << 2
+		    log.Printf("BMP Valid")
                 }
-                //log.Printf(result["old"])
-                myData.mu.Unlock()
+                mySituation.AHRSStatus = msg
+		log.Printf("mySituation.AHRSStatus: %s", mySituation.AHRSStatus)
+		makeAHRSGDL90Report() // Send whether or not valid - the function will invalidate the values as appropriate
+		makeAHRSSimReport()
+		makeAHRSLevilReport()
+
         }
     }
 }
 
+func processIMU(result map[string]string) {
+    log.Printf("%s, %s",result["key"], result["value"])
+
+    if imuKeys[result["key"]] {
+        //result["old"] == "0" || result["fail"] == "0" || result["bad"] == "0" {
+        //mySituation.muAttitude.Lock()
+	log.Printf("%s, %s",result["key"], result["value"])
+        switch result["key"] {
+            case "ROLL":
+//		if result["old"] == "1" || result["fail"] == "1" || result["bad"] == "1" {
+                    mySituation.AHRSRoll, _ = strconv.ParseFloat(result["value"],64)
+//                } else {
+//                    mySituation.AHRSRoll = ahrs.Invalid
+//                }
+            case "PITCH":
+//                log.Printf(result["value"])
+//                if result["old"] == "1" || result["fail"] == "1" || result["bad"] == "1" {
+                    mySituation.AHRSPitch,_ = strconv.ParseFloat(result["value"],64)
+//                } else {
+//                    mySituation.AHRSPitch = ahrs.Invalid
+//                }
+            case "HEAD":
+                mySituation.AHRSGyroHeading,_ = strconv.ParseFloat(result["value"],64)
+                mySituation.AHRSMagHeading,_ = strconv.ParseFloat(result["value"],64) //TODO Fix this
+
+            case "ANORM":
+                mySituation.AHRSGLoad, _ = strconv.ParseFloat(result["value"],64)
+                //mySituation.AHRSGyroHeading = ahrs.Invalid
+                //mySituation.AHRSMagHeading = ahrs.Invalid
+                //mySituation.AHRSSlipSkid = ahrs.Invalid
+                //mySituation.AHRSTurnRate = ahrs.Invalid
+                //mySituation.AHRSGLoadMin = ahrs.Invalid
+
+        //mySituation.muAttitude.Unlock()
+        }
+	mySituation.AHRSSlipSkid  = 0
+	mySituation.AHRSTurnRate = 0
+        mySituation.AHRSGLoadMin = 0
+	mySituation.AHRSLastAttitudeTime = stratuxClock.Time
+    }
+}
+
+func processPress(result map[string]string) {
+    var (
+        altLast  = -9999.9
+        altitude float64
+        dt       = 0.1
+    )  
+    u := 5 / (5 + float32(dt)) // Use 5 sec decay time for rate of climb, slightly faster than typical VSI
+
+    if pressKeys[result["key"]] {
+        mySituation.muBaro.Lock()
+        switch result["key"] {
+            case "OAT":
+		val, _ := strconv.ParseFloat(result["value"],64)
+                mySituation.BaroTemperature = float32(val)
+            case "PALT":
+		val, _ := strconv.ParseFloat(result["value"],64)
+                mySituation.BaroPressureAltitude = float32(val)
+                if altLast < -2000 {
+                    altLast = altitude // Initialize
+                }
+                mySituation.BaroVerticalSpeed = u*mySituation.BaroVerticalSpeed + (1-u)*float32(altitude-altLast)/(float32(dt)/60)
+                //mySituation.BaroSourceType = BARO_TYPE_BMP280
+                altLast = altitude
+
+
+        }
+        mySituation.BaroLastMeasurementTime = stratuxClock.Time
+        mySituation.muBaro.Unlock()
+    }
+}
 
 func processGPS(result map[string]string) {
     //log.Printf("Data1:", result["value"])
@@ -374,6 +471,9 @@ func processGPS(result map[string]string) {
             // Lock mutex?
 	    //log.Printf("Data:", result["value"])
             switch result["key"] {
+		case "COURSE":
+                    val, _ := strconv.ParseFloat(result["value"],64)
+	            mySituation.GPSTrueCourse = float32(val)
                 case "LAT":
 	            val, _ := strconv.ParseFloat(result["value"],64)
                     mySituation.GPSLatitude = float32(val)
@@ -388,7 +488,13 @@ func processGPS(result map[string]string) {
                         mySituation.GPSSatellitesTracked = uint16(val)
 		case "GPS_FIX_TYPE":
 		    val, _ := strconv.ParseInt(result["value"], 10, 8)
-                    mySituation.GPSFixQuality = uint8(val) // TODO Do we need to convert anything here?
+		    if val == 0 || val == 1 {
+                        mySituation.GPSFixQuality = 0 //uint8(val) // TODO Do we need to convert anything here?
+		    } else if val == 2 {
+			mySituation.GPSFixQuality = 1
+		    } else if val >= 3 {
+			mySituation.GPSFixQuality = 2
+		    }
 		    // 0 or 1 from fix it 0 here
 		    // 2 from fix is 1 here
 		    // 3 or higher from fix is 2 here
@@ -397,10 +503,10 @@ func processGPS(result map[string]string) {
 		    mySituation.GPSHorizontalAccuracy = float32(val * 0.3048) // ft to meters
                 case "GPS_ACCURACY_VERTICAL":
                     val, _ := strconv.ParseFloat(result["value"],64)
-                    mySituation.GPSHorizontalAccuracy = float32(val * 0.3048) // ft to meters
+                    mySituation.GPSVerticalAccuracy = float32(val * 0.3048) // ft to meters
 		case "GS": 
 		    val, _ := strconv.ParseFloat(result["value"],64) // Should be knots in and out
-		    mySituation.GPSGroundSpeed = val
+		    mySituation.GPSGroundSpeed = val + 10
 		case "GPS_ELLIPSOID_ALT":
 	            val, _ := strconv.ParseFloat(result["value"],64) //should be ft in and out
 		    mySituation.GPSHeightAboveEllipsoid = float32(val)
@@ -744,8 +850,8 @@ func updateAHRSStatus() {
             if true { //myData.valid {
                 mySituation.AHRSRoll = myData.roll
                 mySituation.AHRSPitch = myData.pitch 
-                mySituation.AHRSGyroHeading = myData.heading
-                mySituation.AHRSMagHeading = myData.heading //TODO Fix this
+                //mySituation.AHRSGyroHeading = myData.heading
+                //mySituation.AHRSMagHeading = myData.heading //TODO Fix this
 		mySituation.GPSTrueCourse = float32(myData.heading) //TODO Fix this
                 mySituation.AHRSSlipSkid = 0
                 mySituation.AHRSTurnRate = 0
