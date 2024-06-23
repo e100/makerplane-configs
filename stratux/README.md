@@ -11,8 +11,7 @@ sudo apt install -y librtlsdr-dev libusb-1.0-0-dev pkg-config debhelper libjpeg-
 
 ### Clone stratux repo
 ```
-mkdir -p ~/.makerplane/stratux
-cd ~/.makerplane/stratux
+cd ~/makerplane/stratux
 git clone --recursive https://github.com/b3nn0/stratux.git
 ```
 
