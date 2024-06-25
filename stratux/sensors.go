@@ -114,7 +114,7 @@ func initI2CSensors() {
     //i2cbus = embd.NewI2CBus(1)
     go pollSensors()
     log.Printf("After poll sensors")
-    go sensorAttitudeSender()
+    go processFixData()
     go updateAHRSStatus()
 }
 
@@ -213,7 +213,7 @@ func initFix(fixKeys map[string]bool) (ok bool) {
         for key := range fixKeys {
             var err error
             _, err = myFixConnection.Write([]byte("@s"+key+"\n"))
-	    log.Printf("Request Fix subscription for: %s", key)
+            log.Printf("Request Fix subscription for: %s", key)
             // TODO Would be best to ensure the subscription is acked
             if err != nil {
                   return false
@@ -291,8 +291,8 @@ func tempAndPressureSender() {
     //mySituation.BaroVerticalSpeed = 99999
 }
 
-func sensorAttitudeSender() {
-    log.Printf("Attitude Sender")
+func processFixData() {
+    log.Printf("Read FIX Data")
         //var (
                 //t                    time.Time
                 //roll, pitch, heading float64
@@ -307,81 +307,62 @@ func sensorAttitudeSender() {
 
     var re = regexp.MustCompile(`(?P<key>\w*);(?P<value>\d|.*);(?P<ann>\d)(?P<old>\d)(?P<bad>\d)(?P<fail>\d)(?P<secfail>\d)`)
     var re2 = regexp.MustCompile(`(?P<at>@)(?P<flag>.)(?P<key>\w*)`)
-    if globalSettings.IMU_Sensor_Enabled {
-             log.Printf("IMU Enabled")
-    }
-    if globalStatus.IMUConnected {
-             log.Printf("IMU Connected and ready")
-    }
     timer := time.NewTicker(50 * time.Millisecond) // ~20Hz update.
     for {
         <-timer.C
             time.Sleep(950 * time.Millisecond)
 
-            for globalSettings.IMU_Sensor_Enabled && globalStatus.IMUConnected {
+            //for globalSettings.IMU_Sensor_Enabled && globalStatus.IMUConnected {
                 //process received data
                 //log.Printf("Listen")
-                data, err := bufio.NewReader(myFixConnection).ReadString('\n')
-                if err != nil {
-                    fmt.Println(err)
-                    globalStatus.IMUConnected = false
-                    globalStatus.BMPConnected = false
-                    myConnected = false
-                        continue
-                }
-                m := re.FindStringSubmatch(data)
-                if m == nil {
-                    // This seems to happen when the ack for subscribe is pushed
-		    f := re2.FindStringSubmatch(data)
-		    if f == nil {
-                        log.Printf("error parsing: ", string(data))
-		    } else {
-			if f[1] == "@" && f[2] == "s" {
-			    log.Printf("Subscription confirmed for: %s", f[3])
-			} else {
-                            log.Printf("error parsing: ", string(data))
-			}
-	            }
-
+            data, err := bufio.NewReader(myFixConnection).ReadString('\n')
+            if err != nil {
+                fmt.Println(err)
+                globalStatus.IMUConnected = false
+                globalStatus.BMPConnected = false
+                myConnected = false
                     continue
-                }
-                result := make(map[string]string)
-                for i, name := range re.SubexpNames() {
-                    if i != 0 && name != "" {
-                        result[name] = m[i]
+            }
+            m := re.FindStringSubmatch(data)
+            if m == nil {
+                // This seems to happen when the ack for subscribe is pushed
+                f := re2.FindStringSubmatch(data)
+                if f == nil {
+                    log.Printf("error parsing: ", string(data))
+                } else {
+                    if f[1] == "@" && f[2] == "s" {
+                        log.Printf("Subscription confirmed for: %s", f[3])
+                    } else {
+                        log.Printf("error parsing: ", string(data))
                     }
                 }
-		//log.Printf("data: ", string(data))
-		//log.Printf(result["value"])
-		//log.Printf("%s, %s",result["key"], result["value"])
-
-		processGPS(result)
-		//log.Printf("1")
-                processPress(result)
-		//log.Printf("3")
-                processIMU(result)
-		//log.Printf("3")
-                msg = 0
-                // GPS ground track valid?
-                if isGPSGroundTrackValid() {
-                    msg++
-	        }
-
-                // IMU is being used 
-                imu = globalSettings.IMU_Sensor_Enabled && globalStatus.IMUConnected
-                if imu {
-                    msg += 1 << 1
+                continue
+            }
+            result := make(map[string]string)
+            for i, name := range re.SubexpNames() {
+                if i != 0 && name != "" {
+                    result[name] = m[i]
                 }
-                // BMP is being used
-                if (globalSettings.BMP_Sensor_Enabled && globalStatus.BMPConnected) || isTempPressValid() {
-                    msg += 1 << 2
-                }
-                mySituation.AHRSStatus = msg
-		//makeAHRSGDL90Report() // Send whether or not valid - the function will invalidate the values as appropriate
-		//makeAHRSSimReport()
-		//makeAHRSLevilReport()
+            }
+            processGPS(result)
+            processPress(result)
+            processIMU(result)
+            msg = 0
+            // GPS ground track valid?
+            if isGPSGroundTrackValid() {
+                msg++
+            }
 
-        }
+            // IMU is being used 
+            imu = globalSettings.IMU_Sensor_Enabled && globalStatus.IMUConnected
+            if imu {
+                msg += 1 << 1
+            }
+            // BMP is being used
+            if (globalSettings.BMP_Sensor_Enabled && globalStatus.BMPConnected) || isTempPressValid() {
+                msg += 1 << 2
+            }
+            mySituation.AHRSStatus = msg
     }
 }
 
@@ -391,10 +372,9 @@ func processIMU(result map[string]string) {
     if imuKeys[result["key"]] {
         //result["old"] == "0" || result["fail"] == "0" || result["bad"] == "0" {
         //mySituation.muAttitude.Lock()
-	//log.Printf("%s, %s",result["key"], result["value"])
         switch result["key"] {
             case "ROLL":
-//		if result["old"] == "1" || result["fail"] == "1" || result["bad"] == "1" {
+//        if result["old"] == "1" || result["fail"] == "1" || result["bad"] == "1" {
                     mySituation.AHRSRoll, _ = strconv.ParseFloat(result["value"],64)
 //                } else {
 //                    mySituation.AHRSRoll = ahrs.Invalid
@@ -415,8 +395,8 @@ func processIMU(result map[string]string) {
             case "ALAT":
                 mySituation.AHRSSlipSkid, _ = strconv.ParseFloat(result["value"],64) 
             case "ROT":
-		mySituation.AHRSTurnRate, _ = strconv.ParseFloat(result["value"],64)
-		//mySituation.AHRSGyroHeading = ahrs.Invalid
+                mySituation.AHRSTurnRate, _ = strconv.ParseFloat(result["value"],64)
+                //mySituation.AHRSGyroHeading = ahrs.Invalid
                 //mySituation.AHRSMagHeading = ahrs.Invalid
                 //mySituation.AHRSSlipSkid = ahrs.Invalid
                 //mySituation.AHRSTurnRate = ahrs.Invalid
@@ -424,9 +404,9 @@ func processIMU(result map[string]string) {
 
         //mySituation.muAttitude.Unlock()
         }
-	//mySituation.AHRSSlipSkid  = 0
+        //mySituation.AHRSSlipSkid  = 0
         mySituation.AHRSGLoadMin = 0
-	mySituation.AHRSLastAttitudeTime = stratuxClock.Time
+        mySituation.AHRSLastAttitudeTime = stratuxClock.Time
     }
 }
 
@@ -442,10 +422,10 @@ func processPress(result map[string]string) {
         mySituation.muBaro.Lock()
         switch result["key"] {
             case "OAT":
-		val, _ := strconv.ParseFloat(result["value"],64)
+                val, _ := strconv.ParseFloat(result["value"],64)
                 mySituation.BaroTemperature = float32(val)
             case "PALT":
-		val, _ := strconv.ParseFloat(result["value"],64)
+                val, _ := strconv.ParseFloat(result["value"],64)
                 mySituation.BaroPressureAltitude = float32(val)
                 if altLast < -2000 {
                     altLast = altitude // Initialize
@@ -464,64 +444,64 @@ func processPress(result map[string]string) {
 func processGPS(result map[string]string) {
     //log.Printf("Data1:", result["value"])
     if gpsKeys[result["key"]] {
-	//log.Printf("Data2:", result["key"],result["value"])
+    //log.Printf("Data2:", result["key"],result["value"])
         if false { //result["old"] == "0" || result["fail"] == "0" || result["bad"] == "0" {
             //log.Printf("OLD")
             // Flag gps as bad
         } else {
             // Lock mutex?
-	    //log.Printf("Data:", result["value"])
+       //log.Printf("Data:", result["value"])
             switch result["key"] {
-		case "COURSE":
+                case "COURSE":
                     val, _ := strconv.ParseFloat(result["value"],64)
-	            mySituation.GPSTrueCourse = float32(val)
+                    mySituation.GPSTrueCourse = float32(val)
                 case "LAT":
-	            val, _ := strconv.ParseFloat(result["value"],64)
+                    val, _ := strconv.ParseFloat(result["value"],64)
                     mySituation.GPSLatitude = float32(val)
-		    //log.Printf("LAT: ", result["value"])
+                    //log.Printf("LAT: ", result["value"])
                 case "LONG":
-		    val, _ := strconv.ParseFloat(result["value"],64)
+                    val, _ := strconv.ParseFloat(result["value"],64)
                     mySituation.GPSLongitude = float32(val)
-		case "GPS_SATS_VISIBLE":
-			val, _ := strconv.ParseInt(result["value"], 10, 16)
-			mySituation.GPSSatellitesSeen = uint16(val)
-                        mySituation.GPSSatellites = uint16(val)
-                        mySituation.GPSSatellitesTracked = uint16(val)
-		case "GPS_FIX_TYPE":
-		    val, _ := strconv.ParseInt(result["value"], 10, 8)
-		    if val == 0 || val == 1 {
+                case "GPS_SATS_VISIBLE":
+                    val, _ := strconv.ParseInt(result["value"], 10, 16)
+                    mySituation.GPSSatellitesSeen = uint16(val)
+                    mySituation.GPSSatellites = uint16(val)
+                    mySituation.GPSSatellitesTracked = uint16(val)
+                case "GPS_FIX_TYPE":
+                    val, _ := strconv.ParseInt(result["value"], 10, 8)
+                    if val == 0 || val == 1 {
                         mySituation.GPSFixQuality = 0 //uint8(val) // TODO Do we need to convert anything here?
-		    } else if val == 2 {
-			mySituation.GPSFixQuality = 1
-		    } else if val >= 3 {
-			mySituation.GPSFixQuality = 2
-		    }
-		    // 0 or 1 from fix it 0 here
-		    // 2 from fix is 1 here
-		    // 3 or higher from fix is 2 here
+                    } else if val == 2 {
+                        mySituation.GPSFixQuality = 1
+                    } else if val >= 3 {
+                        mySituation.GPSFixQuality = 2
+                    }
+                    // 0 or 1 from fix it 0 here
+                    // 2 from fix is 1 here
+                    // 3 or higher from fix is 2 here
                 case "GPS_ACCURACY_HORIZ":
-		    val, _ := strconv.ParseFloat(result["value"],64)
-		    mySituation.GPSHorizontalAccuracy = float32(val * 0.3048) // ft to meters
+                    val, _ := strconv.ParseFloat(result["value"],64)
+                    mySituation.GPSHorizontalAccuracy = float32(val * 0.3048) // ft to meters
                 case "GPS_ACCURACY_VERTICAL":
                     val, _ := strconv.ParseFloat(result["value"],64)
                     mySituation.GPSVerticalAccuracy = float32(val * 0.3048) // ft to meters
-		case "GS": 
-		    val, _ := strconv.ParseFloat(result["value"],64) // Should be knots in and out
-		    mySituation.GPSGroundSpeed = val
-		case "GPS_ELLIPSOID_ALT":
-	            val, _ := strconv.ParseFloat(result["value"],64) //should be ft in and out
-		    mySituation.GPSHeightAboveEllipsoid = float32(val)
-		case "ALT":
-		    val, _ := strconv.ParseFloat(result["value"],64)
-		    mySituation.GPSAltitudeMSL = float32(val) 
+                case "GS": 
+                    val, _ := strconv.ParseFloat(result["value"],64) // Should be knots in and out
+                    mySituation.GPSGroundSpeed = val
+                case "GPS_ELLIPSOID_ALT":
+                    val, _ := strconv.ParseFloat(result["value"],64) //should be ft in and out
+                    mySituation.GPSHeightAboveEllipsoid = float32(val)
+                case "ALT":
+                    val, _ := strconv.ParseFloat(result["value"],64)
+                    mySituation.GPSAltitudeMSL = float32(val) 
             }
-	    // TODO
-	    mySituation.GPSLastFixLocalTime = stratuxClock.Time
-	    mySituation.GPSLastValidNMEAMessageTime = stratuxClock.Time
-	    // see calculateNavRate in gps.go, seems we need the performance stats
-	    mySituation.GPSPositionSampleRate = 20
+            // TODO
+            mySituation.GPSLastFixLocalTime = stratuxClock.Time
+            mySituation.GPSLastValidNMEAMessageTime = stratuxClock.Time
+            // see calculateNavRate in gps.go, seems we need the performance stats
+            mySituation.GPSPositionSampleRate = 20
 
-	    //mySituation.GPSTrueCourse = 100
+            //mySituation.GPSTrueCourse = 100
         }
 
     }
