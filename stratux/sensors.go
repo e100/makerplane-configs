@@ -371,7 +371,7 @@ func processIMU(result map[string]string) {
 
     if imuKeys[result["key"]] {
         //result["old"] == "0" || result["fail"] == "0" || result["bad"] == "0" {
-        //mySituation.muAttitude.Lock()
+        mySituation.muAttitude.Lock()
         switch result["key"] {
             case "ROLL":
 //        if result["old"] == "1" || result["fail"] == "1" || result["bad"] == "1" {
@@ -402,11 +402,12 @@ func processIMU(result map[string]string) {
                 //mySituation.AHRSTurnRate = ahrs.Invalid
                 //mySituation.AHRSGLoadMin = ahrs.Invalid
 
-        //mySituation.muAttitude.Unlock()
         }
         //mySituation.AHRSSlipSkid  = 0
         mySituation.AHRSGLoadMin = 0
         mySituation.AHRSLastAttitudeTime = stratuxClock.Time
+        mySituation.muAttitude.Unlock()
+
     }
 }
 
@@ -451,6 +452,17 @@ func processGPS(result map[string]string) {
         } else {
             // Lock mutex?
        //log.Printf("Data:", result["value"])
+            mySituation.muSatellite.Lock()
+            switch result["key"] {
+                case "GPS_SATS_VISIBLE":
+                    val, _ := strconv.ParseInt(result["value"], 10, 16)
+                    mySituation.GPSSatellitesSeen = uint16(val)
+                    mySituation.GPSSatellites = uint16(val)
+                    mySituation.GPSSatellitesTracked = uint16(val)
+            }
+            mySituation.muSatellite.Unlock()
+
+            mySituation.muGPS.Lock()
             switch result["key"] {
                 case "COURSE":
                     val, _ := strconv.ParseFloat(result["value"],64)
@@ -464,9 +476,11 @@ func processGPS(result map[string]string) {
                     mySituation.GPSLongitude = float32(val)
                 case "GPS_SATS_VISIBLE":
                     val, _ := strconv.ParseInt(result["value"], 10, 16)
+                    mySituation.muSatellite.Lock()
                     mySituation.GPSSatellitesSeen = uint16(val)
                     mySituation.GPSSatellites = uint16(val)
                     mySituation.GPSSatellitesTracked = uint16(val)
+                    mySituation.muSatellite.Unlock()
                 case "GPS_FIX_TYPE":
                     val, _ := strconv.ParseInt(result["value"], 10, 8)
                     if val == 0 || val == 1 {
@@ -502,6 +516,7 @@ func processGPS(result map[string]string) {
             mySituation.GPSPositionSampleRate = 20
 
             //mySituation.GPSTrueCourse = 100
+            mySituation.muGPS.Unlock()
         }
 
     }
