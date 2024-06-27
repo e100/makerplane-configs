@@ -315,54 +315,56 @@ func processFixData() {
             //for globalSettings.IMU_Sensor_Enabled && globalStatus.IMUConnected {
                 //process received data
                 //log.Printf("Listen")
-            data, err := bufio.NewReader(myFixConnection).ReadString('\n')
-            if err != nil {
-                fmt.Println(err)
-                globalStatus.IMUConnected = false
-                globalStatus.BMPConnected = false
-                myConnected = false
-                    continue
-            }
-            m := re.FindStringSubmatch(data)
-            if m == nil {
-                // This seems to happen when the ack for subscribe is pushed
-                f := re2.FindStringSubmatch(data)
-                if f == nil {
-                    log.Printf("error parsing: ", string(data))
-                } else {
-                    if f[1] == "@" && f[2] == "s" {
-                        log.Printf("Subscription confirmed for: %s", f[3])
-                    } else {
+            for myConnected {
+                data, err := bufio.NewReader(myFixConnection).ReadString('\n')
+                if err != nil {
+                    fmt.Println(err)
+                    globalStatus.IMUConnected = false
+                    globalStatus.BMPConnected = false
+                    myConnected = false
+                        continue
+                }
+                m := re.FindStringSubmatch(data)
+                if m == nil {
+                    // This seems to happen when the ack for subscribe is pushed
+                    f := re2.FindStringSubmatch(data)
+                    if f == nil {
                         log.Printf("error parsing: ", string(data))
+                    } else {
+                        if f[1] == "@" && f[2] == "s" {
+                            log.Printf("Subscription confirmed for: %s", f[3])
+                        } else {
+                            log.Printf("error parsing: ", string(data))
+                        }
+                    }
+                    continue
+                }
+                result := make(map[string]string)
+                for i, name := range re.SubexpNames() {
+                    if i != 0 && name != "" {
+                        result[name] = m[i]
                     }
                 }
-                continue
-            }
-            result := make(map[string]string)
-            for i, name := range re.SubexpNames() {
-                if i != 0 && name != "" {
-                    result[name] = m[i]
+                processGPS(result)
+                processPress(result)
+                processIMU(result)
+                msg = 0
+                // GPS ground track valid?
+                if isGPSGroundTrackValid() {
+                    msg++
                 }
-            }
-            processGPS(result)
-            processPress(result)
-            processIMU(result)
-            msg = 0
-            // GPS ground track valid?
-            if isGPSGroundTrackValid() {
-                msg++
-            }
 
-            // IMU is being used 
-            imu = globalSettings.IMU_Sensor_Enabled && globalStatus.IMUConnected
-            if imu {
-                msg += 1 << 1
+                // IMU is being used 
+                imu = globalSettings.IMU_Sensor_Enabled && globalStatus.IMUConnected
+                if imu {
+                    msg += 1 << 1
+                }
+                // BMP is being used
+                if (globalSettings.BMP_Sensor_Enabled && globalStatus.BMPConnected) || isTempPressValid() {
+                    msg += 1 << 2
+                }
+                mySituation.AHRSStatus = msg
             }
-            // BMP is being used
-            if (globalSettings.BMP_Sensor_Enabled && globalStatus.BMPConnected) || isTempPressValid() {
-                msg += 1 << 2
-            }
-            mySituation.AHRSStatus = msg
     }
 }
 
