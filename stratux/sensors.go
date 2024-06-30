@@ -440,6 +440,7 @@ func processPress(result map[string]string) {
 
         }
         mySituation.BaroLastMeasurementTime = stratuxClock.Time
+        mySituation.BaroSourceType = BARO_TYPE_BMP280
         mySituation.muBaro.Unlock()
     }
 }
