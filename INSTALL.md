@@ -321,6 +321,20 @@ It is easiest to just reboot at this step before continuing
 reboot
 ```
 
+## Prepare for installing FIX Gateway
+Enable hotplug option in snapd:
+```
+sudo snap set system experimental.hotplug=true
+```
+Enable user daemon support:
+```
+sudo snap set system experimental.user-daemons=true
+```
+Restart snapd to apply the hotplug change:
+```
+sudo systemctl restart snapd.service
+```
+
 ## Install FIX Gateway
 To install FIX Gateway use snap:
 ```
@@ -336,14 +350,7 @@ Add yourself to the dialout group:
 sudo usermod -a -G dialout ${USER}
 newgrp dialout
 ```
-Enable hotplug option in snapd:
-```
-sudo snap set system experimental.hotplug=true
-```
-Restart snapd to apply the hotplug change:
-```
-sudo systemctl restart snapd.service
-```
+
 List serial ports:
 ```
 snap interface serial-port --attrs
