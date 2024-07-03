@@ -1,0 +1,18 @@
+# Make changes to includes and enabled in this file.
+# see preferences.yaml for a list of options
+
+# IF you need a custom config file, make one anc change the filename here:
+includes:
+  QUORUM_CONFIG: connections/quorum.yaml
+  MAVLINK_CONFIG: connections/mavlink_dakota_hawk.yaml
+  DATA_RECORDER_CONFIG: fixgw/config/connections/data_recorder_custom.yaml
+
+# This section is used to turn things on or off
+enabled:
+  QUORUM: false
+  MAVLINK: true
+  DEMO: false
+  SYSTEM: true
+  IFLY: true
+  DATA_RECORDER: true
+
