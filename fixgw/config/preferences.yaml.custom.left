@@ -8,6 +8,7 @@ includes:
   MEGASQUIRT_CONFIG: connections/megasquirt_dakota_hawk.yaml
   MGL_CONFIG: connections/mgl_dakota_hawk.yaml
   MAVLINK_CONFIG: connections/mavlink_dakota_hawk.yaml
+  DATA_RECORDER_CONFIG: fixgw/config/connections/data_recorder_custom.yaml
 # This section is used to turn things on or off
 enabled:
   QUORUM: true
