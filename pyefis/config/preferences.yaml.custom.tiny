@@ -1,0 +1,23 @@
+# Edit this file to make changes.                                                                                                                                            
+# format is the same as preferences.yaml                                                                                                                                     
+# Any section defined here will override what is in                                                                                                                          
+# the preferences.yaml                                                                                                                                                       
+#style: [ ]
+style:  
+  basic: true      
+  dseg: false
+  ghost: false     
+  segmented: true 
+
+enabled:
+  VSI_BALL: false
+  VSI_TAPE: true
+
+styles:
+  BAR:
+    segmented:
+      segments: 18
+
+includes:
+  BUTTON_GROUP1: includes/buttons/vertical/screen_changing_PFD-EMS-MAP-RADIO-AP-Units.yaml
+
